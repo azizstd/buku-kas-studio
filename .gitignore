@@ -12,7 +12,10 @@ Desktop.ini
 *.sln
 *.sw?
 
-# Temporary / Log files
+# Helper scripts
+upload-ke-github.bat
+upload-ke-github.ps1
+
 *.log
 *.tmp
 node_modules/
