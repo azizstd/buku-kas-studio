@@ -1,0 +1,2982 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+<title>Buku Kas Studio & Proyek Arsitektur</title>
+<style>
+:root{
+  --bg:#f4f7f4;--sf:#ffffff;--sf-sub:#ffffff;--tx:#142217;--mu:#6e7d72;--bd:#e5ebe5;
+  --ac:#1a4d2e;--ac-bg:#e8f0eb;--ac-hover:#143d24;
+  --accent-light:#b4e380;
+  --rd:#e05252;--rd-bg:#fde8e8;
+  --wn:#d97706;--wn-bg:#fef3c7;
+  --bl:#2563eb;--bl-bg:#eff6ff;
+  --pu:#7c3aed;--pu-bg:#f5f3ff;
+  --sh:0 6px 24px rgba(26,77,46,0.06);
+  --sh-sm:0 2px 8px rgba(26,77,46,0.04);
+  --sidebar-w:260px;
+  --header-h:60px;
+  --bottom-bar-h:64px;
+  color-scheme:light;
+  box-sizing:border-box;
+}
+:root[data-theme="dark"]{
+  --bg:#0f1511;--sf:#161f19;--sf-sub:#1a251e;--tx:#e9f1eb;--mu:#8a9a8e;--bd:#233328;
+  --ac:#22c55e;--ac-bg:rgba(34,197,94,0.14);--ac-hover:#16a34a;
+  --accent-light:#4ade80;
+  --rd:#ef4444;--rd-bg:rgba(239,68,68,0.14);
+  --wn:#f59e0b;--wn-bg:rgba(245,158,11,0.14);
+  --bl:#3b82f6;--bl-bg:rgba(59,130,246,0.14);
+  --pu:#a855f7;--pu-bg:rgba(168,85,247,0.14);
+  --sh:0 6px 24px rgba(0,0,0,0.35);
+  --sh-sm:0 2px 8px rgba(0,0,0,0.25);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;transition:background-color .15s ease,border-color .15s ease}
+body{
+  margin:0;background:var(--bg);color:var(--tx);
+  font:14px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* APP SHELL & SIDEBAR LAYOUT */
+.app-shell{display:flex;min-height:100vh;position:relative}
+
+/* SIDEBAR DESKTOP & MOBILE DRAWER */
+.sidebar{
+  width:var(--sidebar-w);background:var(--sf);border-right:1px solid var(--bd);padding:24px 18px;
+  display:flex;flex-direction:column;gap:20px;flex-shrink:0;position:sticky;top:0;height:100vh;
+  overflow-y:auto;z-index:95;-webkit-overflow-scrolling:touch;
+}
+.sidebar-header-row{display:flex;align-items:center;justify-content:space-between;width:100%}
+.sidebar-brand{display:flex;align-items:center;gap:12px;padding:4px 6px 12px;border-bottom:1px solid var(--bd);width:100%}
+.sidebar-brand .brand-icon{width:38px;height:38px;border-radius:10px;background:#142217;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+:root[data-theme="dark"] .sidebar-brand .brand-icon{background:#233328;color:#4ade80}
+.sidebar-brand h1{font-size:15px;margin:0;font-weight:800;color:var(--tx);line-height:1.2}
+.sidebar-brand small{font-size:11px;color:var(--mu);display:block}
+.sidebar-close-btn{
+  display:none;background:none;border:none;color:var(--mu);font-size:22px;
+  padding:6px 10px;cursor:pointer;border-radius:8px;line-height:1;
+}
+
+.nav-section{margin-bottom:10px}
+.nav-heading{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);padding:6px 10px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;
+  font-weight:700;font-size:13px;color:var(--mu);cursor:pointer;border:none;background:transparent;
+  width:100%;text-align:left;transition:all .15s ease;touch-action:manipulation;
+}
+.nav-item:hover{background:var(--ac-bg);color:var(--tx)}
+.nav-item.active{background:#142217;color:#ffffff;box-shadow:0 3px 12px rgba(20,34,23,0.18)}
+:root[data-theme="dark"] .nav-item.active{background:#233328;color:#4ade80}
+.nav-item .icon{font-size:16px;width:20px;display:inline-flex;justify-content:center;flex-shrink:0}
+.nav-item .badge-cnt{margin-left:auto;font-size:10px;background:rgba(255,255,255,0.15);padding:2px 7px;border-radius:99px;white-space:nowrap}
+.nav-item:not(.active) .badge-cnt{background:var(--bd);color:var(--mu)}
+
+.sidebar-backdrop{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(3px);z-index:94;opacity:0;transition:opacity .25s ease;
+}
+
+/* TOP MOBILE APP BAR (VISIBLE ON SMARTPHONE & TABLET) */
+.mobile-top-bar{
+  display:none;position:sticky;top:0;left:0;right:0;height:var(--header-h);
+  background:var(--sf);border-bottom:1px solid var(--bd);z-index:90;
+  padding:0 16px;align-items:center;justify-content:space-between;
+  box-shadow:var(--sh-sm);
+}
+.mobile-top-left{display:flex;align-items:center;gap:10px}
+.mobile-menu-btn{
+  width:40px;height:40px;border-radius:10px;border:1px solid var(--bd);
+  background:var(--bg);color:var(--tx);display:flex;align-items:center;
+  justify-content:center;font-size:20px;cursor:pointer;padding:0;
+}
+.mobile-brand-title{font-size:15px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.mobile-brand-sub{font-size:11px;color:var(--mu);display:block}
+.mobile-top-actions{display:flex;align-items:center;gap:6px}
+
+/* MAIN CONTENT AREA */
+.content-area{
+  flex:1;padding:24px 32px 80px;max-width:1200px;margin:0 auto;width:100%;
+  min-width:0;/* Prevents overflow in flex children */
+}
+
+/* BOTTOM NAVIGATION BAR FOR PHONES */
+.mobile-bottom-nav{
+  display:none;position:fixed;bottom:0;left:0;right:0;height:var(--bottom-bar-h);
+  background:var(--sf);border-top:1px solid var(--bd);z-index:90;
+  padding:4px 10px calc(4px + env(safe-area-inset-bottom, 0px));
+  justify-content:space-around;align-items:center;box-shadow:0 -4px 16px rgba(0,0,0,0.06);
+}
+.bottom-nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;background:none;border:none;color:var(--mu);font-size:10px;font-weight:700;
+  cursor:pointer;padding:6px 2px;border-radius:8px;text-align:center;transition:all .15s ease;
+}
+.bottom-nav-item .b-icon{font-size:18px;line-height:1}
+.bottom-nav-item.active{color:var(--ac)}
+.bottom-nav-item.fab-btn-wrap{
+  flex:0 0 54px;display:flex;justify-content:center;align-items:center;
+}
+.bottom-nav-fab{
+  width:46px;height:46px;border-radius:50%;background:var(--ac);color:#ffffff;
+  display:flex;align-items:center;justify-content:center;font-size:22px;border:none;
+  box-shadow:0 4px 14px rgba(26,77,46,0.35);cursor:pointer;margin-top:-14px;
+}
+.bottom-nav-fab:hover{background:var(--ac-hover);transform:scale(1.05)}
+
+/* HERO BALANCE BANNER */
+.hero-banner{
+  background:#142217;
+  color:#ffffff;
+  border-radius:24px;
+  padding:28px 32px;
+  display:flex;
+  justify-content:space-between;
+  gap:24px;
+  align-items:center;
+  margin-bottom:20px;
+  box-shadow:0 12px 36px rgba(20,34,23,0.16);
+  position:relative;
+  overflow:hidden;
+  width:100%;
+}
+:root[data-theme="dark"] .hero-banner{background:#161f19;border:1px solid #233328}
+.hero-left-box{flex:1;min-width:0}
+.hero-label{font-size:13px;font-weight:600;color:#94a397;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.hero-val{
+  font-size:clamp(26px, 5vw, 38px);font-weight:800;letter-spacing:-.03em;
+  line-height:1.15;margin-bottom:12px;word-break:break-word;
+}
+.hero-badges-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 10px;
+  border-radius:8px;font-size:11px;font-weight:700;background:rgba(180,227,128,0.18);color:#b4e380
+}
+.hero-badge.sub{color:#94a397;background:transparent;padding-left:0}
+.hero-action-btn{
+  width:100px;height:74px;border-radius:18px;background:#ffffff;border:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);transition:transform .15s ease,box-shadow .15s ease;
+  touch-action:manipulation;
+}
+.hero-action-btn:hover{transform:scale(1.04);box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+.hero-action-btn svg{width:34px;height:34px;fill:none;stroke:#1a4d2e;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* 3-COLUMN METRIC CARDS */
+.stats-grid{
+  display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:18px;
+  margin-bottom:24px;width:100%;
+}
+.stat-card{
+  background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:22px 24px;
+  box-shadow:var(--sh-sm);display:flex;flex-direction:column;gap:6px;position:relative;
+  min-width:0;
+}
+.stat-header{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--mu)}
+.stat-header .stat-icon{font-size:14px;flex-shrink:0}
+.stat-val{
+  font-size:clamp(19px, 3vw, 26px);font-weight:800;letter-spacing:-.02em;color:var(--tx);
+  margin:4px 0;word-break:break-word;
+}
+.stat-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:6px;
+  font-size:11px;font-weight:700;width:fit-content;max-width:100%;flex-wrap:wrap;
+}
+.stat-badge.pos{background:var(--ac-bg);color:var(--ac)}
+.stat-badge.neg{background:var(--rd-bg);color:var(--rd)}
+.stat-badge.neutral{background:var(--bg);color:var(--mu)}
+
+/* 2-COLUMN BALANCED GRID */
+.two-col-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:20px;
+  align-items:stretch;
+  width:100%;
+  margin-bottom:20px;
+}
+.card-widget, .block-panel{
+  background:var(--sf);
+  border:1px solid var(--bd);
+  border-radius:20px;
+  padding:22px 24px;
+  box-shadow:var(--sh-sm);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  min-width:0;
+  margin-bottom:20px;
+}
+.two-col-grid .card-widget{margin-bottom:0}
+.card-widget-header, .block-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--bd);
+  flex-wrap:wrap;
+  gap:8px;
+}
+.card-widget-title, .block-title{
+  font-size:15px;
+  font-weight:800;
+  margin:0;
+  color:var(--tx);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  letter-spacing:-.01em;
+}
+
+/* RECENT TRANSACTIONS MINI LIST */
+.recent-list{display:flex;flex-direction:column;gap:10px}
+.recent-item{
+  display:flex;align-items:center;justify-content:space-between;padding:10px 12px;
+  background:var(--bg);border-radius:14px;border:1px solid var(--bd);gap:12px;
+}
+.recent-left{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.recent-icon{
+  width:36px;height:36px;border-radius:10px;background:var(--sf);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  box-shadow:var(--sh-sm);flex-shrink:0;
+}
+.recent-text-box{min-width:0;flex:1}
+.recent-desc{
+  font-weight:700;font-size:13px;color:var(--tx);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.recent-sub{font-size:11px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-amt{font-weight:800;font-size:14px;text-align:right;white-space:nowrap;flex-shrink:0}
+
+/* DONUT SPENDING CHART */
+.donut-wrap{display:flex;align-items:center;gap:24px;padding:12px 0}
+.donut-svg-box{position:relative;width:150px;height:150px;flex-shrink:0;margin:0 auto}
+.donut-legend{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.legend-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;gap:8px}
+.legend-label{display:flex;align-items:center;color:var(--tx);font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legend-bullet{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;flex-shrink:0}
+
+.block-title .icon-pill, .card-widget-title .icon-pill{
+  width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;
+}
+.icon-emerald{background:var(--ac-bg);color:var(--ac)}
+.icon-amber{background:var(--wn-bg);color:var(--wn)}
+.icon-blue{background:var(--bl-bg);color:var(--bl)}
+.icon-purple{background:var(--pu-bg);color:var(--pu)}
+
+/* KPI 2-ROW GRID */
+.kpi-row{display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:12px}
+.kpi-row + .kpi-row{margin-top:12px}
+.card{
+  background:var(--sf-sub);
+  border:1px solid var(--bd);
+  border-radius:14px;
+  padding:14px 16px;
+  box-shadow:var(--sh-sm);
+  position:relative;
+  min-width:0;
+}
+.card small{display:block;color:var(--mu);font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card b{font-size:clamp(16px, 3.5vw, 20px);font-weight:800;letter-spacing:-.02em;display:block;word-break:break-word}
+.pos{color:var(--ac)}.neg{color:var(--rd)}
+
+/* PROGRESS BAR / BURN RATE */
+.burn-card{
+  background:var(--bg);
+  border:1px solid var(--bd);
+  border-radius:14px;
+  padding:14px 16px;
+  margin-top:14px;
+}
+.progress-track{height:9px;background:var(--bd);border-radius:99px;overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--ac),#059669);border-radius:99px;transition:width .4s ease}
+.progress-fill.warn{background:linear-gradient(90deg,var(--wn),#d97706)}
+.progress-fill.danger{background:linear-gradient(90deg,var(--rd),#b91c1c)}
+
+/* TABLES & RESPONSIVE HORIZONTAL SCROLL */
+.wrap{
+  overflow-x:auto;background:var(--sf);border:1px solid var(--bd);border-radius:14px;width:100%;
+  -webkit-overflow-scrolling:touch;position:relative;
+}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:540px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--bd);white-space:nowrap}
+th{color:var(--mu);font-weight:700;font-size:11px;text-transform:uppercase;background:var(--bg);position:sticky;top:0}
+td.n,th.n{text-align:right}
+tr:last-child td{border-bottom:0}
+tr:hover td{background:rgba(0,0,0,0.015)}
+:root[data-theme="dark"] tr:hover td{background:rgba(255,255,255,0.02)}
+
+/* FORMS */
+.form{display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:14px}
+.form label{font-size:11px;color:var(--mu);font-weight:700;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.full{grid-column:1/-1}
+input,select{
+  width:100%;padding:10px 13px;border:1px solid var(--bd);border-radius:10px;
+  background:var(--bg);color:var(--tx);font:inherit;font-size:14px;
+}
+input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
+
+/* CHIPS & LIVE NUMBER PREVIEW */
+.chips-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chip-btn{
+  background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:6px 11px;
+  font-size:11px;font-weight:700;color:var(--tx);cursor:pointer;touch-action:manipulation;
+}
+.chip-btn:hover{border-color:var(--ac);color:var(--ac)}
+.chip-btn.d{color:var(--rd);border-color:transparent}
+.chip-btn.d:hover{background:var(--rd-bg)}
+
+.num-preview{margin-top:6px;padding:8px 12px;background:var(--ac-bg);border:1px solid var(--ac);border-radius:99px;font-size:12px;color:var(--ac);display:none;animation:fadeIn .2s ease}
+.num-preview.show{display:block}
+.num-preview b{display:block;font-size:14px;margin-bottom:2px}
+
+/* FILTER PILLS */
+.filter-bar{
+  display:flex;gap:8px;margin:12px 0 10px;overflow-x:auto;padding-bottom:6px;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.filter-bar::-webkit-scrollbar{display:none}
+.pill{
+  background:var(--bg);border:1px solid var(--bd);padding:7px 15px;border-radius:99px;
+  font-size:12px;font-weight:700;color:var(--mu);cursor:pointer;white-space:nowrap;
+  flex-shrink:0;touch-action:manipulation;
+}
+.pill.on{background:#142217;color:#fff;border-color:#142217;box-shadow:0 2px 6px rgba(20,34,23,0.25)}
+:root[data-theme="dark"] .pill.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.pill:not(.on):hover{border-color:var(--ac);color:var(--tx)}
+
+/* BUTTONS */
+.btn{
+  padding:10px 16px;border:0;border-radius:10px;background:var(--ac);color:#fff;
+  font:inherit;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;
+  justify-content:center;gap:6px;touch-action:manipulation;text-align:center;
+}
+.btn:hover{background:var(--ac-hover)}
+.btn.g{background:transparent;color:var(--mu);border:1px solid var(--bd)}
+.btn.g:hover{background:var(--bg);color:var(--tx);border-color:var(--mu)}
+.btn.sm{padding:7px 12px;font-size:12px;border-radius:8px}
+.btn.wn{background:var(--wn);color:#fff}
+.btn.wn:hover{opacity:.92}
+.lnk{background:none;border:0;color:var(--ac);font:inherit;padding:4px 6px;cursor:pointer;font-weight:700;touch-action:manipulation}.lnk.d{color:var(--rd)}
+
+/* BADGES & TAGS */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:7px;font-size:11px;font-weight:700;white-space:nowrap}
+.b-ok{background:var(--ac-bg);color:var(--ac);border:1px solid var(--ac)}
+.b-neg{background:var(--rd-bg);color:var(--rd);border:1px solid var(--rd)}
+.b-pos{background:var(--bl-bg);color:var(--bl);border:1px solid var(--bl)}
+.b-wn{background:var(--wn-bg);color:var(--wn);border:1px solid var(--wn)}
+.b-mu{background:var(--bg);color:var(--mu);border:1px solid var(--bd)}
+
+.cat-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;white-space:nowrap}
+.cat-material{background:#e0f2fe;color:#0369a1}
+.cat-upah{background:#dcfce7;color:#15803d}
+.cat-sewa{background:#f3e8ff;color:#7e22ce}
+.cat-transport{background:#fef9c3;color:#854d0e}
+.cat-konsultan{background:#e0e7ff;color:#3730a3}
+.cat-kantor{background:#f1f5f9;color:#334155}
+.cat-kasbon{background:#ffedd5;color:#c2410c;border:1px solid #fdba74}
+.cat-default{background:var(--bg);color:var(--mu);border:1px solid var(--bd)}
+
+/* ALERTS & MODALS */
+.alert-box{
+  background:var(--wn-bg);border:1px solid var(--wn);border-radius:14px;
+  padding:14px 18px;margin-bottom:18px;display:flex;gap:12px;
+  align-items:center;justify-content:space-between;flex-wrap:wrap;
+}
+.alert-box b{color:var(--wn);display:block;font-size:13px}
+
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  backdrop-filter:blur(4px);overflow-y:auto;
+}
+.modal-bg.hid{display:none !important}
+.modal{
+  background:var(--sf);border:1px solid var(--bd);border-radius:20px;
+  max-width:480px;width:100%;padding:24px;box-shadow:var(--sh);
+  animation:modalIn .2s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height:calc(100dvh - 32px);overflow-y:auto;margin:auto;
+}
+.modal.modal-lg{max-width:680px}
+.modal h3{margin:0 0 6px;font-size:18px;font-weight:800}
+
+#toast{
+  position:fixed;left:50%;transform:translateX(-50%);
+  bottom:calc(74px + env(safe-area-inset-bottom,0px));
+  background:var(--sf);border:1px solid var(--bd);color:var(--tx);
+  padding:11px 20px;border-radius:14px;z-index:99;font-size:13px;
+  font-weight:700;box-shadow:var(--sh);display:flex;align-items:center;
+  gap:10px;max-width:90vw;text-align:center;
+}
+
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.row>.btn{flex:0 0 auto}
+.empty{padding:26px 16px;text-align:center;color:var(--mu)}
+.mu{color:var(--mu);font-size:12px}
+.hid{display:none !important}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+@keyframes modalIn{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
+
+/* ============================================================== */
+/* MEDIA QUERIES: TABLET & SMARTPHONE RESPONSIVENESS              */
+/* ============================================================== */
+
+/* TABLET (PORTRAIT & LANDSCAPE 768px - 1024px) */
+@media(max-width:1024px){
+  .content-area{padding:20px 24px 80px}
+  .stats-grid{gap:14px}
+  .stat-card{padding:18px 20px}
+  .hero-banner{padding:24px 28px}
+}
+
+/* SMARTPHONE & NARROW TABLET (< 992px) */
+@media(max-width:991px){
+  .app-shell{flex-direction:column}
+  
+  /* OFF-CANVAS SIDEBAR DRAWER */
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;height:100dvh;
+    width:280px;max-width:85vw;z-index:100;
+    transform:translateX(-100%);transition:transform .25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow:4px 0 24px rgba(0,0,0,0.3);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-backdrop.open{display:block;opacity:1}
+  .sidebar-close-btn{display:inline-flex}
+
+  /* SHOW MOBILE TOP APP BAR */
+  .mobile-top-bar{display:flex}
+
+  /* CONTENT AREA ADJUSTMENTS */
+  .content-area{
+    padding:16px 16px calc(var(--bottom-bar-h) + env(safe-area-inset-bottom, 16px) + 20px);
+    width:100%;max-width:100%;
+  }
+
+  /* SHOW BOTTOM NAVIGATION */
+  .mobile-bottom-nav{display:flex}
+
+  /* 2-COLUMN GRIDS BECOME 1 COLUMN */
+  .two-col-grid{grid-template-columns:1fr;gap:16px}
+
+  /* STATS GRID ON TABLET/MOBILE */
+  .stats-grid{grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:14px;margin-bottom:18px}
+
+  .card-widget, .block-panel{padding:18px 18px;margin-bottom:16px;border-radius:18px}
+}
+
+/* SMARTPHONE SPECIFIC (< 680px) */
+@media(max-width:680px){
+  /* iOS Input Zoom Prevention */
+  input, select, textarea{font-size:16px !important}
+  
+  .content-area{padding:14px 12px calc(var(--bottom-bar-h) + env(safe-area-inset-bottom, 16px) + 20px)}
+
+  /* HERO BANNER ON PHONES */
+  .hero-banner{
+    padding:18px 18px;border-radius:20px;margin-bottom:16px;
+    align-items:center;gap:12px;
+  }
+  .hero-action-btn{
+    width:52px;height:52px;border-radius:14px;flex-shrink:0;
+  }
+  .hero-action-btn svg{width:26px;height:26px}
+  
+  /* STATS 1 COL ON PHONES */
+  .stats-grid{grid-template-columns:1fr;gap:12px}
+  .stat-card{padding:16px 18px}
+
+  /* KPI GRIDS ON PHONES */
+  .kpi-row{grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px}
+  .card{padding:12px 14px}
+  .card b{font-size:16px}
+
+  /* DONUT CHART COMPACT */
+  .donut-wrap{flex-direction:column;gap:16px;padding:8px 0}
+  .donut-svg-box{width:130px;height:130px}
+  .donut-legend{width:100%}
+
+  /* FORMS ON PHONE */
+  .form{grid-template-columns:1fr;gap:12px}
+
+  /* MODAL ON PHONE (SAFE MARGINS & SIZING) */
+  .modal{padding:20px 16px;border-radius:18px}
+  
+  /* TABLE TOUCH SCROLL INDICATOR */
+  .wrap{border-radius:12px}
+  th, td{padding:9px 12px;font-size:12px}
+  
+  /* ACC BALANCE CHECK INPUT ON SMALL PHONES */
+  #acc input.ck{width:110px !important}
+
+  /* TOAST POSITION ON PHONES */
+  #toast{
+    bottom:calc(var(--bottom-bar-h) + env(safe-area-inset-bottom, 0px) + 12px);
+    width:calc(100% - 32px);padding:10px 14px;font-size:12px;
+  }
+
+  /* ROW BUTTON WRAPPING */
+  .row.row-stack-mobile{flex-direction:column;align-items:stretch}
+  .row.row-stack-mobile>*{width:100%}
+}
+
+/* VERY SMALL SMARTPHONES (< 380px) */
+@media(max-width:380px){
+  .hero-badges-row{flex-direction:column;align-items:flex-start;gap:4px}
+  .kpi-row{grid-template-columns:1fr}
+}
+</style></head><body>
+
+<!-- MOBILE DRAWER BACKDROP -->
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleMobileSidebar(false)"></div>
+
+<!-- TOP MOBILE APP BAR -->
+<header class="mobile-top-bar" id="mobile-top-bar">
+ <div class="mobile-top-left">
+  <button type="button" class="mobile-menu-btn" onclick="toggleMobileSidebar(true)" aria-label="Buka Menu Sidebar">
+   ☰
+  </button>
+  <div>
+   <div class="mobile-brand-title">📐 Buku Kas Studio</div>
+   <small class="mobile-brand-sub" id="mobile-active-view-label">Overview Kas Besar</small>
+  </div>
+ </div>
+ <div class="mobile-top-actions">
+  <button type="button" class="btn sm g" onclick="toggleAppTheme()" title="Ganti Tema" style="padding:7px 10px;font-size:14px">🌓</button>
+  <button type="button" class="btn sm" onclick="bukaModalTransaksi()" title="Tambah Transaksi Cepat" style="padding:7px 12px;font-size:12px">➕ Baru</button>
+ </div>
+</header>
+
+<div class="app-shell">
+ <!-- SIDEBAR -->
+ <aside class="sidebar" id="app-sidebar">
+  <div class="sidebar-brand">
+   <div class="sidebar-header-row">
+    <div style="display:flex;align-items:center;gap:12px">
+     <div class="brand-icon">📐</div>
+     <div>
+      <h1>Buku Kas</h1>
+      <small>Arsitektur &amp; Interior</small>
+     </div>
+    </div>
+    <button type="button" class="sidebar-close-btn" onclick="toggleMobileSidebar(false)" aria-label="Tutup Sidebar">✕</button>
+   </div>
+  </div>
+
+  <div class="nav-section">
+   <div class="nav-heading">UTAMA</div>
+   <button type="button" class="nav-item active" id="sb-nav-kb" onclick="navTo('kb')">
+    <span class="icon">🏢</span> Overview Kas Besar
+   </button>
+   <button type="button" class="nav-item" id="sb-nav-log" onclick="navTo('log')">
+    <span class="icon">📋</span> Log Transaksi
+   </button>
+  </div>
+
+  <div class="nav-section" style="flex:1">
+   <div class="nav-heading">
+    <span>PROYEK</span>
+    <button type="button" class="lnk" onclick="tambahProyekSidebar()" style="font-size:18px;line-height:1;padding:0 6px" title="Tambah Proyek Baru">+</button>
+   </div>
+   <div id="sidebar-projects-list" style="display:flex;flex-direction:column;gap:4px">
+    <!-- Diisi otomatis oleh render() -->
+   </div>
+  </div>
+
+  <div style="padding-top:12px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:6px">
+   <button type="button" class="btn sm g" id="theme-btn" style="width:100%;justify-content:flex-start">🌓 Ganti Tema</button>
+   <button type="button" class="btn sm g" id="btn-quick-bk" style="width:100%;justify-content:flex-start">💾 Cadangkan Data</button>
+   <button type="button" class="lnk d" id="btn-clear-data" style="font-size:11px;text-align:left;padding:6px 8px">🗑️ Reset Semua Data</button>
+  </div>
+ </aside>
+
+ <!-- MAIN CONTENT AREA -->
+ <main class="content-area">
+  
+  <div id="bk-alert" class="alert-box hid">
+   <div>
+    <b>🔔 Pengingat Cadangan Mingguan</b>
+    <span class="mu">Sudah 7 hari sejak backup terakhir. Simpan cadangan data agar tidak hilang jika cache browser dibersihkan.</span>
+   </div>
+   <button class="btn sm wn" id="bk-now">💾 Unduh Backup Sekarang</button>
+  </div>
+
+  <!-- HIDDEN TABS FOR JS COMPATIBILITY -->
+  <div class="tabs hid" style="display:none">
+   <button id="tb1"><span>🏢</span> Kas Besar Studio</button>
+   <button id="tb2" class="on"><span>🔨</span> Kas Kecil Proyek</button>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- TAB 1: KAS BESAR STUDIO                        -->
+  <!-- ============================================== -->
+  <section id="v1">
+
+   <!-- HERO BALANCE CARD -->
+   <div class="hero-banner">
+    <div class="hero-left-box">
+     <div class="hero-label">
+      <span>Total Saldo Studio</span>
+     </div>
+     <div class="hero-val" id="hero-total-saldo">Rp0</div>
+     <div class="hero-badges-row">
+      <span class="hero-badge" id="hero-saldo-badge">↑ Kas Aktif</span>
+      <span class="hero-badge sub" id="hero-saldo-sub">Kas Besar + Kasir Proyek</span>
+     </div>
+    </div>
+    <div>
+     <button type="button" class="hero-action-btn" id="hero-btn-add" onclick="bukaModalTransaksi()" title="Tambah Transaksi Cepat">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+     </button>
+    </div>
+   </div>
+
+   <!-- 3-COLUMN METRIC CARDS -->
+   <div class="stats-grid">
+    <div class="stat-card">
+     <div class="stat-header">
+      <span class="stat-icon" style="color:var(--rd)">↓</span>
+      <span>Total dana di proyek</span>
+     </div>
+     <div class="stat-val" id="stat-dana-proyek">Rp0</div>
+     <div class="stat-badge neutral">
+      <span>🔨</span> <span id="stat-proyek-cnt">0 proyek aktif</span>
+     </div>
+    </div>
+
+    <div class="stat-card">
+     <div class="stat-header">
+      <span class="stat-icon" style="color:var(--wn)">↑</span>
+      <span>Kas Tunai</span>
+     </div>
+     <div class="stat-val" id="stat-kas-tunai">Rp0</div>
+     <div class="stat-badge neutral">
+      <span>💵</span> <span>Semua uang tunai (termasuk kasir)</span>
+     </div>
+    </div>
+
+    <div class="stat-card">
+     <div class="stat-header">
+      <span class="stat-icon" style="color:var(--ac)">💳</span>
+      <span>Kas Non-tunai</span>
+     </div>
+     <div class="stat-val" id="stat-kas-nontunai">Rp0</div>
+     <div class="stat-badge pos">
+      <span>🏦</span> <span>Semua rekening non-tunai</span>
+     </div>
+    </div>
+   </div>
+
+   <!-- Hidden placeholders -->
+   <div id="top-row1" class="hid" style="display:none"></div>
+   <div id="top-row2" class="hid" style="display:none"></div>
+   <p class="neg" id="warn" style="margin:0 0 16px;font-weight:700"></p>
+
+   <!-- ============================================================== -->
+   <!-- BARIS 1: SPENDING OVERVIEW & KONTROL KESEIMBANGAN REKENING    -->
+   <!-- ============================================================== -->
+   <div class="two-col-grid">
+    <!-- Spending Overview Donut Widget -->
+    <div class="card-widget">
+     <div class="card-widget-header">
+      <h3 class="card-widget-title"><span class="icon-pill icon-emerald">📊</span> Spending Overview (Pengeluaran Proyek)</h3>
+      <span class="mu" style="font-size:12px;font-weight:700">Akumulasi Belanja</span>
+     </div>
+     <div>
+      <div style="font-size:12px;color:var(--mu);font-weight:700;text-transform:uppercase">Total spent</div>
+      <div style="font-size:clamp(22px, 4.5vw, 28px);font-weight:800;letter-spacing:-.02em;margin:2px 0 16px" id="donut-total-spent">Rp0</div>
+     </div>
+     <div class="donut-wrap">
+      <div class="donut-svg-box">
+       <svg viewBox="0 0 100 100" style="width:100%;height:100%;transform:rotate(-90deg)">
+        <circle cx="50" cy="50" r="38" fill="none" stroke="var(--bd)" stroke-width="14"></circle>
+        <circle id="donut-seg-1" cx="50" cy="50" r="38" fill="none" stroke="#142217" stroke-width="14" stroke-dasharray="0 238.7" stroke-dashoffset="0"></circle>
+        <circle id="donut-seg-2" cx="50" cy="50" r="38" fill="none" stroke="#2d5a3c" stroke-width="14" stroke-dasharray="0 238.7" stroke-dashoffset="0"></circle>
+        <circle id="donut-seg-3" cx="50" cy="50" r="38" fill="none" stroke="#b4e380" stroke-width="14" stroke-dasharray="0 238.7" stroke-dashoffset="0"></circle>
+        <circle id="donut-seg-4" cx="50" cy="50" r="38" fill="none" stroke="#e0e7ff" stroke-width="14" stroke-dasharray="0 238.7" stroke-dashoffset="0"></circle>
+       </svg>
+       <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none">
+        <span style="font-size:10px;color:var(--mu);font-weight:700;text-transform:uppercase">Top Category</span>
+        <b id="donut-top-cat" style="font-size:11px;max-width:80px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Material</b>
+       </div>
+      </div>
+      <div class="donut-legend" id="donut-legend-box"></div>
+     </div>
+    </div>
+
+    <!-- KONTROL KESEIMBANGAN REKENING -->
+    <div class="card-widget">
+     <div class="card-widget-header">
+      <h3 class="card-widget-title"><span class="icon-pill icon-emerald">⚖️</span> Kontrol Keseimbangan Rekening</h3>
+      <span class="mu" style="font-size:11px">Anti-Nombok</span>
+     </div>
+     <div class="wrap" id="acc" style="flex:1"><table><tbody><tr><th>Rekening</th><th class="n">Saldo Catatan</th><th>Saldo Fisik</th><th class="n">Status</th></tr></tbody></table></div>
+     <div class="row row-stack-mobile" style="margin-top:12px;gap:8px">
+      <input id="anew" placeholder="Nama rekening baru (mis. BCA Studio, Mandiri)">
+      <button class="btn sm" id="aadd">+ Rekening</button>
+     </div>
+    </div>
+   </div>
+
+   <!-- ============================================================== -->
+   <!-- BARIS 2: RECENT TRANSACTIONS & REKAPITULASI PER PROYEK         -->
+   <!-- ============================================================== -->
+   <div class="two-col-grid">
+    <!-- Recent Transactions Mini Card -->
+    <div class="card-widget">
+     <div class="card-widget-header">
+      <h3 class="card-widget-title"><span class="icon-pill icon-purple">⏱️</span> Recent Transactions</h3>
+      <button type="button" class="lnk" onclick="navTo('log')" style="font-size:12px">View All →</button>
+     </div>
+     <div class="recent-list" id="mini-recent-list"></div>
+    </div>
+
+    <!-- REKAPITULASI PER PROYEK -->
+    <div class="card-widget">
+     <div class="card-widget-header">
+      <h3 class="card-widget-title"><span class="icon-pill icon-amber">📊</span> Rekapitulasi per Proyek</h3>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+       <button class="btn sm g" id="exp" title="Ekspor Excel">📑 Excel</button>
+       <button class="btn sm g" id="btn-bk" title="Cadangkan Data">💾 Backup</button>
+       <label class="btn sm g" style="cursor:pointer" title="Pulihkan Data">📥 Restore<input type="file" id="inp-rst" class="hid"></label>
+      </div>
+     </div>
+     <div class="wrap" id="byp" style="flex:1"><div class="empty">Belum ada proyek aktif.</div></div>
+    </div>
+   </div>
+
+   <!-- BLOK 4: LOG TRANSAKSI KAS BESAR (LEBAR PENUH) -->
+   <div class="block-panel" style="margin-top:4px">
+    <div class="block-header">
+     <h2 class="block-title"><span class="icon-pill icon-blue">📋</span> Riwayat Transaksi Kas Besar Studio</h2>
+    </div>
+    <div class="wrap" id="blog"><div class="empty">Belum ada transaksi di Kas Besar Studio.</div></div>
+   </div>
+  </section>
+
+<!-- ============================================== -->
+<!-- TAB 2: KAS KECIL OPERASIONAL PROYEK            -->
+<!-- ============================================== -->
+<section id="v2" class="hid">
+ 
+ <!-- COMPACT PROYEK HEADER BAR -->
+ <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+  <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
+   <span style="font-size:24px;flex-shrink:0">📐</span>
+   <div style="min-width:0">
+    <h2 id="proj-title-head" style="margin:0;font-size:18px;font-weight:800;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Proyek Aktif</h2>
+    <small class="mu" id="proj-kontrak-badge" style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Nilai Kontrak: Rp0</small>
+   </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+   <button type="button" class="btn sm g" onclick="ubahNamaProyekAktif()">✏️ Ubah Nama</button>
+   <button type="button" class="btn sm g" onclick="aturKontrakProyekAktif()">💼 Atur Kontrak</button>
+   <select id="pmode-sel" title="Mode pengelolaan proyek" onchange="ubahModeProyekAktif(this.value)" style="padding:6px 9px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-size:12px;font-weight:600;width:auto">
+    <option>Dikelola Sendiri</option><option>Dikelola PIC</option>
+   </select>
+  </div>
+ </div>
+
+ <!-- HIDDEN CONTROLS -->
+ <div class="hid" style="display:none">
+  <select id="psel"></select>
+  <input id="pnew">
+  <button id="padd"></button>
+  <button id="prn"></button>
+  <input id="kon">
+  <button id="ksv"></button>
+ </div>
+
+ <!-- PANEL DANA PIC (tampil untuk proyek Dikelola PIC) -->
+ <div class="block-panel hid" id="pic-panel">
+  <div class="block-header">
+   <h2 class="block-title"><span class="icon-pill icon-emerald">🤝</span> Dana PIC</h2>
+   <span class="badge b-wn">Dikelola PIC</span>
+  </div>
+  <div class="kpi-row" id="pic-kpi"></div>
+  <div id="pic-note" class="mu" style="margin-top:8px;font-size:12px;line-height:1.5"></div>
+ </div>
+
+ <!-- PANEL DANA TALANGAN PRIBADI -->
+ <div class="block-panel hid" id="talangan-panel">
+  <div class="block-header">
+   <h2 class="block-title"><span class="icon-pill icon-emerald">👤</span> Dana Talangan Pribadi</h2>
+  </div>
+  <div class="kpi-row" id="talangan-kpi"></div>
+  <div id="talangan-note" class="mu" style="margin-top:8px;font-size:12px;line-height:1.5"></div>
+ </div>
+
+ <!-- BLOK 1: DASHBOARD REVIEW KAS KECIL -->
+ <div class="block-panel">
+  <div class="block-header">
+   <h2 class="block-title"><span class="icon-pill icon-emerald">📊</span> Ringkasan Arus Kas Proyek</h2>
+   <span id="proj-badge-name" class="badge b-mu">Pilih Proyek</span>
+  </div>
+
+  <div class="kpi-row" id="kpi-row-1"><div class="card"><small>📥 Total Uang Masuk</small><b>Rp0</b></div><div class="card"><small>📤 Total Pengeluaran</small><b>Rp0</b></div><div class="card"><small>💰 Total Saldo</small><b class="pos">Rp0</b></div></div>
+
+  <div class="kpi-row" id="kpi-row-2"><div class="card"><small>💳 Saldo Nontunai</small><b>Rp0</b></div><div class="card"><small>💵 Saldo Tunai</small><b>Rp0</b></div><div class="card"><small>💼 Sisa Saldo Kasir</small><b class="pos">Rp0</b></div></div>
+
+  <!-- VISUAL PROGRESS PENYERAPAN BUDGET -->
+  <div class="burn-card" id="burn-card" style="display: none;">
+   <div style="display:flex;justify-content:space-between;align-items:center">
+    <span style="font-weight:700;font-size:13px">Realisasi Belanja Lapangan</span>
+    <b id="burn-pct" style="font-size:14px">0%</b>
+   </div>
+   <div class="progress-track"><div class="progress-fill" id="burn-fill" style="width: 0%;"></div></div>
+   <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--mu);gap:8px">
+    <span id="burn-spent">Terpakai: Rp0</span>
+    <span id="burn-limit">Total Masuk: Rp0</span>
+   </div>
+  </div>
+ </div>
+
+ <!-- DIAGRAM BATANG HORIZONTAL: PENGELUARAN PER JENIS PEKERJAAN -->
+ <div class="block-panel" id="panel-chart-pekerjaan">
+  <div class="block-header">
+   <h2 class="block-title"><span class="icon-pill icon-emerald">📊</span> Pengeluaran per Jenis Pekerjaan</h2>
+   <span class="mu" id="chart-pekerjaan-sub" style="font-weight:700">Total Belanja: Rp0</span>
+  </div>
+  <div id="chart-pekerjaan-bars" style="display:flex;flex-direction:column;gap:12px;margin-top:4px">
+   <!-- Diisi otomatis oleh render() -->
+  </div>
+ </div>
+
+ <!-- BLOK 2: KASBON MANDOR & TUKANG -->
+ <div class="block-panel" id="kasbon-box">
+  <div class="block-header">
+   <h2 class="block-title"><span class="icon-pill icon-amber">🔨</span> Kasbon Mandor &amp; Tukang (Aktif)</h2>
+   <button class="btn sm wn" id="btn-gajian">⚖️ Hitung &amp; Potong Upah Sabtu</button>
+  </div>
+  <div id="kasbon-list" class="wrap"><div class="empty" style="padding:12px">✅ <b>Semua Kasbon Beres:</b> Tidak ada kasbon tukang yang menggantung di proyek ini.</div></div>
+  <p class="mu" style="margin-top:8px">💡 <b>Anti-Lupa:</b> Tukang yang kasbon di hari kerja akan masuk daftar ini. Saat hari Sabtu gajian, gunakan tombol di atas agar kasbon otomatis dipotong!</p>
+ </div>
+
+ <!-- BLOK 3: INPUT TRANSAKSI BELANJA KAS KECIL -->
+ <div class="block-panel">
+  <div class="block-header">
+   <h2 class="block-title" id="ft"><span class="icon-pill icon-blue">📝</span> Input Belanja Kasir Lapangan</h2>
+  </div>
+  <div class="form">
+   <div>
+    <label>Tanggal Transaksi</label>
+    <input type="date" id="fd">
+    <div class="chips-row">
+     <button type="button" class="chip-btn" data-set-date="today" data-target="fd">Hari Ini</button>
+     <button type="button" class="chip-btn" data-set-date="yesterday" data-target="fd">Kemarin</button>
+     <button type="button" class="chip-btn" data-set-date="last-sat" data-target="fd">Sabtu Lalu</button>
+    </div>
+   </div>
+   <div>
+    <label>Jenis Pekerjaan</label>
+    <select id="fj">
+     <optgroup label="Jenis Pekerjaan">
+      <option value="Pekerjaan Persiapan">Pekerjaan Persiapan</option>
+      <option value="Pekerjaan Struktur">Pekerjaan Struktur</option>
+      <option value="Pekerjaan Arsitektur">Pekerjaan Arsitektur</option>
+      <option value="Pekerjaan Interior">Pekerjaan Interior</option>
+      <option value="Pekerjaan MEP">Pekerjaan MEP</option>
+      <option value="Pekerjaan Eksterior & Landscape">Pekerjaan Eksterior &amp; Landscape</option>
+      <option value="Operasional Proyek">Operasional Proyek</option>
+      <option value="Lain-lain">Lain-lain</option>
+     </optgroup>
+     <optgroup label="Khusus">
+      <option value="Kasbon">🔨 Kasbon Mandor / Tukang</option>
+      <option value="Pindah">🔄 Pindah Rekening (Tarik Tunai / Setor)</option>
+     </optgroup>
+    </select>
+   </div>
+   <div>
+    <label>Rekening Asal Uang</label>
+    <select id="fm"><option>Tunai</option><option>Nontunai</option></select>
+   </div>
+   <div id="f-sumber-wrap">
+    <label>Sumber Dana Pengeluaran</label>
+    <select id="f-sumber"><option value="">Kas / rekening studio</option><option value="Pribadi">Uang pribadi (talangan)</option></select>
+   </div>
+   <div id="fto" class="hid">
+    <label>Pindah ke Rekening Tujuan</label>
+    <select id="ft2"><option>Tunai</option><option>Nontunai</option></select>
+   </div>
+
+   <div id="fkat-wrap">
+    <label>Kategori Pengeluaran</label>
+    <div class="row" style="gap:4px">
+     <select id="fk"><option>Material</option><option>Upah Tukang</option><option>Sewa Alat</option><option>Transportasi</option><option>Konsultan/Sub-kontraktor</option><option>Perizinan</option><option>Operasional Kantor</option><option>Workshop/Mebel</option><option>Finishing &amp; Interior</option><option>Lain-lain</option></select>
+     <button class="btn g" id="btn-add-kat" title="Tambah kategori baru" type="button" style="padding:8px 12px;font-weight:bold">+</button>
+     <button class="btn g" id="btn-del-kat" title="Hapus kategori terpilih" type="button" style="padding:8px 8px;font-size:12px">✕</button>
+    </div>
+   </div>
+
+   <div class="full" id="f-tukang-wrap" style="display:none">
+    <label style="color:var(--wn);font-weight:700">Nama Tukang / Mandor yang Kasbon</label>
+    <input id="f-tukang" placeholder="mis. Pak Slamet, Pak Joko, Tukang Besi">
+   </div>
+
+   <div class="full">
+    <label>Deskripsi / Rincian Belanja</label>
+    <input id="fe" placeholder="mis. Semen 10 sak, paku gypsum, ongkir lalamove">
+   </div>
+
+   <div class="full">
+    <label>Jumlah Nominal (Rp)</label>
+    <input id="fa" type="number" inputmode="numeric" min="0" placeholder="0">
+    <div class="num-preview" id="fa-preview"></div>
+    <div class="chips-row">
+     <button type="button" class="chip-btn" data-add-amt="50000" data-target="fa">+50 rb</button>
+     <button type="button" class="chip-btn" data-add-amt="100000" data-target="fa">+100 rb</button>
+     <button type="button" class="chip-btn" data-add-amt="250000" data-target="fa">+250 rb</button>
+     <button type="button" class="chip-btn" data-add-amt="500000" data-target="fa">+500 rb</button>
+     <button type="button" class="chip-btn" data-add-amt="1000000" data-target="fa">+1 jt</button>
+     <button type="button" class="chip-btn d" data-clear-amt="fa">Reset</button>
+    </div>
+   </div>
+
+   <div class="full row row-stack-mobile">
+    <button class="btn" id="fs">Simpan Transaksi Belanja</button>
+    <button class="btn g hid" id="fc">Batal</button>
+   </div>
+  </div>
+ </div>
+
+ <!-- BLOK 4: LOG TRANSAKSI & PENCARIAN -->
+ <div class="block-panel">
+  <div class="block-header">
+   <h2 class="block-title"><span class="icon-pill icon-purple">📋</span> Riwayat Belanja Proyek Ini</h2>
+  </div>
+
+  <div class="filter-bar">
+   <button class="pill on" data-filter="all">Semua</button>
+   <button class="pill" data-filter="Keluar">Belanja</button>
+   <button class="pill" data-filter="Kasbon">Kasbon Tukang</button>
+   <button class="pill" data-filter="Pindah">Pindah Saldo</button>
+   <button class="pill" data-filter="this-month">Bulan Ini</button>
+  </div>
+
+  <input id="q" placeholder="🔍 Cari transaksi (deskripsi, kategori, nama tukang, tanggal)..." style="margin-bottom:12px">
+  <div class="wrap" id="log"><div class="empty">Tidak ada transaksi yang cocok dengan filter.</div></div>
+ </div>
+
+ <!-- BLOK 5: IMPOR & UPDATE LAPORAN -->
+ <div class="block-panel">
+  <div class="block-header">
+   <h2 class="block-title"><span class="icon-pill icon-blue">📤</span> Impor &amp; Update Laporan Proyek</h2>
+  </div>
+  <div class="form">
+   <div class="full">
+    <label>Pilih File Excel (.xlsx/.xls/.csv) untuk Ditambahkan ke Proyek Ini</label>
+    <input type="file" id="imf" accept=".xlsx,.xls,.csv">
+   </div>
+   <div class="full mu" id="imi" style="background:var(--sf-sub);padding:12px;border-radius:10px;border:1px solid var(--bd)">
+    💡 <b>Mode Update Cerdas (Smart Append):</b> Data yang sudah ada di proyek ini <u>tidak akan terhapus</u>. Transaksi lama otomatis dilewati dan hanya baris baru yang akan ditambahkan.
+   </div>
+   <div class="full row row-stack-mobile">
+    <button class="btn hid" id="imb">➕ Tambahkan Transaksi ke Proyek Ini</button>
+    <button class="btn g" id="tpl">📥 Unduh Template Resmi</button>
+    <button class="btn g" id="expp">📑 Ekspor Proyek Ini (.xlsx)</button>
+   </div>
+  </div>
+ </div>
+</section>
+ </main>
+</div>
+
+<!-- BOTTOM NAVIGATION BAR (FOR SMARTPHONES & TABLETS) -->
+<nav class="mobile-bottom-nav">
+ <button type="button" class="bottom-nav-item active" id="bnav-kb" onclick="navTo('kb')">
+  <span class="b-icon">🏢</span>
+  <span>Kas Besar</span>
+ </button>
+ <button type="button" class="bottom-nav-item" id="bnav-proj" onclick="navToProjectDirect()">
+  <span class="b-icon">📐</span>
+  <span>Proyek</span>
+ </button>
+ <div class="bottom-nav-item fab-btn-wrap">
+  <button type="button" class="bottom-nav-fab" onclick="bukaModalTransaksi()" title="Tambah Transaksi Cepat">
+   ➕
+  </button>
+ </div>
+ <button type="button" class="bottom-nav-item" id="bnav-log" onclick="navTo('log')">
+  <span class="b-icon">📋</span>
+  <span>Riwayat</span>
+ </button>
+ <button type="button" class="bottom-nav-item" id="bnav-menu" onclick="toggleMobileSidebar(true)">
+  <span class="b-icon">☰</span>
+  <span>Menu</span>
+ </button>
+</nav>
+
+<!-- MODAL INPUT TRANSAKSI KAS BESAR -->
+<div id="modal-kas-besar" class="modal-bg hid">
+ <div class="modal modal-lg">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+   <h3 id="bt" style="margin:0"><span class="icon-pill icon-purple">📝</span> Input Transaksi Kas Besar</h3>
+   <button type="button" class="lnk" id="bc-x" onclick="tutupModalKasBesar()" style="font-size:22px;line-height:1;color:var(--mu);padding:4px 8px">✕</button>
+  </div>
+  <div class="form">
+   <div>
+    <label>Tanggal Transaksi</label>
+    <input type="date" id="bd">
+    <div class="chips-row">
+     <button type="button" class="chip-btn" data-set-date="today" data-target="bd">Hari Ini</button>
+     <button type="button" class="chip-btn" data-set-date="yesterday" data-target="bd">Kemarin</button>
+    </div>
+   </div>
+   <div>
+    <label>Jenis Transaksi</label>
+    <select id="bj"><option>Pemasukan</option><option>Pengeluaran</option></select>
+   </div>
+   <div>
+    <label>Jenis Penggunaan</label>
+    <select id="btipe"></select>
+   </div>
+   <div>
+    <label>Rekening Bank / Kas</label>
+    <select id="br"><option>Tunai</option><option>Nontunai</option></select>
+   </div>
+   <div>
+    <label id="bpl">Pembayaran Klien untuk Proyek (Opsional)</label>
+    <select id="bp"><option value="">— tidak untuk proyek —</option></select>
+   </div>
+   <div class="full">
+    <label>Deskripsi / Uraian Transaksi</label>
+    <input id="be" placeholder="mis. DP Termin 1 Desain Bpk Budi, Lisensi SketchUp">
+   </div>
+   <div class="full">
+    <label>Jumlah Nominal (Rp)</label>
+    <input id="ba" type="number" inputmode="numeric" min="0" placeholder="0">
+    <div class="num-preview" id="ba-preview"></div>
+    <div class="chips-row">
+     <button type="button" class="chip-btn" data-add-amt="100000" data-target="ba">+100 rb</button>
+     <button type="button" class="chip-btn" data-add-amt="500000" data-target="ba">+500 rb</button>
+     <button type="button" class="chip-btn" data-add-amt="1000000" data-target="ba">+1 jt</button>
+     <button type="button" class="chip-btn" data-add-amt="5000000" data-target="ba">+5 jt</button>
+     <button type="button" class="chip-btn d" data-clear-amt="ba">Reset</button>
+    </div>
+   </div>
+   <div class="full row row-stack-mobile" style="margin-top:10px">
+    <button class="btn" id="bs">Simpan Transaksi Kas Besar</button>
+    <button class="btn g" id="bc" type="button" onclick="tutupModalKasBesar()">Batal</button>
+   </div>
+  </div>
+  <p class="mu" style="margin-top:12px;margin-bottom:0">💡 <b>Otomatisasi:</b> Pengeluaran yang dipilihkan untuk proyek otomatis masuk sebagai dana di Kas Kecil proyek tersebut.</p>
+ </div>
+</div>
+
+<!-- MODAL HITUNG UPAH SABTU & POTONG KASBON -->
+<div id="modal-gaji" class="modal-bg hid">
+ <div class="modal">
+  <h3>⚖️ Kalkulator Upah Sabtu (Potong Kasbon)</h3>
+  <p class="mu" style="margin-top:0">Hitung upah bersih setelah dipotong kasbon agar tidak bayar full:</p>
+
+  <div style="display:flex;flex-direction:column;gap:10px">
+   <div>
+    <label class="mu" style="font-weight:700">Pilih Tukang yang Kasbon:</label>
+    <select id="mg-tukang" style="margin-top:4px"></select>
+   </div>
+   <div class="card" style="background:var(--wn-bg);border-color:var(--wn)">
+    <small style="color:var(--wn)">Total Kasbon Menggantung:</small>
+    <b id="mg-kasbon-val" class="neg">Rp0</b>
+   </div>
+   <div>
+    <label class="mu" style="font-weight:700">Upah Kotor Mingguan Tukang (Rp):</label>
+    <input id="mg-upah" type="number" inputmode="numeric" placeholder="mis. 900000" style="margin-top:4px">
+    <div class="num-preview" id="mg-upah-preview"></div>
+   </div>
+   <div class="card" style="background:var(--sf-sub)">
+    <small>Uang Bersih yang Dikeluarkan Kasir:</small>
+    <b id="mg-bersih-val" class="pos" style="font-size:20px">Rp0</b>
+    <span class="mu" style="display:block;font-size:11px" id="mg-bersih-words"></span>
+   </div>
+   <div>
+    <label class="mu" style="font-weight:700">Sumber Dana Pembayaran:</label>
+    <select id="mg-sumber" style="margin-top:4px">
+     <option value="">— Pilih sumber dana —</option>
+     <option value="Studio">Kas / rekening studio</option>
+     <option value="PIC">Dana PIC</option>
+     <option value="Pribadi">Uang pribadi (talangan)</option>
+    </select>
+    <small class="mu">Pilih sumber uang yang benar-benar digunakan untuk membayar upah bersih.</small>
+   </div>
+   <div>
+    <label class="mu" style="font-weight:700">Rekening Pembayaran (jika sumber Studio):</label>
+    <select id="mg-rek" style="margin-top:4px"></select>
+   </div>
+  </div>
+
+  <div class="row row-stack-mobile" style="margin-top:18px">
+   <button class="btn" id="mg-bayar">Bayar &amp; Potong Kasbon</button>
+   <button class="btn g" id="mg-tutup">Batal</button>
+  </div>
+ </div>
+</div>
+
+<div id="toast" class="hid"><span>✅</span> Mode tampilan diubah ke Gelap</div>
+
+<!-- SheetJS Fallback -->
+<script src="xlsx.full.min.js"></script>
+<script>if(!window.XLSX){document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"><\/script>')}</script>
+
+<script>
+const DEFAULT_KAT = ['Material', 'Upah Tukang', 'Sewa Alat', 'Transportasi', 'Konsultan/Sub-kontraktor', 'Perizinan', 'Operasional Kantor', 'Workshop/Mebel', 'Finishing & Interior', 'Lain-lain'];
+
+const PEKERJAAN_LIST = [
+ 'Pekerjaan Persiapan',
+ 'Pekerjaan Struktur',
+ 'Pekerjaan Arsitektur',
+ 'Pekerjaan Interior',
+ 'Pekerjaan MEP',
+ 'Pekerjaan Eksterior & Landscape',
+ 'Operasional Proyek',
+ 'Lain-lain'
+];
+
+const PEKERJAAN_COLORS = {
+ 'Pekerjaan Persiapan': '#64748b',
+ 'Pekerjaan Struktur': '#0284c7',
+ 'Pekerjaan Arsitektur': '#16a34a',
+ 'Pekerjaan Interior': '#d97706',
+ 'Pekerjaan MEP': '#9333ea',
+ 'Pekerjaan Eksterior & Landscape': '#059669',
+ 'Operasional Proyek': '#ea580c',
+ 'Lain-lain': '#8a9a8e'
+};
+
+const PEKERJAAN_ICONS = {
+ 'Pekerjaan Persiapan': '🚧',
+ 'Pekerjaan Struktur': '🏗️',
+ 'Pekerjaan Arsitektur': '🧱',
+ 'Pekerjaan Interior': '🛋️',
+ 'Pekerjaan MEP': '⚡',
+ 'Pekerjaan Eksterior & Landscape': '🌳',
+ 'Operasional Proyek': '🚚',
+ 'Lain-lain': '📦'
+};
+
+function getPekerjaan(t){
+ if(t.pekerjaan && PEKERJAAN_LIST.includes(t.pekerjaan)) return t.pekerjaan;
+ const s = ((t.desc||'') + ' ' + (t.kat||'')).toLowerCase();
+ if(s.includes('hpl') || s.includes('triplek') || s.includes('lemari') || s.includes('mebel') || s.includes('interior')) return 'Pekerjaan Interior';
+ if(s.includes('kabel') || s.includes('led') || s.includes('saklar') || s.includes('pln') || s.includes('ac') || s.includes('trafo') || s.includes('pipa') || s.includes('downlight')) return 'Pekerjaan MEP';
+ if(s.includes('pasir') || s.includes('semen') || s.includes('besi') || s.includes('dak') || s.includes('bata') || s.includes('fondasi') || s.includes('struktur')) return 'Pekerjaan Struktur';
+ if(s.includes('cat') || s.includes('keramik') || s.includes('kunci') || s.includes('gembok') || s.includes('solasi') || s.includes('arsitektur') || s.includes('finishing')) return 'Pekerjaan Arsitektur';
+ if(s.includes('taman') || s.includes('landscape') || s.includes('pagar') || s.includes('paving') || s.includes('kanopi')) return 'Pekerjaan Eksterior & Landscape';
+ if(s.includes('persiapan') || s.includes('direksi') || s.includes('pagar seng') || s.includes('pembersihan')) return 'Pekerjaan Persiapan';
+ if(t.kat === 'Transportasi' || s.includes('makan') || s.includes('esteh') || s.includes('kopi') || s.includes('gorengan') || s.includes('bensin') || s.includes('parkir') || s.includes('galon') || s.includes('operasional')) return 'Operasional Proyek';
+ return 'Lain-lain';
+}
+
+let P=[], T=[], A=[], B=[], C=[], KBON=[], KAT=[];
+let cur=null, editId=null, bid=null, activeFilter='all';
+
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+const rp=n=>(n<0?'-':'')+'Rp'+Math.abs(Math.round(n)).toLocaleString('id-ID');
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dt=s=>s?s.split('-').reverse().join('/'):'';
+const cls=n=>n<0?'neg':'pos';
+const today=()=>new Date().toLocaleDateString('en-CA');
+
+function terbilang(n){
+ if(!n || n <= 0) return 'Nol Rupiah';
+ const bil=['','Satu','Dua','Tiga','Empat','Lima','Enam','Tujuh','Delapan','Sembilan','Sepuluh','Sebelas'];
+ function toWords(x){
+  if(x < 12) return bil[x];
+  if(x < 20) return toWords(x - 10) + ' Belas';
+  if(x < 100) return toWords(Math.floor(x / 10)) + ' Puluh' + (x % 10 ? ' ' + toWords(x % 10) : '');
+  if(x < 200) return 'Seratus' + (x % 100 ? ' ' + toWords(x % 100) : '');
+  if(x < 1000) return toWords(Math.floor(x / 100)) + ' Ratus' + (x % 100 ? ' ' + toWords(x % 100) : '');
+  if(x < 2000) return 'Seribu' + (x % 1000 ? ' ' + toWords(x % 1000) : '');
+  if(x < 1000000) return toWords(Math.floor(x / 1000)) + ' Ribu' + (x % 1000 ? ' ' + toWords(x % 1000) : '');
+  if(x < 1000000000) return toWords(Math.floor(x / 1000000)) + ' Juta' + (x % 1000000 ? ' ' + toWords(x % 1000000) : '');
+  if(x < 1000000000000) return toWords(Math.floor(x / 1000000000)) + ' Miliar' + (x % 1000000000 ? ' ' + toWords(x % 1000000000) : '');
+  return toWords(Math.floor(n)) + ' Triliun' + (x % 1000000000000 ? ' ' + toWords(x % 1000000000000) : '');
+ }
+ return toWords(Math.floor(n)) + ' Rupiah';
+}
+
+function catClass(k){
+ const s=(k||'').toLowerCase();
+ if(s.includes('material')) return 'cat-material';
+ if(s.includes('upah')||s.includes('tukang')) return 'cat-upah';
+ if(s.includes('sewa')||s.includes('alat')) return 'cat-sewa';
+ if(s.includes('transport')||s.includes('bensin')||s.includes('ongkir')) return 'cat-transport';
+ if(s.includes('konsultan')||s.includes('arsitek')||s.includes('desain')) return 'cat-konsultan';
+ if(s.includes('kantor')||s.includes('operasional')) return 'cat-kantor';
+ if(s.includes('kasbon')) return 'cat-kasbon';
+ return 'cat-default';
+}
+
+// RESPONSIVE MOBILE SIDEBAR DRAWER TOGGLE
+function toggleMobileSidebar(open){
+ const sb = $('#app-sidebar');
+ const bd = $('#sidebar-backdrop');
+ if(open === undefined) open = !sb.classList.contains('open');
+ if(open){
+  sb.classList.add('open');
+  bd.classList.add('open');
+  document.body.style.overflow = 'hidden';
+ } else {
+  sb.classList.remove('open');
+  bd.classList.remove('open');
+  document.body.style.overflow = '';
+ }
+}
+
+function navToProjectDirect(){
+ if(P.length > 0){
+  if(!cur) cur = P[0].id;
+  selectProjectFromSidebar(cur);
+ } else {
+  tab(2);
+  toast('Belum ada proyek. Tambahkan proyek baru terlebih dahulu.');
+ }
+}
+
+// SALINAN UJI: prefix 'bkdev_' membuat penyimpanan TERPISAH dari aplikasi asli ('bk_').
+const KEY_PREFIX='bkdev_';
+const KEY={projects:KEY_PREFIX+'p',tx:KEY_PREFIX+'t',accounts:KEY_PREFIX+'a',kb:KEY_PREFIX+'k',cek:KEY_PREFIX+'c',kasbon:KEY_PREFIX+'kb',kat:KEY_PREFIX+'kat',last_bk:KEY_PREFIX+'lb',theme:KEY_PREFIX+'theme'};
+const COL=()=>({projects:P,tx:T,accounts:A,kb:B,cek:C,kasbon:KBON});
+
+function lsError(e,msg){
+ console.error(msg,e);
+ let b=document.getElementById('ls-err');
+ if(!b){
+  b=document.createElement('div'); b.id='ls-err';
+  b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99999;background:#b91c1c;color:#fff;padding:10px 14px;font-size:13px;font-weight:700;text-align:center';
+  document.body.appendChild(b);
+ }
+ b.textContent='⚠️ '+msg+' ('+(e&&e.name?e.name:'error')+'). Segera unduh Cadangan JSON sebelum menutup halaman ini.';
+}
+function lsGet(k, def=[]){
+ let raw=null;
+ try{raw=localStorage.getItem(KEY[k]);return raw?JSON.parse(raw):def}
+ catch(e){
+  try{if(raw!=null) localStorage.setItem(KEY[k]+'_rusak',raw)}catch(_){}
+  lsError(e,'Data "'+k+'" tidak terbaca; salinan mentah disimpan di kunci *_rusak.');
+  return def;
+ }
+}
+function lsSet(k,v){
+ try{localStorage.setItem(KEY[k],JSON.stringify(v));return true}
+ catch(e){lsError(e,'DATA TIDAK TERSIMPAN di browser (kolom "'+k+'")');return false}
+}
+
+function commitCollections(changes){
+ const cols=COL(), oldRaw={}, oldArrays={};
+ try{
+  for(const ch of changes){
+   if(!cols[ch.col] || !Array.isArray(ch.data)) throw new Error('Koleksi tidak valid: '+ch.col);
+   if(!(ch.col in oldRaw)){
+    oldRaw[ch.col]=localStorage.getItem(KEY[ch.col]);
+    oldArrays[ch.col]=cols[ch.col].slice();
+   }
+  }
+  for(const ch of changes){
+   localStorage.setItem(KEY[ch.col],JSON.stringify(ch.data));
+   const check=JSON.parse(localStorage.getItem(KEY[ch.col])||'null');
+   if(!Array.isArray(check) || JSON.stringify(check)!==JSON.stringify(ch.data)) throw new Error('Verifikasi penyimpanan gagal: '+ch.col);
+  }
+ }catch(e){
+  for(const col of Object.keys(oldRaw)){
+   try{if(oldRaw[col]===null)localStorage.removeItem(KEY[col]);else localStorage.setItem(KEY[col],oldRaw[col]);}catch(_){}
+   const target=cols[col]; target.splice(0,target.length,...oldArrays[col]);
+  }
+  lsError(e,'Transaksi dibatalkan karena data gagal disimpan');
+  return false;
+ }
+ for(const col of Object.keys(oldRaw)){
+  const target=cols[col], next=changes.filter(x=>x.col===col).slice(-1)[0].data;
+  target.splice(0,target.length,...next);
+ }
+ render();
+ return true;
+}
+async function save(col,id,data){
+ const a=COL()[col], i=a.findIndex(x=>x.id===id), next=a.slice();
+ const o=Object.assign({id}, i<0?{}:a[i], data);
+ if(i<0) next.push(o); else next[i]=o;
+ return commitCollections([{col,data:next}]);
+}
+async function del(col,id){
+ const a=COL()[col], next=a.filter(x=>x.id!==id);
+ return commitCollections([{col,data:next}]);
+}
+
+const toast=(m,ic)=>{
+ const t=$('#toast');
+ t.innerHTML='<span>'+(ic||'✅')+'</span> ' + esc(m);
+ t.classList.remove('hid');
+ setTimeout(()=>t.classList.add('hid'),3000);
+};
+
+const MODE_LIST=['Dikelola Sendiri','Dikelola PIC'];
+const modeBelumDiset=p=>!(p&&MODE_LIST.includes(p.mode));
+const modeProyek=p=>modeBelumDiset(p)?'Dikelola Sendiri':p.mode;
+
+const sum=(a,f)=>a.reduce((s,t)=>s+(f(t)?(+t.amt||0):0),0);
+
+const ACC=()=>{
+ const s=['Tunai','Nontunai'];
+ A.forEach(a=>{if(!s.includes(a.name))s.push(a.name)});
+ return s;
+};
+
+const ps=id=>{
+ const d=sum(B,b=>b.proj===id&&b.tipe!=='KembaliPIC');
+ const r=sum(B,b=>b.proj===id&&b.tipe==='KembaliPIC');
+ const m=sum(T,t=>t.proj===id&&t.jenis==='Masuk');
+ const k=sum(T,t=>t.proj===id&&(t.jenis==='Keluar'||t.jenis==='Kasbon'));
+ const kp=sum(T,t=>t.proj===id&&t.sumber==='Pribadi'&&(t.jenis==='Keluar'||t.jenis==='Kasbon'));
+ return {d,r,m,k,kp,s:d+m-(k-kp)-r};
+};
+
+const card=(l,v,s,icon='')=>'<div class="card"><small>'+(icon?icon+' ':'')+l+'</small><b'+(s?' class="'+cls(v)+'"':'')+'>'+rp(v)+'</b></div>';
+
+function opts(el,list){
+ const v=el.value;
+ el.innerHTML=list.map(n=>'<option>'+esc(n)+'</option>').join('');
+ if(list.includes(v)) el.value=v;
+}
+
+function popts(el,blank){
+ const v=el.value;
+ el.innerHTML=(blank?'<option value="">— tidak untuk proyek —</option>':'')+P.map(p=>'<option value="'+p.id+'">'+esc(p.name)+'</option>').join('');
+ if(v&&P.find(p=>p.id===v)) el.value=v;
+}
+
+function bj(){
+ const e=$('#bj').value==='Pengeluaran';
+ const bt=$('#btipe'), v=bt.value;
+ bt.innerHTML=e
+  ?'<option value="">Pengeluaran studio (umum)</option><option value="TransferPIC">Transfer dana ke PIC</option><option value="GantiTalangan">Ganti dana talangan pemilik</option>'
+  :'<option value="">Penerimaan biasa (klien / bos)</option><option value="KembaliPIC">Pengembalian dana dari PIC</option>';
+ if(Array.from(bt.options).some(o=>o.value===v)) bt.value=v;
+ const t=bt.value;
+ $('#bpl').textContent=t==='TransferPIC'?'Proyek PIC penerima transfer (wajib)'
+  :t==='KembaliPIC'?'Proyek PIC yang mengembalikan dana (wajib)'
+  :t==='GantiTalangan'?'Proyek (tidak diperlukan untuk penggantian talangan)'
+  :(e?'Proyek terkait (khusus arsip alokasi lama, tidak untuk transaksi baru)':'Pembayaran Klien untuk Proyek (Opsional)');
+ $('#br').disabled=false;
+}
+
+function hold(id){
+ let c=0,b=0;
+ const add=(r,v)=>{if(r==='Tunai')c+=v;else b+=v};
+ B.forEach(x=>{if(x.proj===id)add(x.rek,(x.tipe==='KembaliPIC'?-1:1)*(+x.amt||0))});
+ T.forEach(t=>{
+  if(t.proj!==id)return;
+  const v=+t.amt||0;
+  if(t.jenis==='Masuk')add(t.metode,v);
+  else if(t.jenis==='Keluar'||t.jenis==='Kasbon'){ if(t.sumber!=='Pribadi') add(t.metode,-v); }
+  else{add(t.metode,-v);add(t.to,v)}
+ });
+ return {c,b};
+}
+
+const isBelanja=t=>t.jenis==='Keluar'||t.jenis==='Kasbon';
+const kbSisa=k=>k.status==='LUNAS'?0:Math.max(0,(+k.amt||0)-(+k.terpotong||0));
+const kbSudahDipotong=k=>k.status==='LUNAS'||(+k.terpotong||0)>0;
+async function balikkanPotongan(tx){
+ for(const pt of (tx.kasbonPotong||[])){
+  const k=KBON.find(x=>x.id===pt.id);
+  if(!k) continue;
+  const pot=(k.potongan||[]).filter(x=>x.tx!==tx.id);
+  const terpotong=pot.reduce((a,x)=>a+(+x.amt||0),0);
+  const lunas=terpotong>=(+k.amt||0)&&terpotong>0;
+  await save('kasbon',k.id,Object.assign({},k,{potongan:pot,terpotong,status:lunas?'LUNAS':'BELUM LUNAS',tglLunas:lunas?k.tglLunas:'',catatanLunas:lunas?k.catatanLunas:''}));
+ }
+}
+
+function utangPemilik(){
+ const talangan=sum(T,t=>t.sumber==='Pribadi'&&isBelanja(t));
+ const diganti=sum(B,b=>b.tipe==='GantiTalangan');
+ return {talangan,diganti,sisa:talangan-diganti};
+}
+function danaPICProyek(id){
+ const diterima=sum(B,b=>b.tipe==='TransferPIC'&&b.proj===id);
+ const kembali=sum(B,b=>b.tipe==='KembaliPIC'&&b.proj===id);
+ const terpakai=sum(T,t=>t.proj===id&&t.sumber==='PIC'&&isBelanja(t));
+ return {diterima,kembali,terpakai,sisa:diterima-kembali-terpakai};
+}
+
+function hitungSaldo(){
+ const m={}; ACC().forEach(n=>m[n]=0);
+ T.forEach(t=>{
+  if((t.sumber==='PIC'||t.sumber==='Pribadi')&&isBelanja(t)) return;
+  const v=+t.amt||0;
+  if(t.jenis==='Pindah'){m[t.metode]=(m[t.metode]||0)-v;m[t.to]=(m[t.to]||0)+v}
+  else m[t.metode]=(m[t.metode]||0)+(t.jenis==='Masuk'?v:-v);
+ });
+ B.forEach(b=>{
+  const v=+b.amt||0;
+  if(b.tipe==='TransferPIC') m[b.rek]=(m[b.rek]||0)-v;
+  else if(b.tipe==='KembaliPIC') m[b.rek]=(m[b.rek]||0)+v;
+  else if(!b.proj) m[b.rek]=(m[b.rek]||0)+(b.jenis==='Pemasukan'?v:-v);
+ });
+ const totRek=Object.keys(m).reduce((s,k)=>s+m[k],0);
+ const danaPIC=P.reduce((s,p)=>s+danaPICProyek(p.id).sisa,0);
+ const tot=totRek+danaPIC;
+ const tunai=m['Tunai']||0;
+ const kb=sum(B,b=>b.jenis==='Pemasukan')-sum(B,b=>b.jenis==='Pengeluaran');
+ const psum=P.reduce((s,p)=>s+ps(p.id).s,0);
+ const ut=utangPemilik();
+ return {perRek:m, totRek, danaPIC, utang:ut.sisa, tot, tunai, nontunai:totRek-tunai, kb, psum, selisih:tot-(kb+psum)};
+}
+
+// RENDER FUNCTION
+function render(){
+ const L=ACC();
+ const CK={}; C.forEach(c=>CK[c.rek]=+c.amt);
+ const pr=P.map(p=>Object.assign({p,kon:+p.kontrak||0,paid:sum(B,b=>b.src===p.id)},ps(p.id))), psum=pr.reduce((s,x)=>s+x.s,0);
+
+ const S=hitungSaldo();
+ const totSeluruhnya=S.tot, cashKB=S.tunai, bankKB=S.nontunai;
+ {
+  const hs=$('#hero-saldo-sub');
+  if(hs&&hs.parentNode){
+   let ex=$('#hero-extra');
+   if(!ex){ex=document.createElement('span');ex.id='hero-extra';ex.className='hero-badge sub';hs.parentNode.appendChild(ex)}
+   const parts=[];
+   if(S.danaPIC) parts.push('Termasuk dana di PIC: '+rp(S.danaPIC));
+   if(S.utang) parts.push('Utang ke pemilik: '+rp(S.utang));
+   ex.style.display=parts.length?'':'none';
+   ex.textContent=parts.join(' · ');
+  }
+ }
+
+ if($('#hero-total-saldo')) $('#hero-total-saldo').textContent = rp(totSeluruhnya);
+ if($('#stat-dana-proyek')) $('#stat-dana-proyek').textContent = rp(psum);
+ if($('#stat-kas-tunai')) $('#stat-kas-tunai').textContent = rp(cashKB);
+ if($('#stat-kas-nontunai')) $('#stat-kas-nontunai').textContent = rp(bankKB);
+ if($('#stat-proyek-cnt')) $('#stat-proyek-cnt').textContent = P.length + ' proyek aktif';
+
+ const allTxList = [];
+ B.forEach(b => {
+  allTxList.push({
+   date: b.date,
+   desc: b.desc || (b.jenis === 'Pemasukan' ? 'Pemasukan Kas' : 'Pengeluaran Kas'),
+   sub: (b.tipe==='TransferPIC' ? 'Transfer ke PIC' : b.tipe==='KembaliPIC' ? 'Pengembalian dari PIC' : b.tipe==='GantiTalangan' ? 'Ganti talangan pemilik' : b.proj ? 'Alokasi Proyek' : (b.src ? 'Termin Klien' : 'Kas Besar Studio')) + ' · ' + dt(b.date),
+   amt: +b.amt || 0,
+   isPos: b.jenis === 'Pemasukan',
+   icon: b.jenis === 'Pemasukan' ? '💼' : '🏢',
+   ts: b.ts || 0
+  });
+ });
+ T.forEach(t => {
+  const prj = P.find(p => p.id === t.proj);
+  const prjName = prj ? prj.name : 'Proyek';
+  allTxList.push({
+   date: t.date,
+   desc: t.desc || (t.jenis === 'Kasbon' ? 'Kasbon Tukang' : t.kat),
+   sub: prjName + (t.tukang ? ' (' + t.tukang + ')' : '') + ' · ' + dt(t.date),
+   amt: +t.amt || 0,
+   isPos: t.jenis === 'Masuk',
+   icon: t.jenis === 'Kasbon' ? '🔨' : (t.kat.toLowerCase().includes('material') ? '🧱' : (t.kat.toLowerCase().includes('transport') ? '🚗' : '☕')),
+   ts: t.ts || 0
+  });
+ });
+ allTxList.sort((a,b) => (b.date + b.ts).localeCompare(a.date + a.ts));
+
+ if($('#mini-recent-list')){
+  const mini = allTxList.slice(0, 4);
+  if(mini.length === 0){
+   $('#mini-recent-list').innerHTML = '<div class="empty" style="padding:16px">Belum ada transaksi tercatat.</div>';
+  } else {
+   $('#mini-recent-list').innerHTML = mini.map(item => `
+    <div class="recent-item">
+     <div class="recent-left">
+      <div class="recent-icon">${item.icon}</div>
+      <div class="recent-text-box">
+       <div class="recent-desc">${esc(item.desc)}</div>
+       <div class="recent-sub">${esc(item.sub)}</div>
+      </div>
+     </div>
+     <div class="recent-amt ${item.isPos ? 'pos' : 'neg'}">
+      ${item.isPos ? '+' : '-'}${rp(item.amt)}
+     </div>
+    </div>
+   `).join('');
+  }
+ }
+
+ const catSums = {};
+ let totalSpentAll = 0;
+ T.forEach(t => {
+  if(t.jenis === 'Keluar' || t.jenis === 'Kasbon'){
+   const c = t.pekerjaan || getPekerjaan(t) || 'Lain-lain';
+   const a = +t.amt || 0;
+   catSums[c] = (catSums[c] || 0) + a;
+   totalSpentAll += a;
+  }
+ });
+
+ if($('#donut-total-spent')) $('#donut-total-spent').textContent = rp(totalSpentAll);
+
+ const sortedCats = Object.keys(catSums).map(k => ({name:k, amt:catSums[k]})).sort((a,b) => b.amt - a.amt);
+ const top4 = sortedCats.slice(0, 4);
+ const donutColors = ['#142217', '#2d5a3c', '#b4e380', '#94a397'];
+
+ if($('#donut-top-cat')){
+  $('#donut-top-cat').textContent = top4.length ? top4[0].name : 'Belum Ada';
+ }
+
+ const circ = 238.76;
+ let runningOffset = 0;
+ for(let i = 1; i <= 4; i++){
+  const seg = $('#donut-seg-' + i);
+  if(seg){
+   if(i - 1 < top4.length && totalSpentAll > 0){
+    const pct = top4[i - 1].amt / totalSpentAll;
+    const len = pct * circ;
+    seg.style.strokeDasharray = len + ' ' + (circ - len);
+    seg.style.strokeDashoffset = -runningOffset;
+    runningOffset += len;
+   } else {
+    seg.style.strokeDasharray = '0 ' + circ;
+   }
+  }
+ }
+
+ if($('#donut-legend-box')){
+  if(top4.length === 0){
+   $('#donut-legend-box').innerHTML = '<div class="mu" style="font-size:12px">Belum ada pengeluaran proyek tercatat.</div>';
+  } else {
+   $('#donut-legend-box').innerHTML = top4.map((c, idx) => {
+    const pct = totalSpentAll > 0 ? Math.round((c.amt / totalSpentAll) * 100) : 0;
+    return `
+     <div class="legend-row">
+      <span class="legend-label">
+       <span class="legend-bullet" style="background:${donutColors[idx]}"></span>
+       <span>${esc(c.name)}</span>
+      </span>
+      <span style="font-weight:700;white-space:nowrap">${rp(c.amt)} <small class="mu" style="font-weight:500;margin-left:4px">${pct}%</small></span>
+     </div>
+    `;
+   }).join('');
+  }
+ }
+
+ if($('#sidebar-projects-list')){
+  $('#sidebar-projects-list').innerHTML = P.map(p => {
+   const isSel = p.id === cur && !$('#v2').classList.contains('hid');
+   const prjInfo = ps(p.id);
+   return `
+    <button type="button" class="nav-item ${isSel ? 'active' : ''}" onclick="selectProjectFromSidebar('${p.id}')">
+     <span class="icon">📐</span>
+     <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.name)}</span>
+     <span class="badge-cnt">${rp(prjInfo.s)}</span>
+    </button>
+   `;
+  }).join('');
+ }
+
+ $('#warn').innerHTML=(P.some(p=>danaPICProyek(p.id).sisa<0)?'⚠️ Peringatan: pengeluaran yang dilaporkan PIC melebihi dana yang ditransfer pada '+P.filter(p=>danaPICProyek(p.id).sisa<0).map(p=>esc(p.name)+' ('+rp(danaPICProyek(p.id).sisa)+')').join(', '):'')+(Math.abs(S.selisih)>0.5?'<br>⚠️ Pemeriksaan internal gagal: total rekening berbeda '+rp(S.selisih)+' dari Kas Besar + dana proyek. Mohon laporkan.':'');
+
+ const m=S.perRek;
+ const ks=Object.keys(m), tot=S.totRek;
+ 
+ $('#acc').innerHTML='<table><tr><th>Rekening</th><th class="n">Saldo Catatan (Buku)</th><th>Saldo Fisik (Asli di Bank/Dompet)</th><th class="n">Status Selisih</th></tr>'+ks.map(k=>{
+  const buku = m[k] || 0;
+  const fisik = CK[k];
+  let statusBadge = '<span class="badge b-mu">Belum Dicek</span>';
+  if(fisik != null && fisik !== ''){
+   const diff = fisik - buku;
+   if(diff === 0){
+    statusBadge = '<span class="badge b-ok">✓ SEIMBANG</span>';
+   } else if(diff < 0){
+    statusBadge = '<span class="badge b-neg">⚠ -' + rp(Math.abs(diff)) + '</span>';
+   } else {
+    statusBadge = '<span class="badge b-pos">+' + rp(diff) + '</span>';
+   }
+  }
+  return '<tr><td><b>'+esc(k)+'</b></td><td class="n '+cls(buku)+'"><b>'+rp(buku)+'</b></td><td><input class="ck" data-k="'+esc(k)+'" type="number" inputmode="numeric" placeholder="Saldo fisik..." value="'+(fisik!=null?fisik:'')+'" style="width:125px;min-width:90px;padding:6px 9px"></td><td class="n">'+statusBadge+'</td></tr>';
+ }).join('')+'<tr style="background:var(--sf)"><td><b>Total Seluruhnya</b></td><td class="n"><b>'+rp(tot)+'</b></td><td></td><td></td></tr></table>'+(S.danaPIC?'<div class="mu" style="margin-top:8px;font-size:12px">Belum termasuk dana yang sedang dipegang PIC: <b>'+rp(S.danaPIC)+'</b>. Total studio termasuk dana PIC: <b>'+rp(S.tot)+'</b>.</div>':'');
+
+ opts($('#br'),L); opts($('#fm'),L); opts($('#ft2'),L); popts($('#bp'),1); bj();
+ opts($('#fk'),KAT);
+
+ const bs=B.slice().sort((a,b)=>(b.date+b.ts).localeCompare(a.date+a.ts));
+ $('#blog').innerHTML=bs.length?'<table><tr><th>Tanggal</th><th>Jenis</th><th>Rekening</th><th>Deskripsi</th><th>Alokasi Proyek</th><th class="n">Nominal</th><th></th></tr>'+bs.map(b=>{
+  const p=P.find(x=>x.id===(b.proj||b.src));
+  return '<tr><td>'+dt(b.date)+'</td><td><span class="badge '+(b.jenis==='Pemasukan'?'b-ok':'b-neg')+'">'+esc(b.jenis)+'</span></td><td>'+((b.proj&&!b.tipe)?'<span class="mu">—</span>':esc(b.rek))+'</td><td>'+esc(b.desc)+'</td><td>'+(p?'<span class="badge b-mu">'+(b.tipe==='TransferPIC'?'→ Transfer PIC: ':(b.tipe==='KembaliPIC'?'← Kembali dari PIC: ':(b.proj?'→ Proyek: ':'Klien: ')))+esc(p.name)+'</span>':(b.tipe==='GantiTalangan'?'<span class="badge b-mu">Ganti talangan pemilik</span>':'<span class="mu">—</span>'))+'</td><td class="n '+(b.jenis==='Pemasukan'?'pos':'neg')+'"><b>'+rp(b.amt)+'</b></td><td><button class="lnk" data-e="'+b.id+'">Edit</button><button class="lnk d" data-d="'+b.id+'">Hapus</button></td></tr>';
+ }).join('')+'</table>':'<div class="empty">Belum ada transaksi di Kas Besar Studio.</div>';
+
+ $('#byp').innerHTML=P.length?'<table><tr><th>Nama Proyek</th><th class="n">Nilai Kontrak</th><th class="n">Sisa Piutang Klien</th><th class="n">Dana Diberikan</th><th class="n">Realisasi Belanja</th><th class="n">Sisa Kasir</th></tr>'+pr.map(x=>'<tr><td><b>'+esc(x.p.name)+'</b>'+(x.p.mode==='Dikelola PIC'?' <span class="badge b-wn">PIC</span>':'')+(danaPICProyek(x.p.id).sisa<0?' ⚠️':'')+'</td><td class="n">'+(x.kon?rp(x.kon):'<span class="mu">—</span>')+'</td><td class="n">'+(x.kon?rp(x.kon-x.paid):'<span class="mu">—</span>')+'</td><td class="n">'+rp(x.d-x.r)+'</td><td class="n neg">'+rp(x.k)+'</td><td class="n '+cls(x.s)+'"><b>'+rp(x.s)+'</b></td></tr>').join('')+'<tr style="background:var(--sf)"><td><b>Total</b></td><td></td><td></td><td class="n"><b>'+rp(pr.reduce((s,x)=>s+x.d-x.r,0))+'</b></td><td class="n neg"><b>'+rp(pr.reduce((s,x)=>s+x.k,0))+'</b></td><td class="n"><b>'+rp(psum)+'</b></td></tr></table>':'<div class="empty">Belum ada proyek aktif.</div>';
+
+ if(!P.find(p=>p.id===cur)) cur=P.length?P[0].id:null;
+ $('#psel').innerHTML=P.length?P.map(p=>'<option value="'+p.id+'"'+(p.id===cur?' selected':'')+'>📐 '+esc(p.name)+'</option>').join(''):'<option>(belum ada proyek)</option>';
+
+ const curP = P.find(p=>p.id===cur);
+ $('#proj-badge-name').textContent = curP ? curP.name : 'Pilih Proyek';
+ if($('#proj-title-head')) $('#proj-title-head').textContent = curP ? curP.name : 'Pilih Proyek';
+ if($('#proj-kontrak-badge')){
+  const _pk=P.find(x=>x.id===cur);
+  const kTxt = _pk&&_pk.kontrak ? 'Nilai Kontrak: '+rp(_pk.kontrak) : 'Nilai Kontrak belum diset';
+  $('#proj-kontrak-badge').textContent = (_pk ? modeProyek(_pk)+(modeBelumDiset(_pk)?' (belum diset)':'')+' · ' : '') + kTxt;
+  const ms=$('#pmode-sel');
+  if(ms){
+   ms.innerHTML=(_pk&&modeBelumDiset(_pk)?'<option value="">Mode: belum diset</option>':'')+MODE_LIST.map(m=>'<option>'+m+'</option>').join('');
+   ms.value=(_pk&&!modeBelumDiset(_pk))?_pk.mode:'';
+   ms.disabled=!_pk;
+  }
+ }
+
+ const s=cur?ps(cur):{d:0,r:0,m:0,k:0,s:0};
+ {const pp=P.find(x=>x.id===cur),k=$('#kon');if(document.activeElement!==k)k.value=pp&&pp.kontrak?pp.kontrak:''}
+ const h=hold(cur);
+
+ const actKbon = KBON.filter(k=>k.proj===cur && k.status!=='LUNAS');
+ const sisaBebas = s.s;
+
+ $('#kpi-row-1').innerHTML =
+   card('Total Uang Masuk', s.d + s.m - s.r, 0, '📥') +
+   card('Total Pengeluaran', s.k, 0, '📤') +
+   card('Total Saldo', s.s, 1, '💰');
+
+ $('#kpi-row-2').innerHTML =
+   card('Saldo Nontunai', h.b, 0, '💳') +
+   card('Saldo Tunai', h.c, 0, '💵') +
+   card('Sisa Saldo Kasir', sisaBebas, 1, '💼');
+
+ {
+  const pp0=P.find(x=>x.id===cur), picMode=!!(pp0&&pp0.mode==='Dikelola PIC');
+  isiSumberOpts();
+  {
+   const tp=$('#talangan-panel'), ut=utangPemilik(), kpProj=cur?ps(cur).kp:0;
+   if(tp){
+    const adaT=!!(kpProj||ut.talangan||ut.diganti);
+    tp.classList.toggle('hid',!adaT);
+    if(adaT){
+     $('#talangan-kpi').innerHTML=card('Talangan di proyek ini',kpProj,0,'🧾')+card('Total talangan (semua proyek)',ut.talangan,0,'👤')+card('Sudah diganti perusahaan',ut.diganti,0,'↩️')+card('Utang perusahaan ke pemilik',ut.sisa,1,'⏳');
+     let n='Talangan tetap tercatat sebagai pengeluaran proyek, tetapi saldo rekening/kas studio tidak berubah. Penggantian dicatat di Kas Besar: Pengeluaran → "Ganti dana talangan pemilik".';
+     if(ut.sisa<0) n+='<br>⚠️ Penggantian melebihi talangan tercatat sebesar '+rp(-ut.sisa)+'.';
+     $('#talangan-note').innerHTML=n;
+    }
+   }
+  }
+  const panel=$('#pic-panel');
+  if(panel){
+   const dp=cur?danaPICProyek(cur):{diterima:0,kembali:0,terpakai:0,sisa:0};
+   const adaPIC=picMode||dp.diterima||dp.kembali||dp.terpakai;
+   panel.classList.toggle('hid',!adaPIC);
+   if(adaPIC){
+    const belum=T.filter(t=>t.proj===cur&&isBelanja(t)&&!t.sumber);
+    $('#pic-kpi').innerHTML=card('Ditransfer ke PIC',dp.diterima,0,'📤')+card('Dilaporkan terpakai',dp.terpakai,0,'🧾')+card('Dikembalikan ke studio',dp.kembali,0,'↩️')+card('Dana di PIC (belum lapor)',dp.sisa,1,'⏳');
+    let note='Transfer ke PIC dan pengembalian bukan pengeluaran proyek. Pengeluaran proyek hanya yang dilaporkan PIC.';
+    if(belum.length) note+='<br>⚠️ '+belum.length+' pengeluaran ('+rp(sum(belum,()=>1))+') belum ditentukan sumber dananya. <button type="button" class="btn sm wn" onclick="tandaiSumberPIC()">Tandai semuanya dibayar dari Dana PIC</button>';
+    if(dp.sisa<0) note+='<br>⚠️ Pengeluaran yang dilaporkan melebihi dana yang ditransfer ke PIC sebesar '+rp(-dp.sisa)+'.';
+    $('#pic-note').innerHTML=note;
+   }
+  }
+ }
+
+ const bCard=$('#burn-card');
+ const totalMasuk = s.d + s.m - s.r;
+ if(totalMasuk > 0){
+  bCard.style.display='block';
+  const pct=Math.min(100, Math.round((s.k / totalMasuk) * 100));
+  $('#burn-pct').textContent=pct+'%';
+  $('#burn-spent').textContent='Terpakai: '+rp(s.k);
+  $('#burn-limit').textContent='Total Masuk: '+rp(totalMasuk);
+  const fill=$('#burn-fill');
+  fill.style.width=pct+'%';
+  fill.className='progress-fill'+(pct>90?' danger':(pct>75?' warn':''));
+ } else {
+  bCard.style.display='none';
+ }
+
+ // DIAGRAM BATANG HORIZONTAL: PENGELUARAN PER JENIS PEKERJAAN
+ const pekSums = {};
+ PEKERJAAN_LIST.forEach(pk => pekSums[pk] = 0);
+ let totBelanjaProyek = 0;
+
+ T.filter(t => t.proj === cur && (t.jenis === 'Keluar' || t.jenis === 'Kasbon')).forEach(t => {
+  const pk = getPekerjaan(t);
+  const a = +t.amt || 0;
+  pekSums[pk] = (pekSums[pk] || 0) + a;
+  totBelanjaProyek += a;
+ });
+
+ const pp = P.find(x => x.id === cur);
+ const konAmt = pp && pp.kontrak ? +pp.kontrak : 0;
+ let subInfo = 'Total Belanja: ' + rp(totBelanjaProyek);
+ if(konAmt > 0){
+  const pctKontrak = Math.round((totBelanjaProyek / konAmt) * 100);
+  subInfo += ' · ' + pctKontrak + '% dari Kontrak (' + rp(konAmt) + ')';
+ }
+ if($('#chart-pekerjaan-sub')) $('#chart-pekerjaan-sub').textContent = subInfo;
+
+ if($('#chart-pekerjaan-bars')){
+  const maxAmt = Math.max(...Object.values(pekSums), 1);
+  $('#chart-pekerjaan-bars').innerHTML = PEKERJAAN_LIST.map(pk => {
+   const val = pekSums[pk] || 0;
+   const pctOfTotal = totBelanjaProyek > 0 ? Math.round((val / totBelanjaProyek) * 100) : 0;
+   const barWidth = totBelanjaProyek > 0 && maxAmt > 0 ? Math.max(val > 0 ? 3 : 0, Math.round((val / maxAmt) * 100)) : 0;
+   const color = PEKERJAAN_COLORS[pk] || 'var(--ac)';
+   const icon = PEKERJAAN_ICONS[pk] || '📌';
+
+    return '<div style="display:flex;flex-direction:column;gap:5px">' +
+     '<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;gap:6px">' +
+      '<span style="font-weight:700;display:flex;align-items:center;gap:6px;color:var(--tx);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
+       '<span style="font-size:14px;flex-shrink:0">' + icon + '</span>' +
+       '<span style="overflow:hidden;text-overflow:ellipsis">' + esc(pk) + '</span>' +
+      '</span>' +
+      '<span style="font-weight:700;color:var(--tx);white-space:nowrap;flex-shrink:0">' +
+       rp(val) + ' <small class="mu" style="font-weight:600;margin-left:4px">(' + pctOfTotal + '%)</small>' +
+      '</span>' +
+     '</div>' +
+     '<div class="progress-track" style="height:10px;margin:0;background:var(--bd);border-radius:99px;overflow:hidden">' +
+      '<div class="progress-fill" style="width:' + barWidth + '%;background:' + color + ';border-radius:99px;transition:width .4s ease"></div>' +
+     '</div>' +
+    '</div>';
+   }).join('');
+ }
+
+ if(actKbon.length){
+  $('#kasbon-list').innerHTML='<table><tr><th>Tgl Pinjam</th><th>Nama Tukang</th><th>Keperluan / Catatan</th><th class="n">Nominal Kasbon</th><th>Status</th><th>Aksi Pelunasan</th></tr>'+actKbon.map(k=>'<tr><td>'+dt(k.date)+'</td><td><b style="color:var(--wn)">'+esc(k.tukang)+'</b></td><td>'+esc(k.desc)+'</td><td class="n neg"><b>'+rp(kbSisa(k))+'</b>'+((+k.terpotong||0)>0?' <small class="mu">(dari '+rp(k.amt)+')</small>':'')+'</td><td><span class="badge b-wn">'+((+k.terpotong||0)>0?'SEBAGIAN DIPOTONG':'BELUM DIPOTONG')+'</span></td><td><button class="btn sm wn" data-potong="'+k.id+'">⚖️ Potong di Upah</button></td></tr>').join('')+'</table>';
+ } else {
+  $('#kasbon-list').innerHTML='<div class="empty" style="padding:12px">✅ <b>Semua Kasbon Beres:</b> Tidak ada kasbon tukang yang menggantung di proyek ini.</div>';
+ }
+
+ let rows=T.filter(t=>t.proj===cur).concat(B.filter(b=>b.proj===cur).map(b=>({id:b.id,v:1,date:b.date,jenis:b.tipe==='KembaliPIC'?'Keluar':'Masuk',pekerjaan:b.tipe==='KembaliPIC'?'Pengembalian ke Kas Besar':'',kat:b.tipe==='KembaliPIC'?'Pengembalian dana':(b.tipe==='TransferPIC'?'Transfer ke PIC':'Dana Kas Besar'),desc:b.desc,metode:'Kas Besar',amt:b.amt,ts:b.ts}))).sort((a,b)=>(b.date+b.ts).localeCompare(a.date+a.ts));
+ 
+ if(activeFilter==='Keluar') rows=rows.filter(t=>t.jenis==='Keluar');
+ else if(activeFilter==='Kasbon') rows=rows.filter(t=>t.jenis==='Kasbon');
+ else if(activeFilter==='Pindah') rows=rows.filter(t=>t.jenis==='Pindah');
+ else if(activeFilter==='this-month'){
+  const cm=today().slice(0,7);
+  rows=rows.filter(t=>t.date && t.date.startsWith(cm));
+ }
+
+ const qv=($('#q').value||'').toLowerCase();
+ rows=rows.filter(t=>!qv||(t.desc+' '+t.kat+' '+t.jenis+' '+(t.tukang||'')+' '+dt(t.date)).toLowerCase().includes(qv));
+
+ $('#log').innerHTML=rows.length?'<table><tr><th>Tanggal</th><th>Jenis Pekerjaan</th><th>Kategori</th><th>Deskripsi</th><th>Rekening</th><th class="n">Jumlah</th><th></th></tr>'+rows.map(t=>{
+   const pk = t.jenis==='Masuk' ? 'Dana Masuk' : (t.jenis==='Kasbon' ? 'Kasbon Tukang' : (t.jenis==='Pindah' ? 'Pindah Rekening' : (t.pekerjaan || getPekerjaan(t))));
+   let jenisBadge = '<span class="badge b-mu">'+esc(pk)+'</span>';
+   if(t.jenis==='Kasbon') jenisBadge = '<span class="badge b-wn">Kasbon: '+esc(t.tukang||'Tukang')+'</span>';
+   else if(t.jenis==='Masuk') jenisBadge = '<span class="badge b-ok">Dana Masuk</span>';
+   else if(t.jenis==='Pindah') jenisBadge = '<span class="badge b-pos">Pindah Saldo</span>';
+   else {
+    const col = PEKERJAAN_COLORS[pk] || 'var(--ac)';
+    jenisBadge = '<span class="badge" style="background:var(--bg);border:1px solid '+col+';color:var(--tx)">'+esc(pk)+'</span>';
+   }
+   
+   return '<tr><td>'+dt(t.date)+'</td><td>'+jenisBadge+'</td><td><span class="cat-tag '+catClass(t.kat)+'">'+esc(t.kat)+'</span></td><td><b>'+esc(t.desc)+'</b>'+(t.sumber==='PIC'?' <span class="badge b-wn">Dana PIC</span>':(t.sumber==='Pribadi'?' <span class="badge b-wn">Talangan pribadi</span>':''))+(t.tukang?' <span class="badge b-wn">'+esc(t.tukang)+'</span>':'')+'</td><td>'+(t.sumber==='Pribadi'&&isBelanja(t)?'Uang pribadi':esc(t.metode))+(t.to?' → '+esc(t.to):'')+'</td><td class="n '+(t.jenis==='Keluar'||t.jenis==='Kasbon'?'neg':t.jenis==='Pindah'?'':'pos')+'"><b>'+rp(t.amt)+'</b></td><td>'+(t.v?'<span class="mu">dari Studio</span>':'<button class="lnk" data-e="'+t.id+'">Edit</button><button class="lnk d" data-d="'+t.id+'">Hapus</button>')+'</td></tr>';
+  }).join('')+'</table>':'<div class="empty">Tidak ada transaksi yang cocok dengan filter.</div>';
+
+ checkWeeklyBackup();
+}
+
+// SETUP NOMINAL PREVIEW
+function setupNominalPreview(inputId, previewId){
+ const inp=$('#'+inputId), prev=$('#'+previewId);
+ if(!inp || !prev) return;
+ function upd(){
+  const val=+inp.value||0;
+  if(val>0){
+   prev.innerHTML='<b>'+rp(val)+'</b><span class="mu">'+terbilang(val)+'</span>';
+   prev.classList.add('show');
+  } else {
+   prev.classList.remove('show');
+  }
+ }
+ inp.addEventListener('input', upd);
+}
+
+setupNominalPreview('ba', 'ba-preview');
+setupNominalPreview('fa', 'fa-preview');
+setupNominalPreview('mg-upah', 'mg-upah-preview');
+
+document.addEventListener('click', e=>{
+ const addAmt=e.target.dataset.addAmt;
+ const tgt=e.target.dataset.target;
+ if(addAmt && tgt){
+  const el=$('#'+tgt);
+  if(el){
+   const curVal=+el.value||0;
+   el.value = curVal + (+addAmt);
+   el.dispatchEvent(new Event('input'));
+  }
+ }
+ const clrTgt=e.target.dataset.clearAmt;
+ if(clrTgt){
+  const el=$('#'+clrTgt);
+  if(el){
+   el.value = '';
+   el.dispatchEvent(new Event('input'));
+  }
+ }
+ const setDate=e.target.dataset.setDate;
+ const dateTgt=e.target.dataset.target;
+ if(setDate && dateTgt){
+  const el=$('#'+dateTgt);
+  if(el){
+   if(setDate==='today') el.value = today();
+   else if(setDate==='yesterday'){
+    const d=new Date(); d.setDate(d.getDate()-1);
+    el.value=d.toLocaleDateString('en-CA');
+   } else if(setDate==='last-sat'){
+    const d=new Date();
+    const day=d.getDay();
+    const diff=(day+1)%7;
+    d.setDate(d.getDate()-diff);
+    el.value=d.toLocaleDateString('en-CA');
+   }
+  }
+ }
+});
+
+document.addEventListener('click', e=>{
+ if(e.target.classList.contains('pill')){
+  $$('.filter-bar .pill').forEach(p=>p.classList.remove('on'));
+  e.target.classList.add('on');
+  activeFilter=e.target.dataset.filter;
+  render();
+ }
+});
+
+function applyTheme(th){
+ if(th==='dark') document.documentElement.setAttribute('data-theme', 'dark');
+ else if(th==='light') document.documentElement.setAttribute('data-theme', 'light');
+ else document.documentElement.removeAttribute('data-theme');
+ localStorage.setItem(KEY.theme, th);
+}
+
+function toggleAppTheme(){
+ const curTh=document.documentElement.getAttribute('data-theme');
+ const nextTh=curTh==='light'?'dark':'light';
+ applyTheme(nextTh);
+ toast('Mode tampilan diubah ke ' + (nextTh==='light'?'Terang':'Gelap'));
+}
+
+$('#theme-btn').onclick=toggleAppTheme;
+
+function reset(){
+ editId=null;
+ $('#fj').value='Pekerjaan Persiapan';
+ fjc();
+ $('#fa').value='';
+ $('#fa').dispatchEvent(new Event('input'));
+ $('#fe').value='';
+ $('#f-tukang').value='';
+ $('#f-sumber').value='';
+ $('#fs').textContent='Simpan Transaksi Belanja';
+ $('#fc').classList.add('hid');
+ $('#ft').innerHTML='<span class="icon-pill icon-blue">📝</span> Input Belanja Kasir Lapangan';
+ $('#fd').value=today();
+}
+
+function breset(){
+ bid=null;
+ $('#ba').value='';
+ $('#ba').dispatchEvent(new Event('input'));
+ $('#be').value='';
+ $('#bs').textContent='Simpan Transaksi Kas Besar';
+ $('#bc').classList.add('hid');
+ $('#bt').innerHTML='<span class="icon-pill icon-purple">📝</span> Input Transaksi Kas Besar';
+ $('#bd').value=today();
+ $('#bj').value='Pemasukan';
+ $('#btipe').value='';
+ $('#bp').value='';
+ bj();
+}
+
+function fjc(){
+ const j=$('#fj').value;
+ const isPindah = j === 'Pindah';
+ const isKasbon = j === 'Kasbon';
+ $('#fto').classList.toggle('hid', !isPindah);
+ $('#fkat-wrap').classList.toggle('hid', isPindah);
+ $('#f-sumber-wrap').classList.toggle('hid', isPindah);
+ $('#f-tukang-wrap').style.display = isKasbon ? 'block' : 'none';
+ if(isKasbon){
+  $('#fk').value='Upah Tukang';
+  if(!$('#fe').value) $('#fe').placeholder='mis. Kasbon uang makan harian, beli obat';
+ } else if(isPindah){
+  $('#fe').placeholder='mis. Tarik tunai dari bank untuk kasir lapangan';
+ } else {
+  $('#fe').placeholder='mis. Semen 10 sak, paku gypsum, ongkir lalamove';
+ }
+}
+
+$('#fj').onchange=fjc;
+$('#bj').onchange=bj;
+$('#btipe').onchange=bj;
+$('#bp').onchange=bj;
+$('#q').oninput=render;
+
+$('#tb1').onclick=()=>tab(1);
+$('#tb2').onclick=()=>tab(2);
+
+function navTo(target){
+ toggleMobileSidebar(false);
+ if(target === 'kb'){
+  tab(1);
+  if($('#sb-nav-kb')) $('#sb-nav-kb').classList.add('active');
+  if($('#sb-nav-log')) $('#sb-nav-log').classList.remove('active');
+  if($('#bnav-kb')) $('#bnav-kb').classList.add('active');
+  if($('#bnav-proj')) $('#bnav-proj').classList.remove('active');
+  if($('#bnav-log')) $('#bnav-log').classList.remove('active');
+  if($('#mobile-active-view-label')) $('#mobile-active-view-label').textContent = 'Overview Kas Besar';
+  $$('#sidebar-projects-list .nav-item').forEach(el => el.classList.remove('active'));
+  window.scrollTo({top:0, behavior:'smooth'});
+ } else if(target === 'log'){
+  tab(1);
+  if($('#sb-nav-log')) $('#sb-nav-log').classList.add('active');
+  if($('#sb-nav-kb')) $('#sb-nav-kb').classList.remove('active');
+  if($('#bnav-log')) $('#bnav-log').classList.add('active');
+  if($('#bnav-kb')) $('#bnav-kb').classList.remove('active');
+  if($('#bnav-proj')) $('#bnav-proj').classList.remove('active');
+  if($('#mobile-active-view-label')) $('#mobile-active-view-label').textContent = 'Riwayat Transaksi';
+  $$('#sidebar-projects-list .nav-item').forEach(el => el.classList.remove('active'));
+  const logEl = document.querySelector('#blog');
+  if(logEl) logEl.scrollIntoView({behavior:'smooth'});
+ }
+}
+
+function tambahProyekSidebar(){
+  const list = document.querySelector('#sidebar-projects-list');
+  if (!list) return;
+
+  if (document.querySelector('#input-proyek-sidebar')) {
+    document.querySelector('#input-proyek-sidebar').focus();
+    return;
+  }
+
+  const row = document.createElement('div');
+  row.style.padding = '6px';
+
+  const input = document.createElement('input');
+  input.id = 'input-proyek-sidebar';
+  input.type = 'text';
+  input.placeholder = 'Nama proyek baru...';
+  input.style.width = '100%';
+  input.style.boxSizing = 'border-box';
+  input.style.padding = '9px';
+  input.style.border = '1px solid var(--ac)';
+  input.style.borderRadius = '8px';
+  input.style.background = 'var(--sf)';
+  input.style.color = 'var(--tx)';
+  input.style.fontSize = '12px';
+
+  row.appendChild(input);
+  list.prepend(row);
+  input.focus();
+
+  input.addEventListener('keydown', async function(e){
+    if (e.key === 'Enter') {
+      const nama = input.value.trim();
+      if (!nama) { input.focus(); return; }
+
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const id = 'p' + Date.now();
+      cur = id;
+
+      await save('projects', id, {name: nama, kontrak: 0, mode: 'Dikelola Sendiri'});
+      tab(2);
+      render();
+      toggleMobileSidebar(false);
+      toast('Proyek "' + nama + '" berhasil dibuat!');
+    }
+
+    if (e.key === 'Escape') {
+      row.remove();
+    }
+  });
+}
+
+function selectProjectFromSidebar(projectId){
+ cur = projectId;
+ tab(2);
+ toggleMobileSidebar(false);
+ if($('#psel')) $('#psel').value = projectId;
+ if($('#sb-nav-kb')) $('#sb-nav-kb').classList.remove('active');
+ if($('#sb-nav-log')) $('#sb-nav-log').classList.remove('active');
+ if($('#bnav-proj')) $('#bnav-proj').classList.add('active');
+ if($('#bnav-kb')) $('#bnav-kb').classList.remove('active');
+ if($('#bnav-log')) $('#bnav-log').classList.remove('active');
+ const prj = P.find(p=>p.id===projectId);
+ if($('#mobile-active-view-label')) $('#mobile-active-view-label').textContent = prj ? prj.name : 'Kas Kecil Proyek';
+ render();
+ window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function bukaModalKasBesar(){
+ breset();
+ $('#modal-kas-besar').classList.remove('hid');
+ setTimeout(()=>$('#ba')&&$('#ba').focus(), 100);
+}
+
+function tutupModalKasBesar(){
+ $('#modal-kas-besar').classList.add('hid');
+ breset();
+}
+
+function bukaModalTransaksi(){
+ if($('#v2') && !$('#v2').classList.contains('hid')){
+  const ft = $('#ft');
+  if(ft) ft.scrollIntoView({behavior:'smooth'});
+  if($('#fa')) $('#fa').focus();
+ } else {
+  bukaModalKasBesar();
+ }
+}
+
+function tab(n){
+ $('#v1').classList.toggle('hid',n!==1);
+ $('#v2').classList.toggle('hid',n!==2);
+ $('#tb1').classList.toggle('on',n===1);
+ $('#tb2').classList.toggle('on',n===2);
+ if(n === 1){
+  if($('#sb-nav-kb')) $('#sb-nav-kb').classList.add('active');
+  if($('#bnav-kb')) $('#bnav-kb').classList.add('active');
+  if($('#bnav-proj')) $('#bnav-proj').classList.remove('active');
+  $$('#sidebar-projects-list .nav-item').forEach(el => el.classList.remove('active'));
+ } else {
+  if($('#bnav-proj')) $('#bnav-proj').classList.add('active');
+  if($('#bnav-kb')) $('#bnav-kb').classList.remove('active');
+ }
+}
+
+$('#psel').onchange=e=>{cur=e.target.value;render()};
+
+async function ubahModeProyekAktif(v){
+ const p=P.find(x=>x.id===cur);
+ if(!p||!MODE_LIST.includes(v)){render();return;}
+ if(p.mode===v){render();return;}
+ if(!confirm('Ubah mode proyek "'+p.name+'" menjadi "'+v+'"?\nTransaksi yang sudah ada tidak diubah.')){render();return;}
+ await save('projects',p.id,{mode:v});
+ toast('Mode proyek "'+p.name+'" diatur: '+v+'.');
+}
+
+function isiSumberOpts(){
+ const sel=$('#f-sumber'); if(!sel) return;
+ const pp=P.find(x=>x.id===cur), pic=!!(pp&&pp.mode==='Dikelola PIC');
+ const list=pic
+  ?[['','— pilih sumber dana —'],['PIC','Dana PIC (bukan dari rekening studio)'],['Studio','Kas / rekening studio'],['Pribadi','Uang pribadi (talangan)']]
+  :[['','Kas / rekening studio'],['Pribadi','Uang pribadi (talangan)']];
+ const v=sel.value;
+ sel.innerHTML=list.map(o=>'<option value="'+o[0]+'">'+o[1]+'</option>').join('');
+ if(list.some(o=>o[0]===v)) sel.value=v;
+}
+
+function tandaiSumberPIC(){
+ const rows=T.filter(t=>t.proj===cur&&isBelanja(t)&&!t.sumber);
+ if(!rows.length) return;
+ if(!confirm('Tandai '+rows.length+' pengeluaran proyek ini (total '+rp(sum(rows,()=>1))+') sebagai dibayar dari Dana PIC?\n\nPengeluaran itu tidak lagi mengurangi kas/rekening studio, tetapi mengurangi dana di PIC.')) return;
+ rows.forEach(t=>t.sumber='PIC');
+ lsSet('tx',T);
+ render();
+ toast(rows.length+' pengeluaran ditandai dibayar dari Dana PIC.');
+}
+
+function ubahNamaProyekAktif(){
+ const p=P.find(x=>x.id===cur);
+ if(!p){toast('Pilih proyek terlebih dahulu.');return;}
+ const n=prompt('Nama baru untuk proyek "'+p.name+'" :');
+ if(!n||!n.trim()) return;
+ $('#pnew').value=n.trim();
+ $('#prn').click();
+}
+
+function aturKontrakProyekAktif(){
+ const p=P.find(x=>x.id===cur);
+ if(!p){toast('Pilih proyek terlebih dahulu.');return;}
+ const val=prompt('Nilai kontrak untuk proyek "'+p.name+'" (Rp):');
+ if(val===null) return;
+ $('#kon').value=+val||0;
+ $('#ksv').click();
+}
+
+$('#aadd').onclick=async()=>{
+ const n=$('#anew').value.trim();
+ if(!n||ACC().includes(n)) return;
+ $('#anew').value='';
+ await save('accounts','a'+Date.now(),{name:n});
+ render();
+ toast('Rekening "' + n + '" ditambahkan.');
+};
+
+$('#btn-add-kat').onclick=()=>{
+ const n=prompt('Masukkan nama kategori pengeluaran baru:');
+ if(!n || !n.trim()) return;
+ const cat=n.trim();
+ if(!KAT.includes(cat)){
+  KAT.push(cat);
+  lsSet('kat',KAT);
+  opts($('#fk'),KAT);
+  $('#fk').value=cat;
+  toast('Kategori "'+cat+'" berhasil ditambahkan!');
+ }
+};
+
+$('#btn-del-kat').onclick=()=>{
+ const curKat=$('#fk').value;
+ if(!curKat) return;
+ if(DEFAULT_KAT.includes(curKat)){
+  toast('Kategori bawaan standar tidak dapat dihapus.');
+  return;
+ }
+ if(confirm('Hapus kategori "'+curKat+'"?')){
+  KAT = KAT.filter(k=>k!==curKat);
+  lsSet('kat',KAT);
+  opts($('#fk'),KAT);
+  toast('Kategori berhasil dihapus.');
+ }
+};
+
+$('#fs').onclick=async()=>{
+ const amt=+$('#fa').value;
+ if(!cur||!(amt>0)){toast('Pilih proyek dan isi jumlah nominal.');return}
+ const rawJ=$('#fj').value;
+ let j='Keluar';
+ let pekerjaan=rawJ;
+ if(rawJ==='Kasbon'){ j='Kasbon'; pekerjaan='Operasional Proyek'; }
+ else if(rawJ==='Pindah'){ j='Pindah'; pekerjaan='Pindah Rekening'; }
+
+ const tukang=$('#f-tukang').value.trim();
+ if(j==='Kasbon' && !tukang){
+  toast('Nama tukang yang kasbon wajib diisi!');
+  return;
+ }
+
+ const old=T.find(t=>t.id===editId);
+ const id=editId||'t'+Date.now();
+ const picP=((P.find(x=>x.id===cur)||{}).mode==='Dikelola PIC');
+ let sumber=(old&&old.sumber)||'';
+ if(j==='Pindah') sumber='';
+ else{
+  sumber=$('#f-sumber').value;
+  if(picP&&!sumber&&!(old&&!old.sumber)){toast('Pilih sumber dana pengeluaran.','⚠️');return}
+ }
+ if(old&&old.proj!==cur){
+  toast('Transaksi ini milik proyek "'+((P.find(x=>x.id===old.proj)||{}).name||'lain')+'".','⚠️');
+  return;
+ }
+ const kid0='kb_'+id, kObj0=KBON.find(k=>k.id===kid0);
+ if(kObj0&&kbSudahDipotong(kObj0)){
+  if(j!=='Kasbon'){toast('Kasbon ini sudah dipotong di upah, jenisnya tidak bisa diubah.','⚠️');return}
+  if((+kObj0.amt||0)!==amt||kObj0.tukang!==tukang){toast('Kasbon ini sudah dipotong di upah, nominal/tukang tidak bisa diubah.','⚠️');return}
+ }
+ const d={
+  proj:cur,
+  date:$('#fd').value,
+  jenis:j,
+  pekerjaan:pekerjaan,
+  metode:$('#fm').value,
+  to:j==='Pindah'?$('#ft2').value:'',
+  kat:j==='Pindah'?'Pindah rekening':(j==='Kasbon'?'Upah Tukang':$('#fk').value),
+  desc:$('#fe').value.trim() || (j==='Kasbon'?'Kasbon tukang':pekerjaan),
+  tukang:j==='Kasbon'?tukang:'',
+  sumber,
+  amt,
+  ts:old?old.ts:Date.now()
+ };
+
+ if(j==='Kasbon'){
+  await save('kasbon', kid0, Object.assign({
+   txId: id,
+   proj: cur,
+   date: $('#fd').value,
+   tukang: tukang,
+   desc: $('#fe').value.trim() || 'Kasbon uang jalan/makan',
+   amt: amt
+  }, kObj0?{}:{status:'BELUM LUNAS'}));
+ } else if(kObj0){
+  await del('kasbon', kid0);
+ }
+
+ reset();
+ await save('tx',id,d);
+ render();
+ toast('Transaksi berhasil disimpan.');
+};
+
+$('#fc').onclick=reset;
+
+$('#bs').onclick=async()=>{
+ const amt=+$('#ba').value;
+ if(!(amt>0)){toast('Isi nominal uang.');return}
+ const j=$('#bj').value, old=B.find(x=>x.id===bid), id=bid||'k'+Date.now();
+ const tipe=$('#btipe').value||'', pv=$('#bp').value;
+ if(!tipe&&j==='Pengeluaran'&&pv&&!(old&&old.proj===pv)){
+  toast('Alokasi dana ke proyek sudah dihentikan. Catat pengeluaran proyek langsung di Kas Kecil.','⚠️');
+  return;
+ }
+ if((tipe==='TransferPIC'&&j!=='Pengeluaran')||(tipe==='KembaliPIC'&&j!=='Pemasukan')||(tipe==='GantiTalangan'&&j!=='Pengeluaran')){toast('Jenis penggunaan tidak sesuai dengan jenis transaksi.','⚠️');return}
+ if(tipe==='TransferPIC'||tipe==='KembaliPIC'){
+  const pp=P.find(x=>x.id===pv);
+  if(!pp){toast('Pilih proyek PIC untuk transaksi ini.','⚠️');return}
+  if(pp.mode!=='Dikelola PIC'){toast('Proyek "'+pp.name+'" belum bermode Dikelola PIC.','⚠️');return}
+ }
+ if(tipe==='GantiTalangan'){
+  const sisa=utangPemilik().sisa+((old&&old.tipe==='GantiTalangan')?(+old.amt||0):0);
+  if(amt>sisa&&!confirm('Jumlah penggantian '+rp(amt)+' melebihi sisa utang talangan tercatat ('+rp(Math.max(0,sisa))+').\nLanjutkan?')) return;
+ }
+ const d={
+  date:$('#bd').value,
+  jenis:j,
+  rek:$('#br').value,
+  proj:tipe==='GantiTalangan'?'':((j==='Pengeluaran'||tipe==='KembaliPIC')?pv:''),
+  src:(j==='Pemasukan'&&tipe!=='KembaliPIC')?pv:'',
+  tipe,
+  amt,
+  desc:$('#be').value.trim(),
+  ts:old?old.ts:Date.now()
+ };
+ breset();
+ await save('kb',id,d);
+ render();
+ toast('Transaksi Kas Besar disimpan.');
+ tutupModalKasBesar();
+};
+
+$('#bc').onclick=()=>{ breset(); tutupModalKasBesar(); };
+$('#modal-kas-besar').onclick=e=>{ if(e.target===$('#modal-kas-besar')) tutupModalKasBesar(); };
+
+$('#ksv').onclick=async()=>{
+ const p=P.find(x=>x.id===cur);
+ if(!p) return;
+ await save('projects',p.id,{name:p.name,kontrak:+$('#kon').value||0});
+ render();
+ toast('Nilai kontrak disimpan.');
+};
+
+$('#prn').onclick=async()=>{
+ const p=P.find(x=>x.id===cur), n=$('#pnew').value.trim();
+ if(!p||!n){toast('Isi nama baru di kolom nama proyek.');return}
+ $('#pnew').value='';
+ await save('projects',p.id,{name:n,kontrak:p.kontrak||0});
+ render();
+ toast('Nama proyek diubah.');
+};
+
+$('#acc').onchange=async e=>{
+ const k=e.target.dataset.k;
+ if(k==null) return;
+ const id=k.replace(/\W/g,'_'), v=e.target.value;
+ if(v==='') await del('cek',id);
+ else await save('cek',id,{rek:k,amt:+v});
+ render();
+};
+
+// MODAL HITUNG UPAH SABTU
+$('#btn-gajian').onclick=()=>bukaModalGajian();
+
+function bukaModalGajian(pilihTukangId=null){
+ const act=KBON.filter(k=>k.proj===cur && k.status!=='LUNAS');
+ if(!act.length){
+  toast('Tidak ada kasbon tukang aktif di proyek ini.');
+  return;
+ }
+ const tukangSet=new Set();
+ act.forEach(k=>tukangSet.add(k.tukang));
+ const arrTukang=[...tukangSet];
+
+ $('#mg-tukang').innerHTML=arrTukang.map(t=>'<option value="'+esc(t)+'">'+esc(t)+'</option>').join('');
+ opts($('#mg-rek'), ACC());
+ const proyekAktif=P.find(x=>x.id===cur);
+ const proyekPIC=proyekAktif&&proyekAktif.mode==='Dikelola PIC';
+ $('#mg-sumber').value=proyekPIC?'':'Studio';
+ $('#mg-sumber').querySelector('option[value="PIC"]').disabled=!proyekPIC;
+
+ if(pilihTukangId){
+  const kObj=act.find(x=>x.id===pilihTukangId);
+  if(kObj) $('#mg-tukang').value=kObj.tukang;
+ }
+
+ updateKalkulasiGaji();
+ $('#modal-gaji').classList.remove('hid');
+}
+
+function updateKalkulasiGaji(){
+ const tk=$('#mg-tukang').value;
+ const act=KBON.filter(k=>k.proj===cur && k.tukang===tk && k.status!=='LUNAS');
+ const totK=act.reduce((acc,k)=>acc+kbSisa(k),0);
+ $('#mg-kasbon-val').textContent=rp(totK);
+
+ const upah=+($('#mg-upah').value)||0;
+ const bersih=Math.max(0, upah-totK);
+ $('#mg-bersih-val').textContent=rp(bersih);
+ $('#mg-bersih-words').textContent = bersih > 0 ? terbilang(bersih) : '';
+}
+
+$('#mg-tukang').onchange=updateKalkulasiGaji;
+$('#mg-upah').oninput=updateKalkulasiGaji;
+
+$('#mg-tutup').onclick=()=>{
+ $('#modal-gaji').classList.add('hid');
+ $('#mg-upah').value='';
+ $('#mg-upah').dispatchEvent(new Event('input'));
+};
+
+$('#modal-gaji').onclick=e=>{
+ if(e.target===$('#modal-gaji')){
+  $('#modal-gaji').classList.add('hid');
+  $('#mg-upah').value='';
+ }
+};
+
+document.addEventListener('keydown', e=>{
+ if(e.key==='Escape' && !$('#modal-gaji').classList.contains('hid')){
+  $('#modal-gaji').classList.add('hid');
+  $('#mg-upah').value='';
+ }
+});
+
+$('#mg-bayar').onclick=async()=>{
+ const tk=$('#mg-tukang').value;
+ const upah=+($('#mg-upah').value)||0;
+ if(upah<=0){
+  toast('Isi nominal upah kotor mingguan tukang.');
+  return;
+ }
+
+ const act=KBON.filter(k=>k.proj===cur && k.tukang===tk && k.status!=='LUNAS').sort((a,b)=>(a.date+a.id).localeCompare(b.date+b.id));
+ const totK=act.reduce((acc,k)=>acc+kbSisa(k),0);
+ const dipotong=Math.min(upah,totK);
+ const bayarCash=upah-dipotong;
+ const sumber=$('#mg-sumber').value;
+ if(!sumber){toast('Pilih sumber dana pembayaran upah terlebih dahulu.','⚠️');return;}
+ if(sumber==='PIC' && (!P.find(x=>x.id===cur)||P.find(x=>x.id===cur).mode!=='Dikelola PIC')){
+  toast('Dana PIC hanya bisa dipilih untuk proyek yang dikelola PIC.','⚠️');return;
+ }
+ const idTx='t'+Date.now();
+ let sisaPotong=dipotong; const potongList=[];
+ const nextKasbon=KBON.map(kbItem=>{
+  if(!act.some(x=>x.id===kbItem.id)) return kbItem;
+  if(sisaPotong<=0) return kbItem;
+  const ambil=Math.min(sisaPotong,kbSisa(kbItem));
+  sisaPotong-=ambil;
+  const terpotong=(+kbItem.terpotong||0)+ambil;
+  const lunas=terpotong>=(+kbItem.amt||0);
+  potongList.push({id:kbItem.id,amt:ambil});
+  return Object.assign({},kbItem,{
+   terpotong,
+   potongan:(kbItem.potongan||[]).concat([{tx:idTx,amt:ambil,tgl:today()}]),
+   status:lunas?'LUNAS':'BELUM LUNAS',
+   tglLunas:lunas?today():'',
+   catatanLunas:lunas?('Dipotong pada upah Sabtu '+today()):''
+  });
+ });
+ const metode=$('#mg-rek').value;
+ const txBaru={
+  id:idTx,proj:cur,date:today(),jenis:'Keluar',metode,
+  sumber,kat:'Upah Tukang',
+  desc:'Upah Sabtu '+tk+' (Kotor '+rp(upah)+' - Kasbon '+rp(dipotong)+')',
+  amt:bayarCash,kasbonPotong:potongList,upahKotor:upah,ts:Date.now()
+ };
+ const nextTx=T.concat([txBaru]);
+ if(!commitCollections([{col:'kasbon',data:nextKasbon},{col:'tx',data:nextTx}])){
+  toast('Pembayaran dibatalkan. Data kasbon dan transaksi tidak diubah.','⚠️');return;
+ }
+
+ $('#modal-gaji').classList.add('hid');
+ $('#mg-upah').value='';
+ render();
+ toast('Upah dibayarkan. Kasbon '+tk+' terpotong '+rp(dipotong)+(totK>dipotong?'; sisa kasbon '+rp(totK-dipotong)+' masih tercatat.':' dan LUNAS.'));
+};
+
+$('#kasbon-list').onclick=e=>{
+ const kid=e.target.dataset.potong;
+ if(kid) bukaModalGajian(kid);
+};
+
+// EDIT / HAPUS TRANSAKSI
+$('#log').onclick=async e=>{
+ const ed=e.target.dataset.e, dl=e.target.dataset.d;
+ if(ed){
+  const t=T.find(x=>x.id===ed);
+  editId=ed;
+  $('#fd').value=t.date;
+  if(t.jenis==='Kasbon') $('#fj').value='Kasbon'; else if(t.jenis==='Pindah') $('#fj').value='Pindah'; else $('#fj').value=t.pekerjaan || getPekerjaan(t) || 'Pekerjaan Persiapan';
+  $('#fm').value=t.metode;
+  $('#ft2').value=t.to||'Tunai';
+  fjc();
+  $('#fk').value=t.kat;
+  $('#fe').value=t.desc;
+  $('#f-tukang').value=t.tukang||'';
+  {
+   const sel=$('#f-sumber');
+   if(t.sumber&&!Array.from(sel.options).some(o=>o.value===t.sumber)) sel.add(new Option(t.sumber==='PIC'?'Dana PIC':t.sumber,t.sumber));
+   sel.value=t.sumber||'';
+  }
+  $('#fa').value=t.amt;
+  $('#fa').dispatchEvent(new Event('input'));
+  $('#fs').textContent='Simpan Perubahan';
+  $('#fc').classList.remove('hid');
+  $('#ft').innerHTML='<span class="icon-pill icon-blue">✏️</span> Edit Transaksi Kasir';
+  $('#ft').scrollIntoView({behavior:'smooth'});
+ }
+ if(dl){
+  if(e.target.dataset.c){
+   const tx0=T.find(x=>x.id===dl);
+   const kbObj=KBON.find(k=>k.txId===dl);
+   if(kbObj&&(+kbObj.terpotong||0)>0){
+    toast('Kasbon ini sudah dipotong di upah. Hapus transaksi upah terkait dulu.','⚠️');
+    return;
+   }
+   if(kbObj&&kbObj.status==='LUNAS'&&!(kbObj.potongan&&kbObj.potongan.length)&&!confirm('Kasbon ini ditandai LUNAS. Tetap hapus?')) return;
+   await del('tx',dl);
+   if(kbObj) await del('kasbon', kbObj.id);
+   if(tx0&&tx0.kasbonPotong) await balikkanPotongan(tx0);
+   render();
+   toast('Transaksi dihapus.');
+  } else {
+   e.target.dataset.c=1;
+   e.target.textContent='Yakin?';
+   setTimeout(()=>{e.target.dataset.c='';e.target.textContent='Hapus'},3000);
+  }
+ }
+};
+
+$('#blog').onclick=async e=>{
+ const ed=e.target.dataset.e, dl=e.target.dataset.d;
+ if(ed){
+  const b=B.find(x=>x.id===ed);
+  bid=ed;
+  $('#bd').value=b.date;
+  $('#bj').value=b.jenis;
+  $('#br').value=b.rek||'Tunai';
+  $('#bp').value=b.proj||b.src||'';
+  bj();
+  $('#btipe').value=b.tipe||'';
+  bj();
+  $('#be').value=b.desc||'';
+  $('#ba').value=b.amt;
+  $('#ba').dispatchEvent(new Event('input'));
+  $('#bs').textContent='Simpan Perubahan';
+  $('#bc').classList.remove('hid');
+  $('#bt').innerHTML='<span class="icon-pill icon-purple">✏️</span> Edit Transaksi Kas Besar';
+  $('#modal-kas-besar').classList.remove('hid');
+  setTimeout(()=>$('#ba')&&$('#ba').focus(), 100);
+ }
+ if(dl){
+  if(e.target.dataset.c){
+   await del('kb',dl);
+   render();
+   toast('Transaksi dihapus.');
+  } else {
+   e.target.dataset.c=1;
+   e.target.textContent='Yakin?';
+   setTimeout(()=>{e.target.dataset.c='';e.target.textContent='Hapus'},3000);
+  }
+ }
+};
+
+// EXPORT EXCEL
+const okx=()=>window.XLSX?true:(toast('Pustaka Excel belum termuat.'),false);
+
+function saveX(wb, name){
+ if(!okx()) return;
+ try {
+  XLSX.writeFile(wb, name);
+  toast('Berhasil mengunduh ' + name);
+ } catch(e){
+  console.error(e);
+  toast('Gagal mengekspor file Excel.');
+ }
+}
+
+const pn=id=>(P.find(p=>p.id===id)||{}).name||'';
+
+function logRows(id){
+ const r=[['Tanggal','Jenis','Jenis Pekerjaan','Rekening','Ke rekening','Kategori','Deskripsi','Penerima/Tukang','Jumlah','Sumber Dana']];
+ T.filter(t=>t.proj===id).concat(B.filter(b=>b.proj===id).map(b=>{const lb=b.tipe==='KembaliPIC'?'Pengembalian ke Kas Besar':(b.tipe==='TransferPIC'?'Transfer ke PIC':'Dana dari Kas Besar');return {date:b.date,jenis:lb,pekerjaan:lb,metode:b.rek,to:'',kat:'',desc:b.desc,tukang:'',amt:b.tipe==='KembaliPIC'?-b.amt:b.amt}})).sort((a,b)=>a.date.localeCompare(b.date)).forEach(t=>{
+  r.push([t.date, t.jenis, t.pekerjaan || getPekerjaan(t) || t.jenis, t.metode, t.to||'', t.kat, t.desc, t.tukang||'', +t.amt, t.sumber||'']);
+ });
+ return r;
+}
+
+const sn=(s,u)=>{let n=s.replace(/[^\w ]/g,' ').slice(0,28)||'Sheet';while(u.has(n))n+='_';u.add(n);return n};
+
+$('#exp').onclick=()=>{
+ if(!okx()) return;
+ const wb=XLSX.utils.book_new(), u=new Set(['Ringkasan','Kas Besar','Kasbon Mandor']);
+ const s=[['Proyek','Kontrak','Sisa tagihan','Dana dari Kas Besar','Keluar','Saldo','Tunai','Nontunai']];
+ P.forEach(p=>{
+  const x=ps(p.id), h=hold(p.id), kon=+p.kontrak||0;
+  s.push([p.name,kon,kon?kon-sum(B,b=>b.src===p.id):'',x.d-x.r,x.k,x.s,h.c,h.b]);
+ });
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(s),'Ringkasan');
+
+ const kb=[['Tanggal','Jenis','Rekening','Proyek','Deskripsi','Jumlah']];
+ B.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(b=>{
+  kb.push([b.date,b.jenis,b.rek,pn(b.proj||b.src),b.desc,+b.amt]);
+ });
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(kb),'Kas Besar');
+
+ const skb=[['Proyek','Tanggal Pinjam','Nama Tukang','Catatan','Jumlah','Status','Tgl Lunas','Keterangan']];
+ KBON.forEach(k=>{
+  skb.push([pn(k.proj),k.date,k.tukang,k.desc,+k.amt,k.status,k.tglLunas||'',k.catatanLunas||'']);
+ });
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(skb),'Kasbon Mandor');
+
+ P.forEach(p=>XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(logRows(p.id)),sn(p.name,u)));
+ saveX(wb,'laporan-kas-studio-dan-proyek.xlsx');
+};
+
+$('#expp').onclick=()=>{
+ const p=P.find(x=>x.id===cur);
+ if(!p){toast('Pilih proyek terlebih dahulu.');return}
+ const wb=XLSX.utils.book_new();
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(logRows(p.id)),'Transaksi');
+ saveX(wb,'kas-'+p.name.replace(/[^\w ]/g,'')+'.xlsx');
+};
+
+$('#tpl').onclick=()=>{
+ const link=document.createElement('a');
+ link.href='template-laporan-proyek.xlsx';
+ link.download='template-laporan-proyek.xlsx';
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+ toast('Mengunduh template Excel...');
+};
+
+// BACKUP & RESTORE
+function buatBackupObj(){
+ return {
+  app: 'BukuKasStudio',
+  version: '2.4',
+  timestamp: new Date().toISOString(),
+  data: {projects: P, tx: T, accounts: A, kb: B, cek: C, kasbon: KBON, kat: KAT}
+ };
+}
+
+function unduhFileBackup(prefix){
+ const jam=new Date().toTimeString().slice(0,5).replace(':','');
+ const json=JSON.stringify(buatBackupObj(),null,2);
+ const url=URL.createObjectURL(new Blob([json],{type:'application/json'}));
+ const a=document.createElement('a');
+ a.href=url;
+ a.download=prefix+'-'+today()+'-'+jam+'.json';
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),10000);
+ return a.download;
+}
+
+function unduhBackupJSON(){
+ const nama=unduhFileBackup('buku-kas-backup');
+ const terkonfirmasi=confirm('Permintaan unduhan file '+nama+' sudah dikirim.\n\nBuka folder Unduhan dan pastikan file JSON muncul serta ukurannya tidak 0.\n\nApakah file sudah terlihat?');
+ if(terkonfirmasi){
+  try{
+   localStorage.setItem(KEY.last_bk,Date.now().toString());
+   $('#bk-alert').classList.add('hid');
+   toast('Backup dikonfirmasi oleh pengguna. Simpan file di lokasi aman.');
+  }catch(e){lsError(e,'Status backup tidak dapat dicatat');}
+ }else{
+  toast('Backup belum dikonfirmasi. Pengingat tetap aktif.','⚠️');
+ }
+}
+
+$('#btn-bk').onclick=unduhBackupJSON;
+$('#btn-quick-bk').onclick=unduhBackupJSON;
+$('#bk-now').onclick=unduhBackupJSON;
+
+function validasiBackup(p){
+ if(!p||typeof p!=='object'||!p.data||typeof p.data!=='object') return 'Format file backup tidak valid (bagian data tidak ada).';
+ const d=p.data;
+ if(!Array.isArray(d.projects)) return 'Backup tidak valid: daftar proyek tidak ditemukan.';
+ for(const k of ['projects','tx','accounts','kb','cek','kasbon','kat']){
+  if(d[k]!==undefined && !Array.isArray(d[k])) return 'Backup tidak valid: "'+k+'" bukan daftar.';
+ }
+ for(const k of ['projects','tx','kb']){
+  for(const x of (d[k]||[])){
+   if(!x||typeof x!=='object'||!x.id) return 'Backup tidak valid: ada data di "'+k+'" tanpa id.';
+   if(k!=='projects'&&!isFinite(+x.amt)) return 'Backup tidak valid: ada transaksi di "'+k+'" dengan nominal bukan angka.';
+  }
+ }
+ return '';
+}
+
+function terapkanRestore(p){
+ const d=p.data;
+ const n={projects:d.projects||[],tx:d.tx||[],accounts:d.accounts||[],kb:d.kb||[],cek:d.cek||[],kasbon:d.kasbon||[],kat:d.kat||DEFAULT_KAT};
+ const keys=Object.keys(n), lama={};
+ try{
+  keys.forEach(k=>lama[k]=localStorage.getItem(KEY[k]));
+  keys.forEach(k=>localStorage.setItem(KEY[k],JSON.stringify(n[k])));
+  const cocok=keys.every(k=>localStorage.getItem(KEY[k])===JSON.stringify(n[k]));
+  if(!cocok) throw new Error('Data yang terbaca kembali tidak sama dengan yang ditulis.');
+ }catch(e){
+  try{keys.forEach(k=>{if(lama[k]==null) localStorage.removeItem(KEY[k]); else localStorage.setItem(KEY[k],lama[k])})}catch(_){}
+  return {ok:false,msg:(e&&e.message)||String(e)};
+ }
+ P=n.projects; T=n.tx; A=n.accounts; B=n.kb; C=n.cek; KBON=n.kasbon; KAT=n.kat;
+ return {ok:true,counts:{proyek:P.length,kasKecil:T.length,kasBesar:B.length,kasbon:KBON.length}};
+}
+
+$('#inp-rst').onchange=e=>{
+ const f=e.target.files[0];
+ if(!f) return;
+ const r=new FileReader();
+ r.onload=()=>{
+  try {
+   const parsed=JSON.parse(r.result);
+   const err=validasiBackup(parsed);
+   if(err){ toast(err,'⚠️'); return; }
+   const d=parsed.data;
+   const ringkas=(d.projects.length)+' proyek, '+(d.tx||[]).length+' transaksi kas kecil, '+(d.kb||[]).length+' transaksi kas besar';
+   if(!confirm('Pulihkan data dari file cadangan ini?\n\nIsi file: '+ringkas+'.\nData saat ini di browser akan ditimpa. Cadangan data saat ini diunduh otomatis lebih dulu.')) return;
+   if(P.length||T.length||B.length||KBON.length) unduhFileBackup('buku-kas-sebelum-restore');
+   const res=terapkanRestore(parsed);
+   if(!res.ok){ toast('Pemulihan GAGAL: '+res.msg,'⚠️'); return; }
+   render();
+   toast('Dipulihkan: '+res.counts.proyek+' proyek, '+res.counts.kasKecil+' transaksi.');
+  } catch(err){
+   console.error(err);
+   toast('Gagal membaca file JSON.','⚠️');
+  }
+ };
+ r.readAsText(f);
+ e.target.value='';
+};
+
+function checkWeeklyBackup(){
+ const lastBk=+localStorage.getItem(KEY.last_bk)||0;
+ const oneWeek=7*24*60*60*1000;
+ if(lastBk>0 && (Date.now()-lastBk > oneWeek)){
+  $('#bk-alert').classList.remove('hid');
+ } else if(!lastBk && (P.length>0 || B.length>0)){
+  $('#bk-alert').classList.remove('hid');
+ } else {
+  $('#bk-alert').classList.add('hid');
+ }
+}
+
+// SMART IMPORT
+const nrm=s=>String(s==null?'':s).trim();
+function toIso(v){
+ if(v instanceof Date){
+  const mid=new Date(v.getFullYear(),v.getMonth(),v.getDate());
+  const hari=(v-mid>86400000-600000)?new Date(mid.getTime()+86400000):mid;
+  return hari.toLocaleDateString('en-CA');
+ }
+ if(typeof v==='number'&&v>20000&&v<80000) return new Date(Math.round((v-25569)*86400000)).toISOString().slice(0,10);
+ const s=nrm(v);
+ let m=s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);
+ if(m) return m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0');
+ m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+ return m?m[0]:'';
+}
+
+function parseNominal(v){
+ if(typeof v==='number') return isFinite(v)?Math.round(v):null;
+ let s=nrm(v); if(!s) return null;
+ let neg=false;
+ if(/^\(.*\)$/.test(s)){neg=true;s=s.slice(1,-1)}
+ if(/^[-\u2212\u2013]/.test(s)||/[-\u2212\u2013]$/.test(s)) neg=true;
+ s=s.replace(/rp\.?/ig,'').replace(/[^\d.,]/g,'');
+ if(!/\d/.test(s)) return null;
+ const nDot=(s.match(/\./g)||[]).length, nCom=(s.match(/,/g)||[]).length;
+ let dec='';
+ if(nDot&&nCom) dec=s.lastIndexOf('.')>s.lastIndexOf(',')?'.':',';
+ else if(nDot>1||nCom>1) dec='';
+ else if(nDot===1||nCom===1){
+  const sep=nDot?'.':',', i=s.indexOf(sep), after=s.length-i-1;
+  dec=(after===3&&i>=1&&i<=3)?'':sep;
+ }
+ const t=dec?s.replace(dec==='.'?/,/g:/\./g,'').replace(dec,'.'):s.replace(/[.,]/g,'');
+ const n=parseFloat(t);
+ if(!isFinite(n)) return null;
+ return neg?-Math.round(n):Math.round(n);
+}
+
+const impDesc=s=>nrm(s).toLowerCase().replace(/\s+/g,' ');
+const impKeyOf=(date,jenis,amt,desc)=>[date,jenis,Math.round(+amt||0),impDesc(desc)].join('|');
+
+function normRek(raw){
+ const r=nrm(raw);
+ if(!r||r==='-') return {v:'',known:true};
+ const l=r.toLowerCase().replace(/\s+/g,' ');
+ if(['tunai','cash','kas tunai','uang tunai'].includes(l)) return {v:'Tunai',known:true};
+ if(['nontunai','non tunai','non-tunai','bank','transfer','tf','trf'].includes(l)) return {v:'Nontunai',known:true};
+ const a=ACC().find(n=>n.toLowerCase()===l);
+ return a?{v:a,known:true}:{v:r,known:false};
+}
+function normSumber(raw){
+ const l=nrm(raw).toLowerCase();
+ if(!l||l==='-') return {v:'',ada:false};
+ if(/pic|pemegang/.test(l)) return {v:'PIC',ada:true};
+ if(/pribadi|talang|pinjam/.test(l)) return {v:'Pribadi',ada:true};
+ if(/studio|kas|rekening|perusahaan|kantor|bank|transfer/.test(l)) return {v:'Studio',ada:true};
+ return {v:'',ada:true,tak:nrm(raw)};
+}
+
+let IMP=[], IMP_WARN={lain:0,nama:''};
+$('#imf').onchange=e=>{
+ const f=e.target.files[0];
+ if(!f||!okx()) return;
+ const r=new FileReader();
+ r.onload=()=>{
+  try{parseImp(r.result)}catch(x){console.error(x);$('#imi').textContent='File tidak bisa dibaca.'}
+  $('#imf').value='';
+ };
+ r.readAsArrayBuffer(f);
+};
+
+function parseImp(buf){
+ if(!cur){
+  toast('Pilih proyek terlebih dahulu sebelum mengimpor.');
+  $('#imf').value='';
+  return;
+ }
+ const wb=XLSX.read(buf,{type:'array',cellDates:true});
+ const ws=wb.Sheets[wb.SheetNames.find(n=>/transaksi/i.test(n))||wb.SheetNames[0]];
+ const rows=XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:''});
+ const hi=rows.findIndex(r=>r.some(c=>/^tanggal/i.test(nrm(c)))&&r.some(c=>/^jumlah/i.test(nrm(c))));
+ if(hi<0){
+  $('#imi').innerHTML='<span class="neg">⚠️ Format kolom tidak cocok. Header kolom wajib memiliki "Tanggal" dan "Jumlah".</span>';
+  $('#imb').classList.add('hid');
+  IMP=[];
+  return;
+ }
+
+ const h=rows[hi].map(c=>nrm(c).toLowerCase());
+ const fi=(...n)=>h.findIndex(x=>n.some(k=>x.includes(k)&&(k!=='kategori'||!x.includes('pekerjaan'))));
+ const idx=f=>h.findIndex(f);
+ const jCol=(()=>{const a=idx(x=>x==='jenis'||x==='jenis transaksi'||x==='tipe'||x==='masuk/keluar');return a>=0?a:idx(x=>x.includes('jenis')&&!x.includes('pekerjaan'))})();
+ const mCol=(()=>{const a=idx(x=>x==='rekening'||x.includes('metode'));return a>=0?a:idx(x=>x.includes('rekening')&&!x.includes('ke rekening')&&!x.includes('tujuan'))})();
+ const ci={
+  d:fi('tanggal'),
+  j:jCol,
+  jp:idx(x=>x.includes('jenis pekerjaan')),
+  m:mCol,
+  k:fi('kategori transaksi','kategori'),
+  e:fi('deskripsi','keterangan','uraian'),
+  a:fi('jumlah','nominal'),
+  t:idx(x=>x.includes('ke rekening')||x.includes('tujuan')),
+  u:fi('nama tukang','tukang','penerima'),
+  s:idx(x=>x.includes('sumber')||x.includes('dibayar dari')),
+  kp:idx(x=>x==='kategori pekerjaan')
+ };
+
+ let semuaKeluar=false;
+ if(ci.j<0){
+  if(!confirm('File ini tidak punya kolom "Jenis" (Masuk/Keluar/Kasbon/Pindah).\nAnggap semua baris sebagai pengeluaran (Keluar)?')){
+   $('#imi').innerHTML='<span class="neg">Impor dibatalkan: kolom Jenis tidak ditemukan.</span>';
+   $('#imb').classList.add('hid');
+   IMP=[];
+   return;
+  }
+  semuaKeluar=true;
+ }
+
+ const have={}, haveLain={}, namaLain=new Set();
+ T.forEach(t=>{
+  const key=t.impKey||impKeyOf(t.date,t.jenis,t.amt,t.desc);
+  const box=t.proj===cur?have:haveLain;
+  box[key]=(box[key]||0)+1;
+  if(t.proj!==cur) namaLain.add(((P.find(p=>p.id===t.proj)||{}).name)||'proyek lain');
+ });
+
+ const pcur=P.find(p=>p.id===cur)||{}, picMode=pcur.mode==='Dikelola PIC';
+ let lewatMasukPIC=0,totMasukPIC=0,lewatPindahPIC=0,totPindahPIC=0,cashbonN=0,cashbonT=0;
+
+ IMP=[];
+ const skip=[], rekTak={}, sumTak={};
+ let dup=0, dupLain=0, lewatKB=0, tanpaRek=0, totalBaris=0;
+ const sbr={PIC:0,Pribadi:0,Studio:0,kosong:0};
+ const KB_RE=/^(dana dari kas besar|transfer ke pic|pengembalian ke kas besar)/;
+
+ rows.slice(hi+1).forEach((r,i)=>{
+  const no=hi+2+i;
+  if(r.every(c=>nrm(c)==='')) return;
+  totalBaris++;
+  const date=toIso(r[ci.d]);
+  const first=r.map(nrm).find(x=>x!=='')||'';
+  if(!date&&/^total/i.test(first)){totalBaris--;return}
+
+  let rawJ=ci.j>=0?nrm(r[ci.j]).toLowerCase():(semuaKeluar?'keluar':'');
+  const jp=ci.jp>=0?nrm(r[ci.jp]).toLowerCase():'';
+  if(ci.j<0&&jp==='pindah rekening') rawJ='pindah';
+  if(KB_RE.test(rawJ)||KB_RE.test(jp)){lewatKB++;return}
+
+  const amt=parseNominal(r[ci.a]);
+  if(!date){skip.push([no,'tanggal tidak terbaca']);return}
+  if(amt==null||amt===0){skip.push([no,'jumlah kosong atau 0']);return}
+  if(amt<0){skip.push([no,'jumlah negatif ('+nrm(r[ci.a])+')']);return}
+  if(!rawJ){skip.push([no,'jenis kosong']);return}
+
+  const rk=normRek(ci.m>=0?r[ci.m]:'');
+  let jenis, metode=rk.v, to='';
+  const tanpaMetode=!metode;
+  if(tanpaMetode) metode='Tunai';
+  else if(!rk.known) rekTak[rk.v]=(rekTak[rk.v]||0)+1;
+
+  if(['masuk','pemasukan','dana masuk'].includes(rawJ)) jenis='Masuk';
+  else if(rawJ==='kasbon') jenis='Kasbon';
+  else if(['pindah','pindah rekening','tarik tunai','setor tunai'].includes(rawJ)){
+   jenis='Pindah';
+   if(rawJ==='tarik tunai'){metode='Nontunai'; to='Tunai';}
+   else if(rawJ==='setor tunai'){metode='Tunai'; to='Nontunai';}
+   else {to=ci.t>=0&&nrm(r[ci.t])?(normRek(r[ci.t]).v||'Tunai'):'Tunai';}
+  } else if(['keluar','pengeluaran'].includes(rawJ)){
+   jenis='Keluar';
+  } else {
+   skip.push([no,'jenis tidak dikenal "'+rawJ+'"']);
+   return;
+  }
+
+  if(picMode&&jenis==='Masuk'){lewatMasukPIC++;totMasukPIC+=amt;return}
+  if(picMode&&jenis==='Pindah'){lewatPindahPIC++;totPindahPIC+=amt;return}
+  if(tanpaMetode&&jenis!=='Pindah') tanpaRek++;
+  let kt=nrm(r[ci.k]);
+  if(!KAT.includes(kt)&&ci.kp>=0){const k2=nrm(r[ci.kp]);if(KAT.includes(k2)) kt=k2}
+  const kat=jenis==='Pindah'?'Pindah rekening':(jenis==='Kasbon'?'Upah Tukang':(KAT.includes(kt)?kt:'Lain-lain'));
+  const desc=nrm(r[ci.e]) || (jenis==='Kasbon'?'Kasbon tukang':(jenis==='Masuk'?'Dana masuk':(jenis==='Pindah'?'Pindah rekening':'Belanja operasional')));
+  const tukang=ci.u>=0?nrm(r[ci.u]):'';
+
+  let sumber='';
+  if(ci.s>=0&&(jenis==='Keluar'||jenis==='Kasbon')){
+   const sv=normSumber(r[ci.s]);
+   sumber=sv.v;
+   if(sv.tak) sumTak[sv.tak]=(sumTak[sv.tak]||0)+1;
+  }
+  if(jenis==='Keluar'||jenis==='Kasbon') sbr[sumber||'kosong']++;
+
+  const key=impKeyOf(date,jenis,amt,desc);
+  if(have[key]>0){ have[key]--; dup++; return; }
+  if(haveLain[key]>0){ haveLain[key]--; dupLain++; }
+
+  if(jenis==='Keluar'&&/cash ?bon|kasbon|casbon/i.test(desc)){cashbonN++;cashbonT+=amt}
+  IMP.push({proj:cur,date,jenis,metode,to,kat,desc,tukang,amt,sumber,impKey:key});
+ });
+
+ IMP_WARN={lain:dupLain,nama:[...namaLain].slice(0,3).join(', ')};
+ const curP=P.find(p=>p.id===cur)||{};
+ const rp0=n=>rp(n);
+ const totKeluar=IMP.filter(d=>d.jenis==='Keluar'||d.jenis==='Kasbon').reduce((a,d)=>a+d.amt,0);
+ const totMasuk=IMP.filter(d=>d.jenis==='Masuk').reduce((a,d)=>a+d.amt,0);
+ let html='<b>Siap menambahkan '+IMP.length+' transaksi baru</b> ke proyek <i>"'+esc(curP.name||'')+'"</i>'
+  +(IMP.length?' (pengeluaran '+rp0(totKeluar)+(totMasuk?', dana masuk '+rp0(totMasuk):'')+')':'')+'.<br>';
+ if(dup) html+='<span style="color:var(--ac)">✓ '+dup+' transaksi yang sudah ada otomatis dilewati.</span><br>';
+ if(dupLain) html+='<span class="neg">⚠️ '+dupLain+' baris tampak sama dengan transaksi di proyek lain ('+esc(IMP_WARN.nama)+').</span><br>';
+ if(lewatKB) html+='<span class="mu">'+lewatKB+' baris transaksi Kas Besar dilewati.</span><br>';
+ if(picMode){
+  const dn=danaPICProyek(cur);
+  if(lewatMasukPIC){
+   const sel=totMasukPIC-dn.diterima;
+   html+='<span class="neg">⚠️ '+lewatMasukPIC+' baris "Masuk" ('+rp0(totMasukPIC)+') TIDAK diimpor: itu dana yang diterima PIC dari studio. Catat di Kas Besar sebagai Transfer ke PIC.</span><br>';
+  }
+  if(lewatPindahPIC) html+='<span class="mu">'+lewatPindahPIC+' baris Tarik/Setor Tunai ('+rp0(totPindahPIC)+') dilewati.</span><br>';
+  if(IMP.some(d=>(d.jenis==='Keluar'||d.jenis==='Kasbon')&&(!d.sumber||d.sumber==='PIC'))){
+   const baruPIC=IMP.filter(d=>(d.jenis==='Keluar'||d.jenis==='Kasbon')&&(!d.sumber||d.sumber==='PIC')).reduce((a,d)=>a+d.amt,0);
+   html+='<span class="mu">Bila dicatat dari Dana PIC, sisa dana di PIC menjadi '+rp0(dn.sisa-baruPIC)+'.</span><br>';
+  }
+ }
+ if(cashbonN) html+='<span class="mu">'+cashbonN+' baris ('+rp0(cashbonT)+') berdeskripsi kasbon dicatat sebagai pengeluaran biasa.</span><br>';
+ if(skip.length){
+  html+='<span class="neg">⚠️ '+skip.length+' baris dilewati: '+skip.slice(0,8).map(x=>'baris '+x[0]+' ('+esc(x[1])+')').join(', ')+(skip.length>8?', dan lainnya':'')+'.</span><br>';
+ }
+ if(tanpaRek) html+='<span class="mu">'+tanpaRek+' baris tanpa rekening dicatat sebagai Tunai.</span><br>';
+ const rt=Object.keys(rekTak);
+ if(rt.length) html+='<span class="neg">⚠️ Rekening tidak dikenal: '+rt.map(k=>esc(k)+' ('+rekTak[k]+')').join(', ')+'.</span><br>';
+ const st=Object.keys(sumTak);
+ if(st.length) html+='<span class="neg">⚠️ Sumber dana tidak dikenali: '+st.map(k=>esc(k)+' ('+sumTak[k]+')').join(', ')+'.</span><br>';
+ $('#imi').innerHTML=html;
+
+ $('#imb').textContent='➕ Tambahkan ' + IMP.length + ' Transaksi ke Proyek Ini';
+ $('#imb').classList.toggle('hid', !IMP.length);
+}
+
+$('#imb').onclick=async()=>{
+ const b=IMP.slice();
+ if(!b.length) return;
+ if(IMP_WARN.lain>0&&!confirm(IMP_WARN.lain+' baris tampak sama dengan transaksi di proyek lain ('+IMP_WARN.nama+'). Tetap tambahkan?')) return;
+ const pp=P.find(x=>x.id===cur);
+ const tanpa=b.filter(d=>(d.jenis==='Keluar'||d.jenis==='Kasbon')&&!d.sumber);
+ if(pp&&pp.mode==='Dikelola PIC'&&tanpa.length&&confirm('Proyek ini Dikelola PIC. '+tanpa.length+' pengeluaran di file tidak punya sumber dana.\n\nOK = catat sebagai dibayar dari Dana PIC\nBatal = biarkan belum ditentukan')){
+  tanpa.forEach(d=>d.sumber='PIC');
+ }
+ IMP=[];
+ $('#imb').classList.add('hid');
+ $('#imi').textContent='Sedang menambahkan transaksi...';
+
+ let i=0;
+ for(const d of b){
+  i++;
+  const id='t'+Date.now()+'_'+i;
+  await save('tx', id, Object.assign({ts:Date.now()+i}, d));
+
+  if(d.jenis==='Kasbon'){
+   const kid='kb_'+id;
+   await save('kasbon', kid, {
+    txId: id,
+    proj: cur,
+    date: d.date,
+    tukang: d.tukang || 'Tukang Lapangan',
+    desc: d.desc,
+    amt: d.amt,
+    status: 'BELUM LUNAS'
+   });
+  }
+ }
+
+ $('#imf').value='';
+ $('#imi').innerHTML='✅ <b>Sukses:</b> Berhasil menambahkan ' + b.length + ' transaksi baru ke proyek ini!';
+ render();
+ toast(b.length + ' transaksi baru berhasil ditambahkan!');
+};
+
+$('#btn-clear-data').onclick=()=>{
+ if(!confirm('PERINGATAN: ini menghapus SEMUA proyek dan transaksi di browser ini.\nCadangan JSON akan diunduh lebih dulu. Lanjutkan?')) return;
+ const nama=unduhFileBackup('buku-kas-sebelum-reset');
+ if(!confirm('Cadangan "'+nama+'" sudah diunduh.\nCek dulu file itu ada di folder Unduhan dan ukurannya tidak 0.\n\nLanjut menghapus SEMUA data sekarang?')) return;
+ P=[]; T=[]; A=[]; B=[]; C=[]; KBON=[]; cur=null;
+ lsSet('projects',P); lsSet('tx',T); lsSet('accounts',A); lsSet('kb',B); lsSet('cek',C); lsSet('kasbon',KBON);
+ render();
+ toast('Semua data dibersihkan. Cadangan: '+nama);
+};
+
+const SEED_DATA={"app":"BukuKasStudio","version":"2.4","timestamp":"2026-10-17T17:10:03.000Z","data":{"projects":[{"id":"pk","name":"Kita Farma Jilid 2"},{"id":"pn","name":"Interior Notaris"}],"tx":[{"id":"n02","amt":60000,"date":"2026-10-04","desc":"p yusro","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1002},{"id":"n03","amt":1225000,"date":"2026-10-05","desc":"triplek","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1003},{"id":"n04","amt":20000,"date":"2026-10-06","desc":"amplas","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1004},{"id":"n05","amt":754000,"date":"2026-10-06","desc":"hpl, lem","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1005},{"id":"n06","amt":50000,"date":"2026-10-06","desc":"cashbon (pakai uang cash proyek kita farma)","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1006},{"id":"n07","amt":23700,"date":"2026-10-06","desc":"engsel pivot","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1007},{"id":"n08","amt":250000,"date":"2026-10-07","desc":"transport pickup p muji","jenis":"Keluar","kat":"Transportasi","metode":"Nontunai","proj":"pn","ts":1008},{"id":"n09","amt":28600,"date":"2026-10-07","desc":"roda geser","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1009},{"id":"n10","amt":100000,"date":"2026-10-08","desc":"cashbon","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1010},{"id":"n11","amt":35000,"date":"2026-10-09","desc":"kabel","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1011},{"id":"n12","amt":135000,"date":"2026-10-10","desc":"led strip, trafo","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1012},{"id":"n13","amt":37000,"date":"2026-10-10","desc":"kabel, saklar","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1013},{"id":"n14","amt":650000,"date":"2026-10-10","desc":"","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1014},{"id":"n15","amt":692000,"date":"2026-10-12","desc":"hpl, handel, engsel, rel, dll","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1015},{"id":"n16","amt":20000,"date":"2026-10-12","desc":"kopi","jenis":"Keluar","kat":"Lain-lain","metode":"Nontunai","proj":"pn","ts":1016},{"id":"n17","amt":50000,"date":"2026-10-13","desc":"tusir","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1017},{"id":"n18","amt":6000,"date":"2026-10-13","desc":"gorengan","jenis":"Keluar","kat":"Lain-lain","metode":"Nontunai","proj":"pn","ts":1018},{"id":"n19","amt":124000,"date":"2026-10-14","desc":"kas tunai dr rek kita farma","jenis":"Pindah","kat":"Pindah rekening","metode":"Nontunai","proj":"pn","to":"Tunai","ts":1019},{"id":"n20","amt":30000,"date":"2026-10-14","desc":"pas yusro WD","jenis":"Pindah","kat":"Pindah rekening","metode":"Tunai","proj":"pn","to":"Nontunai","ts":1020},{"id":"n21","amt":29000,"date":"2026-10-14","desc":"downlight","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1021},{"id":"n22","amt":150000,"date":"2026-10-14","desc":"jasa angkut","jenis":"Keluar","kat":"Transportasi","metode":"Nontunai","proj":"pn","ts":1022},{"id":"n23","amt":8500,"date":"2026-10-15","desc":"solasi","jenis":"Keluar","kat":"Material","metode":"Tunai","proj":"pn","ts":1023},{"id":"n24","amt":10000,"date":"2026-10-15","desc":"es kelapa","jenis":"Keluar","kat":"Lain-lain","metode":"Tunai","proj":"pn","ts":1024},{"id":"n25","amt":560000,"date":"2026-10-17","desc":"upah pak yusro","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1025},{"id":"k01","amt":1296338,"date":"2026-09-07","desc":"Termin Pelaksanaan","jenis":"Masuk","kat":"Lain-lain","metode":"Nontunai","proj":"pk","ts":2001}],"accounts":[],"kb":[{"id":"kb_n01a","amt":5000000,"date":"2026-10-04","desc":"Seabank (pembayaran klien)","jenis":"Pemasukan","proj":"","rek":"Nontunai","src":"pn","ts":3001}],"cek":[],"kasbon":[],"kat":["Material","Upah Tukang","Sewa Alat","Transportasi","Konsultan/Sub-kontraktor","Perizinan","Operasional Kantor","Workshop/Mebel","Finishing & Interior","Lain-lain"]}};
+
+function muatDataContohUji(){
+ if(P.length||T.length||B.length||KBON.length||A.length){console.warn('Dibatalkan: sudah ada data.');return false}
+ const s=SEED_DATA.data;
+ P=s.projects; T=s.tx.map(t=>Object.assign({tukang:''},t)); A=s.accounts; B=s.kb; C=s.cek; KBON=s.kasbon; KAT=s.kat||DEFAULT_KAT;
+ cur=P.length?P[0].id:null;
+ lsSet('projects',P); lsSet('tx',T); lsSet('accounts',A); lsSet('kb',B); lsSet('cek',C); lsSet('kasbon',KBON); lsSet('kat',KAT);
+ render();
+ return true;
+}
+
+(function init(){
+ const savedTheme=localStorage.getItem(KEY.theme);
+ if(savedTheme) applyTheme(savedTheme);
+
+ P = lsGet('projects');
+ T = lsGet('tx');
+ A = lsGet('accounts');
+ B = lsGet('kb');
+ C = lsGet('cek');
+ KBON = lsGet('kasbon');
+ KAT = lsGet('kat', DEFAULT_KAT);
+
+ if(P.length===0 && B.length===0 && T.length===0){
+  setTimeout(()=>toast('Belum ada data di browser ini. Gunakan Pulihkan Backup jika ada cadangan.','ℹ️'),300);
+ }
+ if(KEY_PREFIX!=='bk_'){
+  document.title='[UJI] '+document.title;
+  const rb=document.createElement('div');
+  rb.textContent='SALINAN UJI: penyimpanan terpisah';
+  rb.style.cssText='position:fixed;left:8px;top:8px;z-index:89;background:#f59e0b;color:#1c1917;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;opacity:.85;pointer-events:none';
+  document.body.appendChild(rb);
+ }
+
+ reset();
+ breset();
+ render();
+})();
+</script>
+</body></html>
