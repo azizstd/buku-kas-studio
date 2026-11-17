@@ -4,6 +4,8 @@ Aplikasi manajemen keuangan kas terintegrasi untuk studio arsitektur, interior, 
 
 Mendukung tampilan responsif penuh untuk **Smartphone (iOS & Android)**, **Tablet**, hingga **Desktop**.
 
+🌐 **Demo Live (Online):** [https://azizstd.github.io/buku-kas-studio/](https://azizstd.github.io/buku-kas-studio/)
+
 ---
 
 ## ✨ Fitur Utama
@@ -46,7 +48,7 @@ Tidak memerlukan instalasi Node.js, server web khusus, atau database backend:
 
 1. Unduh atau clone repositori ini:
    ```bash
-   git clone https://github.com/<username>/<nama-repo>.git
+   git clone https://github.com/azizstd/buku-kas-studio.git
    ```
 2. Buka file `index.html` langsung di browser favorit Anda (Google Chrome, Safari, Microsoft Edge, Firefox):
    - Klik ganda pada `index.html`, atau
