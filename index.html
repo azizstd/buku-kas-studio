@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id" data-theme="dark"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
-<title>Buku Kas Studio & Proyek Arsitektur</title>
+<title>Buku Kas Studio &amp; Proyek Arsitektur</title>
 <style>
 :root{
   --bg:#f4f7f4;--sf:#ffffff;--sf-sub:#ffffff;--tx:#142217;--mu:#6e7d72;--bd:#e5ebe5;
@@ -39,6 +39,45 @@ body{
   min-height:100vh;
   -webkit-tap-highlight-color:transparent;
 }
+
+/* AUTH & PIN GATE */
+.auth-gate-overlay{
+  position:fixed;inset:0;background:var(--bg);z-index:99999;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.auth-card{
+  background:var(--sf);border:1px solid var(--bd);border-radius:24px;
+  max-width:400px;width:100%;padding:32px 24px;box-shadow:var(--sh);
+  text-align:center;animation:modalIn .25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.auth-icon{
+  width:56px;height:56px;border-radius:16px;background:#142217;color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+  margin:0 auto 16px;box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+:root[data-theme="dark"] .auth-icon{background:#233328;color:#4ade80}
+.auth-title{font-size:20px;font-weight:800;margin:0 0 4px;color:var(--tx)}
+.auth-subtitle{font-size:12px;color:var(--mu);margin:0 0 16px}
+.auth-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:99px;
+  font-size:11px;font-weight:700;background:var(--ac-bg);color:var(--ac);margin-bottom:12px;
+}
+.auth-desc{font-size:12px;color:var(--mu);margin:0 0 20px;line-height:1.5}
+.auth-input-wrap{position:relative;display:flex;align-items:center;margin-bottom:10px}
+.auth-input-wrap input{
+  padding:12px 42px 12px 16px;font-size:18px !important;letter-spacing:4px;
+  text-align:center;font-weight:700;border-radius:12px;
+}
+.auth-input-wrap button{
+  position:absolute;right:10px;background:none;border:none;cursor:pointer;
+  font-size:16px;color:var(--mu);padding:4px;
+}
+.auth-error-msg{
+  font-size:12px;color:var(--rd);background:var(--rd-bg);border:1px solid var(--rd);
+  padding:8px 12px;border-radius:8px;margin-bottom:12px;font-weight:600;text-align:left;
+}
+.auth-footer-note{margin-top:20px;padding-top:16px;border-top:1px solid var(--bd)}
 
 /* APP SHELL & SIDEBAR LAYOUT */
 .app-shell{display:flex;min-height:100vh;position:relative}
@@ -99,7 +138,7 @@ body{
 /* MAIN CONTENT AREA */
 .content-area{
   flex:1;padding:24px 32px 80px;max-width:1200px;margin:0 auto;width:100%;
-  min-width:0;/* Prevents overflow in flex children */
+  min-width:0;
 }
 
 /* BOTTOM NAVIGATION BAR FOR PHONES */
@@ -420,11 +459,7 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
 @keyframes modalIn{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
 
-/* ============================================================== */
-/* MEDIA QUERIES: TABLET & SMARTPHONE RESPONSIVENESS              */
-/* ============================================================== */
-
-/* TABLET (PORTRAIT & LANDSCAPE 768px - 1024px) */
+/* MEDIA QUERIES */
 @media(max-width:1024px){
   .content-area{padding:20px 24px 80px}
   .stats-grid{gap:14px}
@@ -432,11 +467,9 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
   .hero-banner{padding:24px 28px}
 }
 
-/* SMARTPHONE & NARROW TABLET (< 992px) */
 @media(max-width:991px){
   .app-shell{flex-direction:column}
   
-  /* OFF-CANVAS SIDEBAR DRAWER */
   .sidebar{
     position:fixed;top:0;left:0;bottom:0;height:100dvh;
     width:280px;max-width:85vw;z-index:100;
@@ -447,35 +480,23 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
   .sidebar-backdrop.open{display:block;opacity:1}
   .sidebar-close-btn{display:inline-flex}
 
-  /* SHOW MOBILE TOP APP BAR */
   .mobile-top-bar{display:flex}
 
-  /* CONTENT AREA ADJUSTMENTS */
   .content-area{
     padding:16px 16px calc(var(--bottom-bar-h) + env(safe-area-inset-bottom, 16px) + 20px);
     width:100%;max-width:100%;
   }
 
-  /* SHOW BOTTOM NAVIGATION */
   .mobile-bottom-nav{display:flex}
-
-  /* 2-COLUMN GRIDS BECOME 1 COLUMN */
   .two-col-grid{grid-template-columns:1fr;gap:16px}
-
-  /* STATS GRID ON TABLET/MOBILE */
   .stats-grid{grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:14px;margin-bottom:18px}
-
   .card-widget, .block-panel{padding:18px 18px;margin-bottom:16px;border-radius:18px}
 }
 
-/* SMARTPHONE SPECIFIC (< 680px) */
 @media(max-width:680px){
-  /* iOS Input Zoom Prevention */
   input, select, textarea{font-size:16px !important}
-  
   .content-area{padding:14px 12px calc(var(--bottom-bar-h) + env(safe-area-inset-bottom, 16px) + 20px)}
 
-  /* HERO BANNER ON PHONES */
   .hero-banner{
     padding:18px 18px;border-radius:20px;margin-bottom:16px;
     align-items:center;gap:12px;
@@ -485,50 +506,71 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
   }
   .hero-action-btn svg{width:26px;height:26px}
   
-  /* STATS 1 COL ON PHONES */
   .stats-grid{grid-template-columns:1fr;gap:12px}
   .stat-card{padding:16px 18px}
 
-  /* KPI GRIDS ON PHONES */
   .kpi-row{grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px}
   .card{padding:12px 14px}
   .card b{font-size:16px}
 
-  /* DONUT CHART COMPACT */
   .donut-wrap{flex-direction:column;gap:16px;padding:8px 0}
   .donut-svg-box{width:130px;height:130px}
   .donut-legend{width:100%}
 
-  /* FORMS ON PHONE */
   .form{grid-template-columns:1fr;gap:12px}
-
-  /* MODAL ON PHONE (SAFE MARGINS & SIZING) */
   .modal{padding:20px 16px;border-radius:18px}
-  
-  /* TABLE TOUCH SCROLL INDICATOR */
   .wrap{border-radius:12px}
   th, td{padding:9px 12px;font-size:12px}
-  
-  /* ACC BALANCE CHECK INPUT ON SMALL PHONES */
   #acc input.ck{width:110px !important}
 
-  /* TOAST POSITION ON PHONES */
   #toast{
     bottom:calc(var(--bottom-bar-h) + env(safe-area-inset-bottom, 0px) + 12px);
     width:calc(100% - 32px);padding:10px 14px;font-size:12px;
   }
 
-  /* ROW BUTTON WRAPPING */
   .row.row-stack-mobile{flex-direction:column;align-items:stretch}
   .row.row-stack-mobile>*{width:100%}
 }
 
-/* VERY SMALL SMARTPHONES (< 380px) */
 @media(max-width:380px){
   .hero-badges-row{flex-direction:column;align-items:flex-start;gap:4px}
   .kpi-row{grid-template-columns:1fr}
 }
 </style></head><body>
+
+<!-- GERBANG AKSES / LOCK SCREEN (FITUR PROTEKSI AKSES) -->
+<div id="auth-gate" class="auth-gate-overlay">
+  <div class="auth-card">
+    <div class="auth-icon">📐</div>
+    <h2 class="auth-title">Buku Kas Studio</h2>
+    <p class="auth-subtitle">Arsitektur &amp; Interior Finance</p>
+    
+    <div class="auth-badge">🔒 Akses Terproteksi</div>
+    <p class="auth-desc">Aplikasi ini dilindungi. Masukkan PIN Akses Studio untuk membuka pembukuan keuangan.</p>
+    
+    <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+      <div class="auth-input-wrap">
+        <input type="password" id="auth-pin" placeholder="Ketik PIN Akses..." autocomplete="current-password" inputmode="numeric" required>
+        <button type="button" id="auth-toggle-eye" onclick="togglePinVisibility()" title="Tampilkan PIN">👁️</button>
+      </div>
+      <div id="auth-error" class="auth-error-msg hid">PIN salah! Silakan coba lagi.</div>
+      
+      <div style="display:flex;align-items:center;justify-content:center;margin:12px 0 16px;font-size:12px">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--mu);user-select:none">
+          <input type="checkbox" id="auth-remember" checked style="width:auto;margin:0"> Ingat di perangkat ini (30 hari)
+        </label>
+      </div>
+
+      <button type="submit" class="btn" style="width:100%;padding:12px;font-size:14px;border-radius:12px">
+        🔓 Buka Kunci Akses
+      </button>
+    </form>
+
+    <div class="auth-footer-note">
+      <small class="mu">💡 PIN bawaan awal adalah <b>1234</b>. Anda dapat mengubahnya kapan saja melalui menu <i>Kelola PIN Akses</i>.</small>
+    </div>
+  </div>
+</div>
 
 <!-- MOBILE DRAWER BACKDROP -->
 <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleMobileSidebar(false)"></div>
@@ -545,6 +587,7 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
   </div>
  </div>
  <div class="mobile-top-actions">
+  <button type="button" class="btn sm g" onclick="kunciAplikasi()" title="Kunci Aplikasi" style="padding:7px 10px;font-size:14px">🔒</button>
   <button type="button" class="btn sm g" onclick="toggleAppTheme()" title="Ganti Tema" style="padding:7px 10px;font-size:14px">🌓</button>
   <button type="button" class="btn sm" onclick="bukaModalTransaksi()" title="Tambah Transaksi Cepat" style="padding:7px 12px;font-size:12px">➕ Baru</button>
  </div>
@@ -588,7 +631,9 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
 
   <div style="padding-top:12px;border-top:1px solid var(--bd);display:flex;flex-direction:column;gap:6px">
    <button type="button" class="btn sm g" id="theme-btn" style="width:100%;justify-content:flex-start">🌓 Ganti Tema</button>
+   <button type="button" class="btn sm g" onclick="bukaModalPin()" style="width:100%;justify-content:flex-start">🔒 Kelola PIN Akses</button>
    <button type="button" class="btn sm g" id="btn-quick-bk" style="width:100%;justify-content:flex-start">💾 Cadangkan Data</button>
+   <button type="button" class="btn sm g" onclick="kunciAplikasi()" style="width:100%;justify-content:flex-start;color:var(--wn)">🚪 Kunci / Keluar</button>
    <button type="button" class="lnk d" id="btn-clear-data" style="font-size:11px;text-align:left;padding:6px 8px">🗑️ Reset Semua Data</button>
   </div>
  </aside>
@@ -628,7 +673,7 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
      </div>
     </div>
     <div>
-     <button type="button" class="hero-action-btn" id="hero-btn-add" onclick="bukaModalTransaksi()" title="Tambah Transaksi Cepat">
+     <button type="button" class="hero-action-btn" id="hero-btn-add" onclick="bukaModalKasBesar()" title="Tambah Transaksi Kas Besar">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
      </button>
     </div>
@@ -675,9 +720,7 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
    <div id="top-row2" class="hid" style="display:none"></div>
    <p class="neg" id="warn" style="margin:0 0 16px;font-weight:700"></p>
 
-   <!-- ============================================================== -->
-   <!-- BARIS 1: SPENDING OVERVIEW & KONTROL KESEIMBANGAN REKENING    -->
-   <!-- ============================================================== -->
+   <!-- BARIS 1: SPENDING OVERVIEW & KONTROL KESEIMBANGAN REKENING -->
    <div class="two-col-grid">
     <!-- Spending Overview Donut Widget -->
     <div class="card-widget">
@@ -721,9 +764,7 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
     </div>
    </div>
 
-   <!-- ============================================================== -->
-   <!-- BARIS 2: RECENT TRANSACTIONS & REKAPITULASI PER PROYEK         -->
-   <!-- ============================================================== -->
+   <!-- BARIS 2: RECENT TRANSACTIONS & REKAPITULASI PER PROYEK -->
    <div class="two-col-grid">
     <!-- Recent Transactions Mini Card -->
     <div class="card-widget">
@@ -762,7 +803,7 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
 <!-- ============================================== -->
 <section id="v2" class="hid">
  
- <!-- COMPACT PROYEK HEADER BAR -->
+ <!-- COMPACT PROYEK HEADER BAR DENGAN TOMBOL PLUS INPUT -->
  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap;gap:12px">
   <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1">
    <span style="font-size:24px;flex-shrink:0">📐</span>
@@ -772,6 +813,10 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
    </div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+   <!-- TOMBOL PLUS INPUT KAS KECIL PROYEK -->
+   <button type="button" class="btn sm" onclick="bukaModalKasKecil()" style="background:var(--ac);color:#ffffff;box-shadow:var(--sh-sm);font-weight:800" title="Tambah Pengeluaran Kas Kecil">
+    ➕ Tambah Belanja
+   </button>
    <button type="button" class="btn sm g" onclick="ubahNamaProyekAktif()">✏️ Ubah Nama</button>
    <button type="button" class="btn sm g" onclick="aturKontrakProyekAktif()">💼 Atur Kontrak</button>
    <select id="pmode-sel" title="Mode pengelolaan proyek" onchange="ubahModeProyekAktif(this.value)" style="padding:6px 9px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-size:12px;font-weight:600;width:auto">
@@ -788,6 +833,20 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
   <button id="prn"></button>
   <input id="kon">
   <button id="ksv"></button>
+ </div>
+
+ <!-- BANNER INPUT CEPAT BELANJA KAS KECIL -->
+ <div class="card-widget" style="background:var(--sf-sub);border:1px dashed var(--ac);display:flex;flex-direction:row;justify-content:space-between;align-items:center;padding:16px 20px;margin-bottom:18px;flex-wrap:wrap;gap:12px">
+  <div style="display:flex;align-items:center;gap:12px">
+   <div style="width:40px;height:40px;border-radius:12px;background:var(--ac-bg);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">📝</div>
+   <div>
+    <h3 style="margin:0;font-size:15px;font-weight:800;color:var(--tx)">Input Belanja Kasir Lapangan</h3>
+    <small class="mu">Catat pengeluaran material, upah tukang, kasbon, atau pindah rekening proyek.</small>
+   </div>
+  </div>
+  <button type="button" class="btn" onclick="bukaModalKasKecil()" style="padding:9px 18px;box-shadow:var(--sh-sm);font-weight:800" title="Buka Pop-up Transaksi">
+   ➕ Tambah Transaksi Belanja
+  </button>
  </div>
 
  <!-- PANEL DANA PIC (tampil untuk proyek Dikelola PIC) -->
@@ -813,7 +872,10 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
  <div class="block-panel">
   <div class="block-header">
    <h2 class="block-title"><span class="icon-pill icon-emerald">📊</span> Ringkasan Arus Kas Proyek</h2>
-   <span id="proj-badge-name" class="badge b-mu">Pilih Proyek</span>
+   <div style="display:flex;align-items:center;gap:8px">
+    <span id="proj-badge-name" class="badge b-mu">Pilih Proyek</span>
+    <button type="button" class="btn sm" onclick="bukaModalKasKecil()" title="Input Transaksi Kas Kecil">➕ Catat Transaksi</button>
+   </div>
   </div>
 
   <div class="kpi-row" id="kpi-row-1"><div class="card"><small>📥 Total Uang Masuk</small><b>Rp0</b></div><div class="card"><small>📤 Total Pengeluaran</small><b>Rp0</b></div><div class="card"><small>💰 Total Saldo</small><b class="pos">Rp0</b></div></div>
@@ -855,10 +917,139 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
   <p class="mu" style="margin-top:8px">💡 <b>Anti-Lupa:</b> Tukang yang kasbon di hari kerja akan masuk daftar ini. Saat hari Sabtu gajian, gunakan tombol di atas agar kasbon otomatis dipotong!</p>
  </div>
 
- <!-- BLOK 3: INPUT TRANSAKSI BELANJA KAS KECIL -->
+ <!-- BLOK 4: LOG TRANSAKSI & PENCARIAN -->
  <div class="block-panel">
   <div class="block-header">
-   <h2 class="block-title" id="ft"><span class="icon-pill icon-blue">📝</span> Input Belanja Kasir Lapangan</h2>
+   <h2 class="block-title"><span class="icon-pill icon-purple">📋</span> Riwayat Belanja Proyek Ini</h2>
+  </div>
+
+  <div class="filter-bar">
+   <button class="pill on" data-filter="all">Semua</button>
+   <button class="pill" data-filter="Keluar">Belanja</button>
+   <button class="pill" data-filter="Kasbon">Kasbon Tukang</button>
+   <button class="pill" data-filter="Pindah">Pindah Saldo</button>
+   <button class="pill" data-filter="this-month">Bulan Ini</button>
+  </div>
+
+  <input id="q" placeholder="🔍 Cari transaksi (deskripsi, kategori, nama tukang, tanggal)..." style="margin-bottom:12px">
+  <div class="wrap" id="log"><div class="empty">Tidak ada transaksi yang cocok dengan filter.</div></div>
+ </div>
+
+ <!-- BLOK 5: IMPOR & UPDATE LAPORAN -->
+ <div class="block-panel">
+  <div class="block-header">
+   <h2 class="block-title"><span class="icon-pill icon-blue">📤</span> Impor &amp; Update Laporan Proyek</h2>
+  </div>
+  <div class="form">
+   <div class="full">
+    <label>Pilih File Excel (.xlsx/.xls/.csv) untuk Ditambahkan ke Proyek Ini</label>
+    <input type="file" id="imf" accept=".xlsx,.xls,.csv">
+   </div>
+   <div class="full mu" id="imi" style="background:var(--sf-sub);padding:12px;border-radius:10px;border:1px solid var(--bd)">
+    💡 <b>Mode Update Cerdas (Smart Append):</b> Data yang sudah ada di proyek ini <u>tidak akan terhapus</u>. Transaksi lama otomatis dilewati dan hanya baris baru yang akan ditambahkan.
+   </div>
+   <div class="full row row-stack-mobile">
+    <button class="btn hid" id="imb">➕ Tambahkan Transaksi ke Proyek Ini</button>
+    <button class="btn g" id="tpl">📥 Unduh Template Resmi</button>
+    <button class="btn g" id="expp">📑 Ekspor Proyek Ini (.xlsx)</button>
+   </div>
+  </div>
+ </div>
+</section>
+ </main>
+</div>
+
+<!-- BOTTOM NAVIGATION BAR (FOR SMARTPHONES & TABLETS) -->
+<nav class="mobile-bottom-nav">
+ <button type="button" class="bottom-nav-item active" id="bnav-kb" onclick="navTo('kb')">
+  <span class="b-icon">🏢</span>
+  <span>Kas Besar</span>
+ </button>
+ <button type="button" class="bottom-nav-item" id="bnav-proj" onclick="navToProjectDirect()">
+  <span class="b-icon">📐</span>
+  <span>Proyek</span>
+ </button>
+ <div class="bottom-nav-item fab-btn-wrap">
+  <button type="button" class="bottom-nav-fab" onclick="bukaModalTransaksi()" title="Tambah Transaksi Cepat">
+   ➕
+  </button>
+ </div>
+ <button type="button" class="bottom-nav-item" id="bnav-log" onclick="navTo('log')">
+  <span class="b-icon">📋</span>
+  <span>Riwayat</span>
+ </button>
+ <button type="button" class="bottom-nav-item" id="bnav-menu" onclick="toggleMobileSidebar(true)">
+  <span class="b-icon">☰</span>
+  <span>Menu</span>
+ </button>
+</nav>
+
+<!-- MODAL INPUT TRANSAKSI KAS BESAR STUDIO -->
+<div id="modal-kas-besar" class="modal-bg hid">
+ <div class="modal modal-lg">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+   <h3 id="bt" style="margin:0"><span class="icon-pill icon-purple">📝</span> Input Transaksi Kas Besar</h3>
+   <button type="button" class="lnk" id="bc-x" onclick="tutupModalKasBesar()" style="font-size:22px;line-height:1;color:var(--mu);padding:4px 8px">✕</button>
+  </div>
+  <div class="form">
+   <div>
+    <label>Tanggal Transaksi</label>
+    <input type="date" id="bd">
+    <div class="chips-row">
+     <button type="button" class="chip-btn" data-set-date="today" data-target="bd">Hari Ini</button>
+     <button type="button" class="chip-btn" data-set-date="yesterday" data-target="bd">Kemarin</button>
+    </div>
+   </div>
+   <div>
+    <label>Jenis Transaksi</label>
+    <select id="bj"><option>Pemasukan</option><option>Pengeluaran</option></select>
+   </div>
+   <div>
+    <label>Jenis Penggunaan</label>
+    <select id="btipe"></select>
+   </div>
+   <div>
+    <label>Rekening Bank / Kas</label>
+    <select id="br"><option>Tunai</option><option>Nontunai</option></select>
+   </div>
+   <div>
+    <label id="bpl">Pembayaran Klien untuk Proyek (Opsional)</label>
+    <select id="bp"><option value="">— tidak untuk proyek —</option></select>
+   </div>
+   <div class="full">
+    <label>Deskripsi / Uraian Transaksi</label>
+    <input id="be" placeholder="mis. DP Termin 1 Desain Bpk Budi, Lisensi SketchUp">
+   </div>
+   <div class="full">
+    <label>Jumlah Nominal (Rp)</label>
+    <input id="ba" type="number" inputmode="numeric" min="0" placeholder="0">
+    <div class="num-preview" id="ba-preview"></div>
+    <div class="chips-row">
+     <button type="button" class="chip-btn" data-add-amt="100000" data-target="ba">+100 rb</button>
+     <button type="button" class="chip-btn" data-add-amt="500000" data-target="ba">+500 rb</button>
+     <button type="button" class="chip-btn" data-add-amt="1000000" data-target="ba">+1 jt</button>
+     <button type="button" class="chip-btn" data-add-amt="5000000" data-target="ba">+5 jt</button>
+     <button type="button" class="chip-btn d" data-clear-amt="ba">Reset</button>
+    </div>
+   </div>
+   <div class="full row row-stack-mobile" style="margin-top:10px">
+    <button class="btn" id="bs">Simpan Transaksi Kas Besar</button>
+    <button class="btn g" id="bc" type="button" onclick="tutupModalKasBesar()">Batal</button>
+   </div>
+  </div>
+  <p class="mu" style="margin-top:12px;margin-bottom:0">💡 <b>Otomatisasi:</b> Pengeluaran yang dipilihkan untuk proyek otomatis masuk sebagai dana di Kas Kecil proyek tersebut.</p>
+ </div>
+</div>
+
+<!-- MODAL INPUT TRANSAKSI KAS KECIL PROYEK (FITUR BARU POP-UP) -->
+<div id="modal-kas-kecil" class="modal-bg hid">
+ <div class="modal modal-lg">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+   <div style="display:flex;align-items:center;gap:10px;min-width:0">
+    <h3 id="ft" style="margin:0;font-size:18px"><span class="icon-pill icon-blue">📝</span> Input Belanja Kasir Lapangan</h3>
+    <span id="modal-kk-proj-badge" class="badge b-mu">Proyek</span>
+   </div>
+   <button type="button" class="lnk" id="fc-x" onclick="tutupModalKasKecil()" style="font-size:22px;line-height:1;color:var(--mu);padding:4px 8px">✕</button>
   </div>
   <div class="form">
    <div>
@@ -937,132 +1128,9 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
 
    <div class="full row row-stack-mobile">
     <button class="btn" id="fs">Simpan Transaksi Belanja</button>
-    <button class="btn g hid" id="fc">Batal</button>
+    <button class="btn g" id="fc" type="button" onclick="tutupModalKasKecil()">Batal</button>
    </div>
   </div>
- </div>
-
- <!-- BLOK 4: LOG TRANSAKSI & PENCARIAN -->
- <div class="block-panel">
-  <div class="block-header">
-   <h2 class="block-title"><span class="icon-pill icon-purple">📋</span> Riwayat Belanja Proyek Ini</h2>
-  </div>
-
-  <div class="filter-bar">
-   <button class="pill on" data-filter="all">Semua</button>
-   <button class="pill" data-filter="Keluar">Belanja</button>
-   <button class="pill" data-filter="Kasbon">Kasbon Tukang</button>
-   <button class="pill" data-filter="Pindah">Pindah Saldo</button>
-   <button class="pill" data-filter="this-month">Bulan Ini</button>
-  </div>
-
-  <input id="q" placeholder="🔍 Cari transaksi (deskripsi, kategori, nama tukang, tanggal)..." style="margin-bottom:12px">
-  <div class="wrap" id="log"><div class="empty">Tidak ada transaksi yang cocok dengan filter.</div></div>
- </div>
-
- <!-- BLOK 5: IMPOR & UPDATE LAPORAN -->
- <div class="block-panel">
-  <div class="block-header">
-   <h2 class="block-title"><span class="icon-pill icon-blue">📤</span> Impor &amp; Update Laporan Proyek</h2>
-  </div>
-  <div class="form">
-   <div class="full">
-    <label>Pilih File Excel (.xlsx/.xls/.csv) untuk Ditambahkan ke Proyek Ini</label>
-    <input type="file" id="imf" accept=".xlsx,.xls,.csv">
-   </div>
-   <div class="full mu" id="imi" style="background:var(--sf-sub);padding:12px;border-radius:10px;border:1px solid var(--bd)">
-    💡 <b>Mode Update Cerdas (Smart Append):</b> Data yang sudah ada di proyek ini <u>tidak akan terhapus</u>. Transaksi lama otomatis dilewati dan hanya baris baru yang akan ditambahkan.
-   </div>
-   <div class="full row row-stack-mobile">
-    <button class="btn hid" id="imb">➕ Tambahkan Transaksi ke Proyek Ini</button>
-    <button class="btn g" id="tpl">📥 Unduh Template Resmi</button>
-    <button class="btn g" id="expp">📑 Ekspor Proyek Ini (.xlsx)</button>
-   </div>
-  </div>
- </div>
-</section>
- </main>
-</div>
-
-<!-- BOTTOM NAVIGATION BAR (FOR SMARTPHONES & TABLETS) -->
-<nav class="mobile-bottom-nav">
- <button type="button" class="bottom-nav-item active" id="bnav-kb" onclick="navTo('kb')">
-  <span class="b-icon">🏢</span>
-  <span>Kas Besar</span>
- </button>
- <button type="button" class="bottom-nav-item" id="bnav-proj" onclick="navToProjectDirect()">
-  <span class="b-icon">📐</span>
-  <span>Proyek</span>
- </button>
- <div class="bottom-nav-item fab-btn-wrap">
-  <button type="button" class="bottom-nav-fab" onclick="bukaModalTransaksi()" title="Tambah Transaksi Cepat">
-   ➕
-  </button>
- </div>
- <button type="button" class="bottom-nav-item" id="bnav-log" onclick="navTo('log')">
-  <span class="b-icon">📋</span>
-  <span>Riwayat</span>
- </button>
- <button type="button" class="bottom-nav-item" id="bnav-menu" onclick="toggleMobileSidebar(true)">
-  <span class="b-icon">☰</span>
-  <span>Menu</span>
- </button>
-</nav>
-
-<!-- MODAL INPUT TRANSAKSI KAS BESAR -->
-<div id="modal-kas-besar" class="modal-bg hid">
- <div class="modal modal-lg">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-   <h3 id="bt" style="margin:0"><span class="icon-pill icon-purple">📝</span> Input Transaksi Kas Besar</h3>
-   <button type="button" class="lnk" id="bc-x" onclick="tutupModalKasBesar()" style="font-size:22px;line-height:1;color:var(--mu);padding:4px 8px">✕</button>
-  </div>
-  <div class="form">
-   <div>
-    <label>Tanggal Transaksi</label>
-    <input type="date" id="bd">
-    <div class="chips-row">
-     <button type="button" class="chip-btn" data-set-date="today" data-target="bd">Hari Ini</button>
-     <button type="button" class="chip-btn" data-set-date="yesterday" data-target="bd">Kemarin</button>
-    </div>
-   </div>
-   <div>
-    <label>Jenis Transaksi</label>
-    <select id="bj"><option>Pemasukan</option><option>Pengeluaran</option></select>
-   </div>
-   <div>
-    <label>Jenis Penggunaan</label>
-    <select id="btipe"></select>
-   </div>
-   <div>
-    <label>Rekening Bank / Kas</label>
-    <select id="br"><option>Tunai</option><option>Nontunai</option></select>
-   </div>
-   <div>
-    <label id="bpl">Pembayaran Klien untuk Proyek (Opsional)</label>
-    <select id="bp"><option value="">— tidak untuk proyek —</option></select>
-   </div>
-   <div class="full">
-    <label>Deskripsi / Uraian Transaksi</label>
-    <input id="be" placeholder="mis. DP Termin 1 Desain Bpk Budi, Lisensi SketchUp">
-   </div>
-   <div class="full">
-    <label>Jumlah Nominal (Rp)</label>
-    <input id="ba" type="number" inputmode="numeric" min="0" placeholder="0">
-    <div class="num-preview" id="ba-preview"></div>
-    <div class="chips-row">
-     <button type="button" class="chip-btn" data-add-amt="100000" data-target="ba">+100 rb</button>
-     <button type="button" class="chip-btn" data-add-amt="500000" data-target="ba">+500 rb</button>
-     <button type="button" class="chip-btn" data-add-amt="1000000" data-target="ba">+1 jt</button>
-     <button type="button" class="chip-btn" data-add-amt="5000000" data-target="ba">+5 jt</button>
-     <button type="button" class="chip-btn d" data-clear-amt="ba">Reset</button>
-    </div>
-   </div>
-   <div class="full row row-stack-mobile" style="margin-top:10px">
-    <button class="btn" id="bs">Simpan Transaksi Kas Besar</button>
-    <button class="btn g" id="bc" type="button" onclick="tutupModalKasBesar()">Batal</button>
-   </div>
-  </div>
-  <p class="mu" style="margin-top:12px;margin-bottom:0">💡 <b>Otomatisasi:</b> Pengeluaran yang dipilihkan untuk proyek otomatis masuk sebagai dana di Kas Kecil proyek tersebut.</p>
  </div>
 </div>
 
@@ -1110,6 +1178,38 @@ input:focus,select:focus{outline:2px solid var(--ac);border-color:transparent}
   <div class="row row-stack-mobile" style="margin-top:18px">
    <button class="btn" id="mg-bayar">Bayar &amp; Potong Kasbon</button>
    <button class="btn g" id="mg-tutup">Batal</button>
+  </div>
+ </div>
+</div>
+
+<!-- MODAL KELOLA PIN AKSES STUDIO -->
+<div id="modal-pin" class="modal-bg hid">
+ <div class="modal">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+   <h3 style="margin:0"><span class="icon-pill icon-purple">🔑</span> Kelola PIN Akses Studio</h3>
+   <button type="button" class="lnk" onclick="tutupModalPin()" style="font-size:22px;line-height:1;color:var(--mu);padding:4px 8px">✕</button>
+  </div>
+  <p class="mu" style="margin-top:0">PIN digunakan untuk melindungi data keuangan studio Anda agar tidak bisa dibuka oleh orang yang tidak diizinkan.</p>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+   <div>
+    <label class="mu" style="font-weight:700">PIN Saat Ini:</label>
+    <input id="mp-old" type="password" placeholder="Masukkan PIN saat ini (default: 1234)" style="margin-top:4px">
+   </div>
+   <div>
+    <label class="mu" style="font-weight:700">PIN Baru:</label>
+    <input id="mp-new" type="password" placeholder="Minimal 4 karakter/angka" style="margin-top:4px">
+   </div>
+   <div>
+    <label class="mu" style="font-weight:700">Ulangi PIN Baru:</label>
+    <input id="mp-confirm" type="password" placeholder="Ketik ulang PIN baru" style="margin-top:4px">
+   </div>
+   <div id="mp-err" class="auth-error-msg hid" style="margin:0"></div>
+  </div>
+
+  <div class="row row-stack-mobile" style="margin-top:20px">
+   <button class="btn" onclick="simpanPinBaru()">Simpan PIN Baru</button>
+   <button class="btn g" onclick="tutupModalPin()" type="button">Batal</button>
   </div>
  </div>
 </div>
@@ -1210,6 +1310,162 @@ function catClass(k){
  return 'cat-default';
 }
 
+// ==============================================================
+// SISTEM PROTEKSI AKSES & PIN KEAMANAN
+// ==============================================================
+const PIN_KEY = 'bk_pin_hash';
+const PIN_SESSION_KEY = 'bk_auth_session';
+
+async function sha256Hex(str){
+  const enc = new TextEncoder().encode(str);
+  const hash = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function getStoredPinHash(){
+  let h = localStorage.getItem(PIN_KEY);
+  if(!h){
+    // Inisialisasi PIN Bawaan Awal: 1234
+    h = await sha256Hex('1234');
+    localStorage.setItem(PIN_KEY, h);
+  }
+  return h;
+}
+
+function checkIsAuthenticated(){
+  if(sessionStorage.getItem(PIN_SESSION_KEY) === '1') return true;
+  const saved = localStorage.getItem(PIN_SESSION_KEY);
+  if(saved){
+    try {
+      const data = JSON.parse(saved);
+      if(data && data.exp && data.exp > Date.now()) return true;
+    } catch(e){}
+  }
+  return false;
+}
+
+async function handleAuthSubmit(e){
+  if(e) e.preventDefault();
+  const inputEl = $('#auth-pin');
+  const errEl = $('#auth-error');
+  const remember = $('#auth-remember') ? $('#auth-remember').checked : true;
+  const pinVal = (inputEl.value || '').trim();
+  if(!pinVal){
+    errEl.textContent = 'Harap ketik PIN akses.';
+    errEl.classList.remove('hid');
+    return;
+  }
+  const hash = await sha256Hex(pinVal);
+  const targetHash = await getStoredPinHash();
+  if(hash === targetHash){
+    errEl.classList.add('hid');
+    inputEl.value = '';
+    if(remember){
+      const exp = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 hari
+      localStorage.setItem(PIN_SESSION_KEY, JSON.stringify({ exp }));
+    } else {
+      sessionStorage.setItem(PIN_SESSION_KEY, '1');
+    }
+    $('#auth-gate').classList.add('hid');
+    document.body.style.overflow = '';
+    toast('Akses terbuka. Selamat datang di Buku Kas Studio!');
+    render();
+  } else {
+    errEl.textContent = 'PIN salah! Silakan coba lagi.';
+    errEl.classList.remove('hid');
+    inputEl.focus();
+    inputEl.select();
+  }
+}
+
+function togglePinVisibility(){
+  const inp = $('#auth-pin');
+  if(inp.type === 'password'){
+    inp.type = 'text';
+    $('#auth-toggle-eye').textContent = '🙈';
+  } else {
+    inp.type = 'password';
+    $('#auth-toggle-eye').textContent = '👁️';
+  }
+}
+
+function kunciAplikasi(){
+  sessionStorage.removeItem(PIN_SESSION_KEY);
+  localStorage.removeItem(PIN_SESSION_KEY);
+  $('#auth-gate').classList.remove('hid');
+  document.body.style.overflow = 'hidden';
+  if($('#auth-error')) $('#auth-error').classList.add('hid');
+  if($('#auth-pin')){
+    $('#auth-pin').value = '';
+    setTimeout(() => $('#auth-pin').focus(), 150);
+  }
+  toggleMobileSidebar(false);
+  toast('Aplikasi telah dikunci.', '🔒');
+}
+
+function bukaModalPin(){
+  $('#mp-old').value = '';
+  $('#mp-new').value = '';
+  $('#mp-confirm').value = '';
+  $('#mp-err').classList.add('hid');
+  $('#modal-pin').classList.remove('hid');
+  setTimeout(() => $('#mp-old') && $('#mp-old').focus(), 100);
+}
+
+function tutupModalPin(){
+  $('#modal-pin').classList.add('hid');
+}
+
+async function simpanPinBaru(){
+  const oldPin = ($('#mp-old').value || '').trim();
+  const newPin = ($('#mp-new').value || '').trim();
+  const confirmPin = ($('#mp-confirm').value || '').trim();
+  const errEl = $('#mp-err');
+  
+  if(!oldPin || !newPin || !confirmPin){
+    errEl.textContent = 'Semua kolom PIN wajib diisi.';
+    errEl.classList.remove('hid');
+    return;
+  }
+  if(newPin.length < 4){
+    errEl.textContent = 'PIN baru minimal harus 4 karakter/angka.';
+    errEl.classList.remove('hid');
+    return;
+  }
+  if(newPin !== confirmPin){
+    errEl.textContent = 'Konfirmasi PIN baru tidak cocok.';
+    errEl.classList.remove('hid');
+    return;
+  }
+  const oldHash = await sha256Hex(oldPin);
+  const targetHash = await getStoredPinHash();
+  if(oldHash !== targetHash){
+    errEl.textContent = 'PIN lama salah!';
+    errEl.classList.remove('hid');
+    return;
+  }
+  const newHash = await sha256Hex(newPin);
+  localStorage.setItem(PIN_KEY, newHash);
+  tutupModalPin();
+  toast('PIN Akses berhasil diperbarui! Simpan PIN baru Anda baik-baik.', '🔑');
+}
+
+// Auto-lock setelah 30 menit tidak ada aktivitas
+let idleTimer = null;
+function resetIdleTimer(){
+ if(idleTimer) clearTimeout(idleTimer);
+ idleTimer = setTimeout(()=>{
+   if(checkIsAuthenticated()){
+     kunciAplikasi();
+     toast('Sesi dikunci otomatis demi keamanan.', '🔒');
+   }
+ }, 30 * 60 * 1000);
+}
+['click', 'touchstart', 'keydown'].forEach(evt => {
+ window.addEventListener(evt, resetIdleTimer, {passive: true});
+});
+resetIdleTimer();
+
 // RESPONSIVE MOBILE SIDEBAR DRAWER TOGGLE
 function toggleMobileSidebar(open){
  const sb = $('#app-sidebar');
@@ -1236,10 +1492,24 @@ function navToProjectDirect(){
  }
 }
 
-// SALINAN UJI: prefix 'bkdev_' membuat penyimpanan TERPISAH dari aplikasi asli ('bk_').
-const KEY_PREFIX='bkdev_';
+// PENYIMPANAN DATA UTAMA (KEY PREFIX 'bk_')
+const KEY_PREFIX='bk_';
 const KEY={projects:KEY_PREFIX+'p',tx:KEY_PREFIX+'t',accounts:KEY_PREFIX+'a',kb:KEY_PREFIX+'k',cek:KEY_PREFIX+'c',kasbon:KEY_PREFIX+'kb',kat:KEY_PREFIX+'kat',last_bk:KEY_PREFIX+'lb',theme:KEY_PREFIX+'theme'};
 const COL=()=>({projects:P,tx:T,accounts:A,kb:B,cek:C,kasbon:KBON});
+
+function migrateDevDataIfNeeded(){
+  try {
+    const devKeys = ['p','t','a','k','c','kb','kat','lb','theme'];
+    const hasProdData = !!localStorage.getItem('bk_p') || !!localStorage.getItem('bk_t') || !!localStorage.getItem('bk_k');
+    const hasDevData = !!localStorage.getItem('bkdev_p') || !!localStorage.getItem('bkdev_t') || !!localStorage.getItem('bkdev_k');
+    if(!hasProdData && hasDevData){
+      devKeys.forEach(k => {
+        const v = localStorage.getItem('bkdev_' + k);
+        if(v != null) localStorage.setItem('bk_' + k, v);
+      });
+    }
+  } catch(e){}
+}
 
 function lsError(e,msg){
  console.error(msg,e);
@@ -1579,7 +1849,7 @@ function render(){
  const m=S.perRek;
  const ks=Object.keys(m), tot=S.totRek;
  
- $('#acc').innerHTML='<table><tr><th>Rekening</th><th class="n">Saldo Catatan (Buku)</th><th>Saldo Fisik (Asli di Bank/Dompet)</th><th class="n">Status Selisih</th></tr>'+ks.map(k=>{
+ $('#acc').innerHTML='<table><tr><th>Rekening</th><th class="n">Saldo Catatan</th><th>Saldo Fisik</th><th class="n">Status</th></tr>'+ks.map(k=>{
   const buku = m[k] || 0;
   const fisik = CK[k];
   let statusBadge = '<span class="badge b-mu">Belum Dicek</span>';
@@ -1613,6 +1883,7 @@ function render(){
  const curP = P.find(p=>p.id===cur);
  $('#proj-badge-name').textContent = curP ? curP.name : 'Pilih Proyek';
  if($('#proj-title-head')) $('#proj-title-head').textContent = curP ? curP.name : 'Pilih Proyek';
+ if($('#modal-kk-proj-badge')) $('#modal-kk-proj-badge').textContent = curP ? curP.name : 'Pilih Proyek';
  if($('#proj-kontrak-badge')){
   const _pk=P.find(x=>x.id===cur);
   const kTxt = _pk&&_pk.kontrak ? 'Nilai Kontrak: '+rp(_pk.kontrak) : 'Nilai Kontrak belum diset';
@@ -1689,7 +1960,6 @@ function render(){
   bCard.style.display='none';
  }
 
- // DIAGRAM BATANG HORIZONTAL: PENGELUARAN PER JENIS PEKERJAAN
  const pekSums = {};
  PEKERJAAN_LIST.forEach(pk => pekSums[pk] = 0);
  let totBelanjaProyek = 0;
@@ -2019,11 +2289,26 @@ function tutupModalKasBesar(){
  breset();
 }
 
+function bukaModalKasKecil(){
+ if(!cur){
+  toast('Pilih proyek terlebih dahulu.');
+  return;
+ }
+ if(!editId) reset();
+ $('#modal-kas-kecil').classList.remove('hid');
+ const curPrj = P.find(p=>p.id===cur);
+ if($('#modal-kk-proj-badge')) $('#modal-kk-proj-badge').textContent = curPrj ? curPrj.name : 'Pilih Proyek';
+ setTimeout(()=>$('#fa')&&$('#fa').focus(), 100);
+}
+
+function tutupModalKasKecil(){
+ $('#modal-kas-kecil').classList.add('hid');
+ reset();
+}
+
 function bukaModalTransaksi(){
  if($('#v2') && !$('#v2').classList.contains('hid')){
-  const ft = $('#ft');
-  if(ft) ft.scrollIntoView({behavior:'smooth'});
-  if($('#fa')) $('#fa').focus();
+  bukaModalKasKecil();
  } else {
   bukaModalKasBesar();
  }
@@ -2196,10 +2481,11 @@ $('#fs').onclick=async()=>{
  reset();
  await save('tx',id,d);
  render();
- toast('Transaksi berhasil disimpan.');
+ toast('Transaksi belanja berhasil disimpan.');
+ tutupModalKasKecil();
 };
 
-$('#fc').onclick=reset;
+$('#fc').onclick=tutupModalKasKecil;
 
 $('#bs').onclick=async()=>{
  const amt=+$('#ba').value;
@@ -2240,6 +2526,8 @@ $('#bs').onclick=async()=>{
 
 $('#bc').onclick=()=>{ breset(); tutupModalKasBesar(); };
 $('#modal-kas-besar').onclick=e=>{ if(e.target===$('#modal-kas-besar')) tutupModalKasBesar(); };
+$('#modal-kas-kecil').onclick=e=>{ if(e.target===$('#modal-kas-kecil')) tutupModalKasKecil(); };
+$('#modal-pin').onclick=e=>{ if(e.target===$('#modal-pin')) tutupModalPin(); };
 
 $('#ksv').onclick=async()=>{
  const p=P.find(x=>x.id===cur);
@@ -2325,9 +2613,14 @@ $('#modal-gaji').onclick=e=>{
 };
 
 document.addEventListener('keydown', e=>{
- if(e.key==='Escape' && !$('#modal-gaji').classList.contains('hid')){
-  $('#modal-gaji').classList.add('hid');
-  $('#mg-upah').value='';
+ if(e.key==='Escape'){
+  if(!$('#modal-gaji').classList.contains('hid')){
+   $('#modal-gaji').classList.add('hid');
+   $('#mg-upah').value='';
+  }
+  if(!$('#modal-kas-besar').classList.contains('hid')) tutupModalKasBesar();
+  if(!$('#modal-kas-kecil').classList.contains('hid')) tutupModalKasKecil();
+  if(!$('#modal-pin').classList.contains('hid')) tutupModalPin();
  }
 });
 
@@ -2412,8 +2705,8 @@ $('#log').onclick=async e=>{
   $('#fa').dispatchEvent(new Event('input'));
   $('#fs').textContent='Simpan Perubahan';
   $('#fc').classList.remove('hid');
-  $('#ft').innerHTML='<span class="icon-pill icon-blue">✏️</span> Edit Transaksi Kasir';
-  $('#ft').scrollIntoView({behavior:'smooth'});
+  $('#ft').innerHTML='<span class="icon-pill icon-blue">✏️</span> Edit Transaksi Kasir Lapangan';
+  bukaModalKasKecil();
  }
  if(dl){
   if(e.target.dataset.c){
@@ -2545,7 +2838,7 @@ $('#tpl').onclick=()=>{
 function buatBackupObj(){
  return {
   app: 'BukuKasStudio',
-  version: '2.4',
+  version: '2.5',
   timestamp: new Date().toISOString(),
   data: {projects: P, tx: T, accounts: A, kb: B, cek: C, kasbon: KBON, kat: KAT}
  };
@@ -2939,7 +3232,7 @@ $('#btn-clear-data').onclick=()=>{
  toast('Semua data dibersihkan. Cadangan: '+nama);
 };
 
-const SEED_DATA={"app":"BukuKasStudio","version":"2.4","timestamp":"2026-10-17T17:10:03.000Z","data":{"projects":[{"id":"pk","name":"Kita Farma Jilid 2"},{"id":"pn","name":"Interior Notaris"}],"tx":[{"id":"n02","amt":60000,"date":"2026-10-04","desc":"p yusro","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1002},{"id":"n03","amt":1225000,"date":"2026-10-05","desc":"triplek","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1003},{"id":"n04","amt":20000,"date":"2026-10-06","desc":"amplas","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1004},{"id":"n05","amt":754000,"date":"2026-10-06","desc":"hpl, lem","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1005},{"id":"n06","amt":50000,"date":"2026-10-06","desc":"cashbon (pakai uang cash proyek kita farma)","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1006},{"id":"n07","amt":23700,"date":"2026-10-06","desc":"engsel pivot","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1007},{"id":"n08","amt":250000,"date":"2026-10-07","desc":"transport pickup p muji","jenis":"Keluar","kat":"Transportasi","metode":"Nontunai","proj":"pn","ts":1008},{"id":"n09","amt":28600,"date":"2026-10-07","desc":"roda geser","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1009},{"id":"n10","amt":100000,"date":"2026-10-08","desc":"cashbon","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1010},{"id":"n11","amt":35000,"date":"2026-10-09","desc":"kabel","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1011},{"id":"n12","amt":135000,"date":"2026-10-10","desc":"led strip, trafo","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1012},{"id":"n13","amt":37000,"date":"2026-10-10","desc":"kabel, saklar","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1013},{"id":"n14","amt":650000,"date":"2026-10-10","desc":"","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1014},{"id":"n15","amt":692000,"date":"2026-10-12","desc":"hpl, handel, engsel, rel, dll","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1015},{"id":"n16","amt":20000,"date":"2026-10-12","desc":"kopi","jenis":"Keluar","kat":"Lain-lain","metode":"Nontunai","proj":"pn","ts":1016},{"id":"n17","amt":50000,"date":"2026-10-13","desc":"tusir","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1017},{"id":"n18","amt":6000,"date":"2026-10-13","desc":"gorengan","jenis":"Keluar","kat":"Lain-lain","metode":"Nontunai","proj":"pn","ts":1018},{"id":"n19","amt":124000,"date":"2026-10-14","desc":"kas tunai dr rek kita farma","jenis":"Pindah","kat":"Pindah rekening","metode":"Nontunai","proj":"pn","to":"Tunai","ts":1019},{"id":"n20","amt":30000,"date":"2026-10-14","desc":"pas yusro WD","jenis":"Pindah","kat":"Pindah rekening","metode":"Tunai","proj":"pn","to":"Nontunai","ts":1020},{"id":"n21","amt":29000,"date":"2026-10-14","desc":"downlight","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1021},{"id":"n22","amt":150000,"date":"2026-10-14","desc":"jasa angkut","jenis":"Keluar","kat":"Transportasi","metode":"Nontunai","proj":"pn","ts":1022},{"id":"n23","amt":8500,"date":"2026-10-15","desc":"solasi","jenis":"Keluar","kat":"Material","metode":"Tunai","proj":"pn","ts":1023},{"id":"n24","amt":10000,"date":"2026-10-15","desc":"es kelapa","jenis":"Keluar","kat":"Lain-lain","metode":"Tunai","proj":"pn","ts":1024},{"id":"n25","amt":560000,"date":"2026-10-17","desc":"upah pak yusro","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1025},{"id":"k01","amt":1296338,"date":"2026-09-07","desc":"Termin Pelaksanaan","jenis":"Masuk","kat":"Lain-lain","metode":"Nontunai","proj":"pk","ts":2001}],"accounts":[],"kb":[{"id":"kb_n01a","amt":5000000,"date":"2026-10-04","desc":"Seabank (pembayaran klien)","jenis":"Pemasukan","proj":"","rek":"Nontunai","src":"pn","ts":3001}],"cek":[],"kasbon":[],"kat":["Material","Upah Tukang","Sewa Alat","Transportasi","Konsultan/Sub-kontraktor","Perizinan","Operasional Kantor","Workshop/Mebel","Finishing & Interior","Lain-lain"]}};
+const SEED_DATA={"app":"BukuKasStudio","version":"2.5","timestamp":"2026-10-17T17:10:03.000Z","data":{"projects":[{"id":"pk","name":"Kita Farma Jilid 2"},{"id":"pn","name":"Interior Notaris"}],"tx":[{"id":"n02","amt":60000,"date":"2026-10-04","desc":"p yusro","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1002},{"id":"n03","amt":1225000,"date":"2026-10-05","desc":"triplek","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1003},{"id":"n04","amt":20000,"date":"2026-10-06","desc":"amplas","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1004},{"id":"n05","amt":754000,"date":"2026-10-06","desc":"hpl, lem","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1005},{"id":"n06","amt":50000,"date":"2026-10-06","desc":"cashbon (pakai uang cash proyek kita farma)","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1006},{"id":"n07","amt":23700,"date":"2026-10-06","desc":"engsel pivot","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1007},{"id":"n08","amt":250000,"date":"2026-10-07","desc":"transport pickup p muji","jenis":"Keluar","kat":"Transportasi","metode":"Nontunai","proj":"pn","ts":1008},{"id":"n09","amt":28600,"date":"2026-10-07","desc":"roda geser","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1009},{"id":"n10","amt":100000,"date":"2026-10-08","desc":"cashbon","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1010},{"id":"n11","amt":35000,"date":"2026-10-09","desc":"kabel","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1011},{"id":"n12","amt":135000,"date":"2026-10-10","desc":"led strip, trafo","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1012},{"id":"n13","amt":37000,"date":"2026-10-10","desc":"kabel, saklar","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1013},{"id":"n14","amt":650000,"date":"2026-10-10","desc":"","jenis":"Keluar","kat":"Upah Tukang","metode":"Nontunai","proj":"pn","ts":1014},{"id":"n15","amt":692000,"date":"2026-10-12","desc":"hpl, handel, engsel, rel, dll","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1015},{"id":"n16","amt":20000,"date":"2026-10-12","desc":"kopi","jenis":"Keluar","kat":"Lain-lain","metode":"Nontunai","proj":"pn","ts":1016},{"id":"n17","amt":50000,"date":"2026-10-13","desc":"tusir","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1017},{"id":"n18","amt":6000,"date":"2026-10-13","desc":"gorengan","jenis":"Keluar","kat":"Lain-lain","metode":"Nontunai","proj":"pn","ts":1018},{"id":"n19","amt":124000,"date":"2026-10-14","desc":"kas tunai dr rek kita farma","jenis":"Pindah","kat":"Pindah rekening","metode":"Nontunai","proj":"pn","to":"Tunai","ts":1019},{"id":"n20","amt":30000,"date":"2026-10-14","desc":"pas yusro WD","jenis":"Pindah","kat":"Pindah rekening","metode":"Tunai","proj":"pn","to":"Nontunai","ts":1020},{"id":"n21","amt":29000,"date":"2026-10-14","desc":"downlight","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1021},{"id":"n22","amt":150000,"date":"2026-10-14","desc":"jasa angkut","jenis":"Keluar","kat":"Transportasi","metode":"Nontunai","proj":"pn","ts":1022},{"id":"n23","amt":8500,"date":"2026-10-15","desc":"solasi","jenis":"Keluar","kat":"Material","metode":"Tunai","proj":"pn","ts":1023},{"id":"n24","amt":10000,"date":"2026-10-15","desc":"es kelapa","jenis":"Keluar","kat":"Lain-lain","metode":"Tunai","proj":"pn","ts":1024},{"id":"n25","amt":560000,"date":"2026-10-17","desc":"upah pak yusro","jenis":"Keluar","kat":"Material","metode":"Nontunai","proj":"pn","ts":1025},{"id":"k01","amt":1296338,"date":"2026-09-07","desc":"Termin Pelaksanaan","jenis":"Masuk","kat":"Lain-lain","metode":"Nontunai","proj":"pk","ts":2001}],"accounts":[],"kb":[{"id":"kb_n01a","amt":5000000,"date":"2026-10-04","desc":"Seabank (pembayaran klien)","jenis":"Pemasukan","proj":"","rek":"Nontunai","src":"pn","ts":3001}],"cek":[],"kasbon":[],"kat":["Material","Upah Tukang","Sewa Alat","Transportasi","Konsultan/Sub-kontraktor","Perizinan","Operasional Kantor","Workshop/Mebel","Finishing & Interior","Lain-lain"]}};
 
 function muatDataContohUji(){
  if(P.length||T.length||B.length||KBON.length||A.length){console.warn('Dibatalkan: sudah ada data.');return false}
@@ -2951,9 +3244,21 @@ function muatDataContohUji(){
  return true;
 }
 
-(function init(){
+(async function init(){
+ migrateDevDataIfNeeded();
  const savedTheme=localStorage.getItem(KEY.theme);
  if(savedTheme) applyTheme(savedTheme);
+
+ // Cek status autentikasi PIN
+ const isAuth = checkIsAuthenticated();
+ if(!isAuth){
+  $('#auth-gate').classList.remove('hid');
+  document.body.style.overflow = 'hidden';
+  setTimeout(()=>$('#auth-pin')&&$('#auth-pin').focus(), 200);
+ } else {
+  $('#auth-gate').classList.add('hid');
+  document.body.style.overflow = '';
+ }
 
  P = lsGet('projects');
  T = lsGet('tx');
@@ -2965,13 +3270,6 @@ function muatDataContohUji(){
 
  if(P.length===0 && B.length===0 && T.length===0){
   setTimeout(()=>toast('Belum ada data di browser ini. Gunakan Pulihkan Backup jika ada cadangan.','ℹ️'),300);
- }
- if(KEY_PREFIX!=='bk_'){
-  document.title='[UJI] '+document.title;
-  const rb=document.createElement('div');
-  rb.textContent='SALINAN UJI: penyimpanan terpisah';
-  rb.style.cssText='position:fixed;left:8px;top:8px;z-index:89;background:#f59e0b;color:#1c1917;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;opacity:.85;pointer-events:none';
-  document.body.appendChild(rb);
  }
 
  reset();
